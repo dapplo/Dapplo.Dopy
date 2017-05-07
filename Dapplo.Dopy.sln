@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Dopy", "Dapplo.Dopy\Dapplo.Dopy.csproj", "{CFB4F82E-53C3-40ED-B54F-316E8D300C6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Dopy.Container", "Dapplo.Dopy.Container\Dapplo.Dopy.Container.csproj", "{DAC8D59E-AD0A-4C71-B81B-74047BE57D87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapplo.Dopy.Storage", "Dapplo.Dopy.Storage\Dapplo.Dopy.Storage.csproj", "{83617ADD-BA0D-421F-88DB-83CDC062610F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFB4F82E-53C3-40ED-B54F-316E8D300C6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFB4F82E-53C3-40ED-B54F-316E8D300C6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFB4F82E-53C3-40ED-B54F-316E8D300C6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFB4F82E-53C3-40ED-B54F-316E8D300C6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAC8D59E-AD0A-4C71-B81B-74047BE57D87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAC8D59E-AD0A-4C71-B81B-74047BE57D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAC8D59E-AD0A-4C71-B81B-74047BE57D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAC8D59E-AD0A-4C71-B81B-74047BE57D87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83617ADD-BA0D-421F-88DB-83CDC062610F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83617ADD-BA0D-421F-88DB-83CDC062610F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83617ADD-BA0D-421F-88DB-83CDC062610F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83617ADD-BA0D-421F-88DB-83CDC062610F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
