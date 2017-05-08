@@ -32,7 +32,7 @@ using MahApps.Metro.IconPacks;
 
 #endregion
 
-namespace Application.Demo.UseCases.ContextMenu
+namespace Dapplo.Dopy.Container.UseCases.ContextMenu
 {
     /// <summary>
     ///     This will add an extry for the exit to the context menu
@@ -61,7 +61,7 @@ namespace Application.Demo.UseCases.ContextMenu
             };
             ClickAction = clickedItem =>
             {
-                System.Windows.Application.Current.Shutdown();
+                Application.Current.Shutdown();
             };
             this.ApplyIconForegroundColor(Brushes.DarkRed);
         }
