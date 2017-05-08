@@ -41,3 +41,14 @@ Do we need to store all formats? What about size, and unknown formats?
 
 Database storage should be simple and flexible.
 LiteDB would be my current favorite to use...
+
+Configuration:
+* Which formats for which application?
+* Take CF_UNICODETEXT in favor of CF_TEXT
+* Take PNG in favor of CF_TIFF, which is in favor of CF_DIBV5 -> CF_DIB -> CF_BITMAP
+
+Miscelanious:
+HDrop -> See http://www.pinvoke.net/default.aspx/shell32.dragqueryfile
+What to do with URI`s?
+What with unknown formats?
+What with CF_SYLK

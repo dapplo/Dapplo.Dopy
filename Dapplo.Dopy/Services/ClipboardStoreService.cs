@@ -2,10 +2,10 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
 using Dapplo.Addons;
+using Dapplo.Dopy.Configuration;
 using Dapplo.Dopy.Entities;
 using Dapplo.Log;
 using Dapplo.Windows.Clipboard;
@@ -22,19 +22,24 @@ namespace Dapplo.Dopy.Services
         private static readonly LogSource Log = new LogSource();
         private IDisposable _clipboardMonitor;
         private readonly SynchronizationContext _uiSynchronizationContext;
-        private readonly IClipRepository _clipboardRepository;
+        private readonly IClipRepository _clipRepository;
+        private readonly IDopyConfiguration _dopyConfiguration;
 
         /// <summary>
         /// Initializes the needed depedencies
         /// </summary>
-        /// <param name="clipboardRepository">IClipRepository</param>
+        /// <param name="clipRepository">IClipRepository</param>
+        /// <param name="dopyConfiguration">Configuration</param>
         /// <param name="uiSynchronizationContext">SynchronizationContext to register the Clipboard Monitor with</param>
         [ImportingConstructor]
-        public ClipboardStoreService(IClipRepository clipboardRepository,
+        public ClipboardStoreService(
+            IClipRepository clipRepository,
+            IDopyConfiguration dopyConfiguration,
             [Import("ui", typeof(SynchronizationContext))]SynchronizationContext uiSynchronizationContext)
         {
-            _clipboardRepository = clipboardRepository;
+            _clipRepository = clipRepository;
             _uiSynchronizationContext = uiSynchronizationContext;
+            _dopyConfiguration = dopyConfiguration;
         }
 
         /// <summary>
@@ -71,17 +76,16 @@ namespace Dapplo.Dopy.Services
                     {
                         foreach (var format in clipboardContents.Formats)
                         {
-                            if (!format.Contains("TEXT"))
+                            if (!_dopyConfiguration.CopyAlways.Contains(format))
                             {
                                 continue;
                             }
                             clip.Contents[format] = ClipboardNative.GetAsStream(format);
                         }
                     }
-                    _clipboardRepository.Insert(clip);
+                    _clipRepository.Insert(clip);
                 }
             });
-            Log.Info().WriteLine("Registration worked.");
         }
 
         public void Shutdown()

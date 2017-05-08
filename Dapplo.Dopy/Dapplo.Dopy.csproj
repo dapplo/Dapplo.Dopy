@@ -42,12 +42,20 @@
     <Reference Include="Dapplo.Addons, Version=0.4.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapplo.Addons.0.4.7\lib\net45\Dapplo.Addons.dll</HintPath>
     </Reference>
-    <Reference Include="Dapplo.CaliburnMicro, Version=0.4.15.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.CaliburnMicro.0.4.15\lib\net45\Dapplo.CaliburnMicro.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Dapplo.CaliburnMicro, Version=0.4.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.CaliburnMicro.0.4.17\lib\net45\Dapplo.CaliburnMicro.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapplo.Ini, Version=0.5.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Ini.0.5.17\lib\net45\Dapplo.Ini.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapplo.InterfaceImpl, Version=0.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.InterfaceImpl.0.2.6\lib\net45\Dapplo.InterfaceImpl.dll</HintPath>
     </Reference>
     <Reference Include="Dapplo.Log, Version=1.0.29.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapplo.Log.1.0.29\lib\net45\Dapplo.Log.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapplo.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Utils.1.0.132\lib\net45\Dapplo.Utils.dll</HintPath>
     </Reference>
     <Reference Include="Dapplo.Windows, Version=0.4.20.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapplo.Windows.0.4.20\lib\net45\Dapplo.Windows.dll</HintPath>
@@ -85,14 +93,12 @@
       <HintPath>..\packages\Dapplo.Windows.User32.0.4.20\lib\net45\Dapplo.Windows.User32.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="LiteDB, Version=3.1.0.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiteDB.3.1.0\lib\net35\LiteDB.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
     <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
@@ -112,6 +118,8 @@
       <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.0.3\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -127,6 +135,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\IDopyConfiguration.cs" />
     <Compile Include="Entities\Clip.cs" />
     <Compile Include="Entities\EntityBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

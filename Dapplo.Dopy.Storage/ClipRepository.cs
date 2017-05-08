@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using Dapplo.Dopy.Entities;
 using Dapplo.Dopy.Services;
@@ -12,7 +14,7 @@ namespace Dapplo.Dopy.Storage
     /// An IClipboardRepository implementation
     /// </summary>
     [Export(typeof(IClipRepository))]
-    public class ClipboardRepository : IClipRepository
+    public class ClipRepository : IClipRepository
     {
         private readonly LiteCollection<Clip> _clips;
         private readonly LiteStorage _liteStorage;
@@ -21,16 +23,42 @@ namespace Dapplo.Dopy.Storage
         /// </summary>
         /// <param name="database">LiteDatabase</param>
         [ImportingConstructor]
-        public ClipboardRepository(
+        public ClipRepository(
             [Import("clipboard", typeof(LiteDatabase))]
             LiteDatabase database
             )
         {
             _clips =  database.GetCollection<Clip>();
             _liteStorage = database.FileStorage;
-
         }
 
+        /// <summary>
+        /// Load the content to a Clip
+        /// </summary>
+        /// <param name="clip">Clip</param>
+        /// <param name="format">string with clipboard format</param>
+        /// <returns>MemoryStream</returns>
+        private MemoryStream LoadContent(Clip clip, string format)
+        {
+            var stream = new MemoryStream();
+            var fileId = FileIdGenerator(clip, format);
+            _liteStorage.Download(fileId, stream);
+            return stream;
+        }
+
+        /// <summary>
+        /// Load the content to a Clip
+        /// </summary>
+        /// <param name="clip">Clip</param>
+        /// <returns>Clip</returns>
+        private Clip LoadContentFor(Clip clip)
+        {
+            foreach (var format in clip.Contents.Keys)
+            {
+                clip.Contents[format] = LoadContent(clip, format);
+            }
+            return clip;
+        }
         /// <summary>
         /// This returns the clip by ID
         /// </summary>
@@ -38,7 +66,9 @@ namespace Dapplo.Dopy.Storage
         /// <returns></returns>
         public Clip GetById(int id)
         {
-            return _clips.FindById(id);
+            var clip = _clips.FindById(id);
+            LoadContentFor(clip);
+            return clip;
         }
 
         /// <summary>
@@ -47,7 +77,7 @@ namespace Dapplo.Dopy.Storage
         /// <returns>IEnumerable with Clip entities</returns>
         public IEnumerable<Clip> List()
         {
-            return _clips.FindAll();
+            return _clips.FindAll().Select(LoadContentFor);
         }
 
         /// <summary>
@@ -57,7 +87,7 @@ namespace Dapplo.Dopy.Storage
         /// <returns>IEnumerable with Clip entities</returns>
         public IEnumerable<Clip> List(Expression<Func<Clip, bool>> predicate)
         {
-            return _clips.Find(predicate);
+            return _clips.Find(predicate).Select(LoadContentFor);
         }
 
         /// <summary>
@@ -71,6 +101,7 @@ namespace Dapplo.Dopy.Storage
             string idFormat = format.Replace(" ", "_");
             return $"$/contents/{clip.Id}-{idFormat}";
         }
+
         /// <summary>
         /// Insert a new clip into the repository
         /// </summary>

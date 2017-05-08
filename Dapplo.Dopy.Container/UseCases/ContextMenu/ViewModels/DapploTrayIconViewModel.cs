@@ -78,9 +78,9 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu.ViewModels
 
             SetIcon(new PackIconMaterial
             {
-                Kind = PackIconMaterialKind.Apps,
-                Background = Brushes.White,
-                Foreground = Brushes.Black
+                Kind = PackIconMaterialKind.Clipboard,
+                Background = Brushes.Transparent,
+                Foreground = Brushes.White
             });
             Show();
         }

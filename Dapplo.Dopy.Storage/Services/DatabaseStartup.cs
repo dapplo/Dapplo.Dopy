@@ -20,14 +20,17 @@ namespace Dapplo.Dopy.Storage.Services
         /// <inheritdoc />
         public void Start()
         {
-            var clips = Database.GetCollection<Clip>("clips");
-            clips.EnsureIndex(clip => clip.Username);
-            clips.EnsureIndex(clip => clip.Domain);
-            clips.EnsureIndex(clip => clip.Timestamp);
-            clips.EnsureIndex(clip => clip.ProcessName);
-            clips.EnsureIndex(clip => clip.ProductName);
-            clips.EnsureIndex(clip => clip.WindowTitle);
-            clips.EnsureIndex(clip => clip.Formats);
+            var mapper = BsonMapper.Global;
+            mapper.Entity<Clip>()
+                .Id(x => x.Id) // set your document ID
+                .Ignore(x => x.Contents) // ignore this property (do not store)
+                .Index(x => x.Username)
+                .Index(x => x.Domain)
+                .Index(x => x.Timestamp)
+                .Index(x => x.ProcessName)
+                .Index(x => x.ProductName)
+                .Index(x => x.WindowTitle)
+                .Index(x => x.Formats);
         }
 
         /// <inheritdoc />

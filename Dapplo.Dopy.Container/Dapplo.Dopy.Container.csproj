@@ -183,6 +183,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Translations\IContextMenuTranslations.cs" />
     <Compile Include="UseCases\ContextMenu\ExitMenuItem.cs" />
+    <Compile Include="UseCases\ContextMenu\TitleMenuItem.cs" />
     <Compile Include="UseCases\ContextMenu\ViewModels\DapploTrayIconViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
