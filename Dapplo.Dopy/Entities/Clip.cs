@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using LiteDB;
 
 namespace Dapplo.Dopy.Entities
 {
@@ -47,6 +48,7 @@ namespace Dapplo.Dopy.Entities
         /// <summary>
         /// The actual clipboard contents
         /// </summary>
+        [BsonIgnore]
         public IDictionary<string, MemoryStream> Contents { get; } = new Dictionary<string, MemoryStream>();
 
     }

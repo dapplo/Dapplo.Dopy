@@ -42,8 +42,10 @@ namespace Dapplo.Dopy.Services
         /// </summary>
         public void Start()
         {
-            _clipboardMonitor = ClipboardMonitor.OnUpdate.SubscribeOn(_uiSynchronizationContext).Subscribe(clipboardContents =>
+            _clipboardMonitor = ClipboardMonitor.OnUpdate.SubscribeOn(_uiSynchronizationContext).Synchronize().Subscribe(clipboardContents =>
             {
+
+                Log.Info().WriteLine("Processing clipboard id {0}", clipboardContents.Id);
                 var interopWindow = InteropWindowFactory.CreateFor(clipboardContents.OwnerHandle);
 
                 using (var process = Process.GetProcessById(interopWindow.GetProcessId()))

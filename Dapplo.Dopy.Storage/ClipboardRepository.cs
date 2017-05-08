@@ -69,7 +69,7 @@ namespace Dapplo.Dopy.Storage
         private string FileIdGenerator(Clip clip, string format)
         {
             string idFormat = format.Replace(" ", "_");
-            return $"/contents/{clip.Id}-{idFormat}";
+            return $"$/contents/{clip.Id}-{idFormat}";
         }
         /// <summary>
         /// Insert a new clip into the repository
@@ -81,7 +81,8 @@ namespace Dapplo.Dopy.Storage
             foreach (var contentsKey in clip.Contents.Keys)
             {
                 var stream = clip.Contents[contentsKey];
-                _liteStorage.Upload(FileIdGenerator(clip, contentsKey), FileIdGenerator(clip, contentsKey), stream);
+                var fileId = FileIdGenerator(clip, contentsKey);
+                _liteStorage.Upload(fileId, fileId, stream);
             }
         }
 
