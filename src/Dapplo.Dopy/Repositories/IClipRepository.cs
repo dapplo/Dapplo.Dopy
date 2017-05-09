@@ -19,17 +19,14 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System.Collections.Generic;
-using System.ComponentModel;
-using Dapplo.Ini;
-using Dapplo.InterfaceImpl.Extensions;
+using Dapplo.Dopy.Entities;
 
-namespace Dapplo.Dopy.Configuration
+namespace Dapplo.Dopy.Repositories
 {
-    [IniSection("Dopy")]
-    public interface IDopyConfiguration : IIniSection, IDefaultValue
+    /// <summary>
+    /// Interface for the Clip repository
+    /// </summary>
+    public interface IClipRepository : IRepository<Clip>
     {
-        [DefaultValue("PNG,CF_UNICODETEXT,CF_WAVE,HTML Format")]
-        IList<string> CopyAlways { get; set; }
     }
 }

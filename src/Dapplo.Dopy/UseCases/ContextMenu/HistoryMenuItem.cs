@@ -22,48 +22,45 @@
 #region using
 
 using System.ComponentModel.Composition;
-using System.Threading;
-using System.Windows;
-using System.Windows.Media;
+using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
-using Dapplo.Dopy.Container.Translations;
+using Dapplo.Dopy.Translations;
+using Dapplo.Dopy.UseCases.History.ViewModels;
 using MahApps.Metro.IconPacks;
 
 #endregion
 
-namespace Dapplo.Dopy.Container.UseCases.ContextMenu
+namespace Dapplo.Dopy.UseCases.ContextMenu
 {
     /// <summary>
     ///     This will add an extry for the exit to the context menu
     /// </summary>
     [Export("contextmenu", typeof(IMenuItem))]
-    public sealed class ExitMenuItem : MenuItem
+    public sealed class HistoryMenuItem : MenuItem
     {
         [ImportingConstructor]
-        public ExitMenuItem(
-            IMainContextMenuTranslations contextMenuTranslations,
-            // Test for the exporting SynchronizationContext
-            [Import("ui", typeof(SynchronizationContext))]
-            SynchronizationContext uiSynchronizationContext
+        public HistoryMenuItem(
+            IDopyTranslations dopyContextMenuTranslations,
+            IWindowManager windowManager,
+            HistoryViewModel historyViewModel
         )
         {
             // automatically update the DisplayName
-            contextMenuTranslations.CreateDisplayNameBinding(this, nameof(IMainContextMenuTranslations.Exit));
-            Id = "Z_Exit";
+            dopyContextMenuTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));
+            Id = "Y_History";
             Icon = new PackIconMaterial
             {
-                Kind = PackIconMaterialKind.Close,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Stretch,
-                HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                VerticalContentAlignment = VerticalAlignment.Stretch
+                Kind = PackIconMaterialKind.History,
             };
             ClickAction = clickedItem =>
             {
-                Application.Current.Shutdown();
+                // Prevent should it multiple times
+                if (!historyViewModel.IsActive)
+                {
+                    windowManager.ShowWindow(historyViewModel);
+                }
             };
-            this.ApplyIconForegroundColor(Brushes.DarkRed);
         }
     }
 }

@@ -4,20 +4,20 @@
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
 // 
-//  This file is part of Dapplo.CaliburnMicro
+//  This file is part of Dapplo.Dopy
 // 
-//  Dapplo.CaliburnMicro is free software: you can redistribute it and/or modify
+//  Dapplo.Dopy is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU Lesser General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 // 
-//  Dapplo.CaliburnMicro is distributed in the hope that it will be useful,
+//  Dapplo.Dopy is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU Lesser General Public License for more details.
 // 
 //  You should have a copy of the GNU Lesser General Public License
-//  along with Dapplo.CaliburnMicro. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+//  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 #region using
 
@@ -33,6 +33,7 @@ using Dapplo.CaliburnMicro.Menu;
 using Dapplo.CaliburnMicro.NotifyIconWpf;
 using Dapplo.CaliburnMicro.NotifyIconWpf.ViewModels;
 using Dapplo.Dopy.Container.Translations;
+using Dapplo.Windows.Common;
 using MahApps.Metro.IconPacks;
 
 #endregion
@@ -49,7 +50,7 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu.ViewModels
         private IEnumerable<Lazy<IMenuItem>> ContextMenuItems { get; set; }
 
         [Import]
-        private IContextMenuTranslations ContextMenuTranslations { get; set; }
+        private IMainContextMenuTranslations ContextMenuTranslations { get; set; }
         
         [Import]
         public IWindowManager WindowManager { get; set; }
@@ -59,7 +60,7 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu.ViewModels
             base.OnActivate();
 
             // Set the title of the icon (the ToolTipText) to our IContextMenuTranslations.Title
-            ContextMenuTranslations.CreateDisplayNameBinding(this, nameof(IContextMenuTranslations.Title));
+            ContextMenuTranslations.CreateDisplayNameBinding(this, nameof(IMainContextMenuTranslations.Title));
 
             var items = new List<IMenuItem>();
 
@@ -80,7 +81,7 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu.ViewModels
             {
                 Kind = PackIconMaterialKind.Clipboard,
                 Background = Brushes.Transparent,
-                Foreground = Brushes.White
+                Foreground = WindowsVersion.IsWindows8OrLater? Brushes.White : Brushes.Black
             });
             Show();
         }

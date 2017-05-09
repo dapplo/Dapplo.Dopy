@@ -14,10 +14,10 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu
     public sealed class TitleMenuItem : MenuItem
     {
         [ImportingConstructor]
-        public TitleMenuItem(IContextMenuTranslations contextMenuTranslations)
+        public TitleMenuItem(IMainContextMenuTranslations contextMenuTranslations)
         {
             // automatically update the DisplayName
-            contextMenuTranslations.CreateDisplayNameBinding(this, nameof(IContextMenuTranslations.Title));
+            contextMenuTranslations.CreateDisplayNameBinding(this, nameof(IMainContextMenuTranslations.Title));
             Id = "A_Title";
             Style = MenuItemStyles.Title;
 

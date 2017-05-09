@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using Dapplo.Dopy.Entities;
-using Dapplo.Dopy.Services;
+using Dapplo.Dopy.Repositories;
 using LiteDB;
 
 namespace Dapplo.Dopy.Storage

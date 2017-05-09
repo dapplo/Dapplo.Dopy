@@ -19,17 +19,19 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System.Collections.Generic;
-using System.ComponentModel;
-using Dapplo.Ini;
-using Dapplo.InterfaceImpl.Extensions;
+#region using
 
-namespace Dapplo.Dopy.Configuration
+using System.ComponentModel;
+using Dapplo.Language;
+
+#endregion
+
+namespace Dapplo.Dopy.Translations
 {
-    [IniSection("Dopy")]
-    public interface IDopyConfiguration : IIniSection, IDefaultValue
+    [Language("Dopy")]
+    public interface IDopyTranslations : ILanguage, INotifyPropertyChanged
     {
-        [DefaultValue("PNG,CF_UNICODETEXT,CF_WAVE,HTML Format")]
-        IList<string> CopyAlways { get; set; }
+        [DefaultValue("History")]
+        string History { get; }
     }
 }
