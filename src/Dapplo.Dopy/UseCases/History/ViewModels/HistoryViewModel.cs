@@ -38,6 +38,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
     {
         private readonly IClipRepository _clipRepository;
 
+#if DEBUG
         public HistoryViewModel()
         {
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
@@ -63,6 +64,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
                 ProductName = "Not the Dapplo"
             });
         }
+#endif
 
         [ImportingConstructor]
         public HistoryViewModel(

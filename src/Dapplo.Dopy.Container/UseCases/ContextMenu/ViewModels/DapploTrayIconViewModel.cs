@@ -47,6 +47,7 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu.ViewModels
     public class DapploTrayIconViewModel : TrayIconViewModel
     {
         [ImportMany("contextmenu", typeof(IMenuItem))]
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private IEnumerable<Lazy<IMenuItem>> ContextMenuItems { get; set; }
 
         [Import]
