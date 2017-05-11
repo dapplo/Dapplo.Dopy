@@ -4,11 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModels="clr-namespace:Dapplo.Dopy.UseCases.History.ViewModels"
+             xmlns:utils="clr-namespace:Dapplo.Dopy.Utils"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:HistoryViewModel,IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="700">
-    <DataGrid Height="211" HorizontalAlignment="Left" Margin="12,31,0,0" VerticalAlignment="Top" AutoGenerateColumns="False" ItemsSource="{Binding Clips}" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True">
+    <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+              AutoGenerateColumns="False" ItemsSource="{Binding Clips}" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" utils:DataGridBehavior.Autoscroll="{Binding AutoScroll}">
         <DataGrid.Columns>
+            <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button Content="Delete" cal:Message.Attach="Delete($dataContext)"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
             <DataGridTextColumn Binding="{Binding Path=Timestamp, StringFormat=D}" Header="Date" />
             <DataGridTextColumn Binding="{Binding Path=Timestamp, StringFormat=T}" Header="Time" />
             <DataGridTextColumn Binding="{Binding Path=Domain}" Header="Domain" />
@@ -16,7 +26,21 @@
             <DataGridTextColumn Binding="{Binding Path=WindowTitle}" Header="Title" />
             <DataGridTextColumn Binding="{Binding Path=ProcessName}" Header="Process" />
             <DataGridTextColumn Binding="{Binding Path=ProductName}" Header="Product" />
-            <DataGridTextColumn Binding="{Binding Path=OriginalFormats}" Header="Formats" />
+            <DataGridTemplateColumn Header="Formats" >
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <ItemsControl ItemsSource="{Binding OriginalFormats}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

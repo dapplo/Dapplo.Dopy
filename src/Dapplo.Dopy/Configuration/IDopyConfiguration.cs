@@ -26,9 +26,15 @@ using Dapplo.InterfaceImpl.Extensions;
 
 namespace Dapplo.Dopy.Configuration
 {
+    /// <summary>
+    /// The configuration for Dopy
+    /// </summary>
     [IniSection("Dopy")]
     public interface IDopyConfiguration : IIniSection, IDefaultValue
     {
+        /// <summary>
+        /// Which formats are 
+        /// </summary>
         [DefaultValue("PNG,CF_UNICODETEXT,CF_WAVE,HTML Format")]
         IList<string> CopyAlways { get; set; }
     }

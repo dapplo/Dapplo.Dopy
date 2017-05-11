@@ -19,17 +19,30 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
+using System.Collections.Generic;
+
 namespace Dapplo.Dopy.Entities
 {
     /// <summary>
     /// Base class for all entities
     /// </summary>
-    public abstract class EntityBase
+    public abstract class EntityBase : IEqualityComparer<EntityBase>
     {
         /// <summary>
         /// A unique ID for the entity
         /// </summary>
         public int Id { get; protected set; }
 
+        /// <inheritdoc />
+        public bool Equals(EntityBase x, EntityBase y)
+        {
+            return x?.Id == y?.Id;
+        }
+
+        /// <inheritdoc />
+        public int GetHashCode(EntityBase entity)
+        {
+            return entity.Id.GetHashCode();
+        }
     }
 }

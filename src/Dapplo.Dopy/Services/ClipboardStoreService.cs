@@ -78,60 +78,84 @@ namespace Dapplo.Dopy.Services
             {
 
                 Log.Info().WriteLine("Processing clipboard id {0}", clipboardContents.Id);
-                var interopWindow = InteropWindowFactory.CreateFor(clipboardContents.OwnerHandle);
+                var clip = CreateClip(clipboardContents);
 
-                // Make sure we use the parent window (top level) for the title.
-                IInteropWindow toplevelWindow = interopWindow;
-                var parent = toplevelWindow.GetParent();
-                while (true)
-                {
-                    if (parent == IntPtr.Zero)
-                    {
-                        break;
-                    }
-                    toplevelWindow = toplevelWindow?.GetParentWindow();
-                    parent = toplevelWindow.GetParent();
-                }
+                // Store it in the repository
+                _clipRepository.Insert(clip);
 
-                using (var process = Process.GetProcessById(interopWindow.GetProcessId()))
-                {
-                    string productName = process.ProcessName;
-                    try
-                    {
-                        var versionInfo = FileVersionInfo.GetVersionInfo(process.MainModule.FileName);
-                        productName = versionInfo.ProductName;
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error().WriteLine(ex, "Problem retrieving process information for a process with ID {0} and name {1}", process.Id, process.ProcessName);
-                    }
-                    var clip = new Clip
-                    {
-                        WindowTitle = toplevelWindow.GetCaption(),
-                        ProcessName = process.ProcessName,
-                        ProductName = productName,
-                        OriginalWindowHandle = clipboardContents.OwnerHandle,
-                        SequenceNumber = clipboardContents.Id,
-                        OriginalFormats = clipboardContents.Formats.ToList()
-                    };
-                    using (ClipboardNative.Lock())
-                    {
-                        foreach (var format in clipboardContents.Formats)
-                        {
-                            if (!_dopyConfiguration.CopyAlways.Contains(format))
-                            {
-                                continue;
-                            }
-                            clip.Formats.Add(format);
-                            clip.Contents[format] = ClipboardNative.GetAsStream(format);
-                        }
-                    }
-                    _clipRepository.Insert(clip);
-                    _eventAggregator.PublishOnUIThread(new ClipAddedMessage());
-                }
+                // Provide the UI with the new clip
+                _eventAggregator.BeginPublishOnUIThread(new ClipAddedMessage(clip));
             });
         }
 
+        /// <summary>
+        /// Create the full-blown Clip object
+        /// </summary>
+        /// <param name="clipboardContents">ClipboardContents</param>
+        /// <returns>Clip</returns>
+        private Clip CreateClip(ClipboardContents clipboardContents)
+        {
+            var interopWindow = InteropWindowFactory.CreateFor(clipboardContents.OwnerHandle);
+
+            // Make sure we use the parent window (top level) for the title.
+            IInteropWindow toplevelWindow = interopWindow;
+            var parent = toplevelWindow.GetParent();
+            while (true)
+            {
+                if (parent == IntPtr.Zero)
+                {
+                    break;
+                }
+                toplevelWindow = toplevelWindow?.GetParentWindow();
+                parent = toplevelWindow.GetParent();
+            }
+            var caption = toplevelWindow.GetCaption();
+            Clip clip;
+            using (var process = Process.GetProcessById(interopWindow.GetProcessId()))
+            {
+                string productName = process.ProcessName;
+
+                // Make sure we got something, when the caption is emtry up to now
+                if (string.IsNullOrEmpty(caption))
+                {
+                    caption = process.MainWindowTitle;
+                }
+                try
+                {
+                    var versionInfo = FileVersionInfo.GetVersionInfo(process.MainModule.FileName);
+                    productName = versionInfo.ProductName;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error().WriteLine(ex, "Problem retrieving process information for a process with ID {0} and name {1}", process.Id, process.ProcessName);
+                }
+
+                clip = new Clip
+                {
+                    WindowTitle = caption,
+                    ProcessName = process.ProcessName,
+                    ProductName = productName,
+                    OriginalWindowHandle = clipboardContents.OwnerHandle,
+                    SequenceNumber = clipboardContents.Id,
+                    OriginalFormats = clipboardContents.Formats.ToList()
+                };
+            }
+            using (ClipboardNative.Lock())
+            {
+                foreach (var format in clipboardContents.Formats)
+                {
+                    if (!_dopyConfiguration.CopyAlways.Contains(format))
+                    {
+                        continue;
+                    }
+                    clip.Formats.Add(format);
+                    clip.Contents[format] = ClipboardNative.GetAsStream(format);
+                }
+            }
+            return clip;
+        }
+
+        /// <inheritdoc />
         public void Shutdown()
         {
             _clipboardMonitor?.Dispose();

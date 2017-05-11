@@ -28,9 +28,15 @@ using Dapplo.Language;
 
 namespace Dapplo.Dopy.Translations
 {
+    /// <summary>
+    /// Translations for Dopy
+    /// </summary>
     [Language("Dopy")]
     public interface IDopyTranslations : ILanguage, INotifyPropertyChanged
     {
+        /// <summary>
+        /// The translation for the history window and menu item
+        /// </summary>
         [DefaultValue("History")]
         string History { get; }
     }

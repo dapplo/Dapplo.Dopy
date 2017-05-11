@@ -29,15 +29,39 @@ using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.Dopy.Entities;
 using Dapplo.Dopy.Repositories;
 using Dapplo.Dopy.Translations;
+using Dapplo.Log;
+using Dapplo.Windows.Clipboard;
+using Dapplo.Windows.Desktop;
 
 namespace Dapplo.Dopy.UseCases.History.ViewModels
 {
+    /// <summary>
+    /// Viewmodel for the history
+    /// </summary>
     [Export]
     public class HistoryViewModel : Screen, IHandle<ClipAddedMessage>
     {
+        private static readonly LogSource Log = new LogSource();
         private readonly IClipRepository _clipRepository;
         private readonly IEventAggregator _eventAggregator;
+        private bool _autoScroll;
+
+        /// <summary>
+        /// Changing this makes the history autoscroll
+        /// </summary>
+        public bool AutoScroll
+        {
+            get { return _autoScroll; }
+            set
+            {
+                _autoScroll = value;
+                NotifyOfPropertyChange();
+            }
+        }
 #if DEBUG
+        /// <summary>
+        /// Designtime constructor, not compiled in release
+        /// </summary>
         public HistoryViewModel()
         {
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
@@ -49,6 +73,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
                 SequenceNumber = 10,
                 OriginalWindowHandle = new IntPtr(100000),
                 Formats = new List<string> {"CF_TEXT", "PNG" },
+                OriginalFormats = new List<string> { "CF_TEXT", "PNG", "Something unneeded" },
                 WindowTitle = "Not existing",
                 ProcessName = "bollocks.exe",
                 ProductName = "Not the Dapplo"
@@ -58,6 +83,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
                 SequenceNumber = 12,
                 OriginalWindowHandle = new IntPtr(100001),
                 Formats = new List<string> { "CF_TEXT", "CF_UNICODETEXT" },
+                OriginalFormats = new List<string> { "CF_TEXT", "PNG", "Something unneeded" },
                 WindowTitle = "Not existing",
                 ProcessName = "bollocks.exe",
                 ProductName = "Not the Dapplo"
@@ -65,6 +91,12 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         }
 #endif
 
+        /// <summary>
+        /// Constructor for runtime
+        /// </summary>
+        /// <param name="clipRepository">IClipRepository</param>
+        /// <param name="dopyTranslations">IDopyTranslations</param>
+        /// <param name="eventAggregator">IEventAggregator to publish new clips</param>
         [ImportingConstructor]
         public HistoryViewModel(
             IClipRepository clipRepository,
@@ -82,6 +114,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// </summary>
         public IObservableCollection<Clip> Clips { get; } = new BindableCollection<Clip>();
 
+        /// <inheritdoc />
         protected override void OnActivate()
         {
             Load();
@@ -90,6 +123,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
 
         }
 
+        /// <inheritdoc />
         protected override void OnDeactivate(bool close)
         {
             _eventAggregator.Unsubscribe(this);
@@ -108,7 +142,41 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// <inheritdoc />
         public void Handle(ClipAddedMessage message)
         {
-            Load();
+            Clips.Add(message.NewClip);
+            AutoScroll = true;
+        }
+
+        /// <summary>
+        /// Delete the specified clip
+        /// </summary>
+        /// <param name="clip">Clip</param>
+        public void Delete(Clip clip)
+        {
+            Log.Debug().WriteLine("Clip {0} is going to be deleted.", clip.Id);
+            _clipRepository.Delete(clip);
+            Clips.Remove(clip);
+        }
+
+        /// <summary>
+        /// Place the specified clip back on the clipboard
+        /// </summary>
+        /// <param name="clip">Clip</param>
+        public void Restore(Clip clip)
+        {
+            var handle = IntPtr.Zero;
+            
+            if (InteropWindowFactory.CreateFor(clip.OriginalWindowHandle).Exits())
+            {
+                handle = clip.OriginalWindowHandle;
+            }
+            using (ClipboardNative.Lock(handle))
+            {
+                ClipboardNative.Clear();
+                foreach (var key in clip.Contents.Keys)
+                {
+                    ClipboardNative.SetAsMemoryStream(key, clip.Contents[key]);
+                }
+            }
         }
     }
 }

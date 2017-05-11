@@ -39,6 +39,12 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
     [Export("contextmenu", typeof(IMenuItem))]
     public sealed class HistoryMenuItem : MenuItem
     {
+        /// <summary>
+        /// The constructor for the history MenuItem
+        /// </summary>
+        /// <param name="dopyContextMenuTranslations"></param>
+        /// <param name="windowManager"></param>
+        /// <param name="historyViewModel"></param>
         [ImportingConstructor]
         public HistoryMenuItem(
             IDopyTranslations dopyContextMenuTranslations,
