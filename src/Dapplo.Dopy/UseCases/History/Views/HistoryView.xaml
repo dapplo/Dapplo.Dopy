@@ -19,7 +19,14 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTextColumn Binding="{Binding Path=Timestamp, StringFormat=D}" Header="Date" />
+	        <DataGridTemplateColumn>
+		        <DataGridTemplateColumn.CellTemplate>
+			        <DataTemplate>
+				        <Button Content="Restore" cal:Message.Attach="Restore($dataContext)"/>
+			        </DataTemplate>
+		        </DataGridTemplateColumn.CellTemplate>
+	        </DataGridTemplateColumn>
+			<DataGridTextColumn Binding="{Binding Path=Timestamp, StringFormat=D}" Header="Date" />
             <DataGridTextColumn Binding="{Binding Path=Timestamp, StringFormat=T}" Header="Time" />
             <DataGridTextColumn Binding="{Binding Path=Domain}" Header="Domain" />
             <DataGridTextColumn Binding="{Binding Path=Username}" Header="Username" />

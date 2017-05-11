@@ -165,7 +165,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         {
             var handle = IntPtr.Zero;
             
-            if (InteropWindowFactory.CreateFor(clip.OriginalWindowHandle).Exits())
+            if (InteropWindowFactory.CreateFor(clip.OriginalWindowHandle).Exists())
             {
                 handle = clip.OriginalWindowHandle;
             }
@@ -174,7 +174,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
                 ClipboardNative.Clear();
                 foreach (var key in clip.Contents.Keys)
                 {
-                    ClipboardNative.SetAsMemoryStream(key, clip.Contents[key]);
+                    ClipboardNative.SetAsStream(key, clip.Contents[key]);
                 }
             }
         }

@@ -33,6 +33,7 @@ using Dapplo.Dopy.Repositories;
 using Dapplo.Log;
 using Dapplo.Windows.Clipboard;
 using Dapplo.Windows.Desktop;
+using Dapplo.Windows.Messages;
 
 namespace Dapplo.Dopy.Services
 {
@@ -74,7 +75,13 @@ namespace Dapplo.Dopy.Services
         /// </summary>
         public void Start()
         {
-            _clipboardMonitor = ClipboardMonitor.OnUpdate.SubscribeOn(_uiSynchronizationContext).Synchronize().Subscribe(clipboardContents =>
+            _clipboardMonitor = ClipboardMonitor
+                .OnUpdate
+                .SubscribeOn(_uiSynchronizationContext)
+                .Where(contents => contents.OwnerHandle != WinProcHandler.Instance.Handle)
+                // TODO: Add check for myself
+                // .Where(contents => contents.Formats.Contains("Dopy"))
+                .Synchronize().Subscribe(clipboardContents =>
             {
 
                 Log.Info().WriteLine("Processing clipboard id {0}", clipboardContents.Id);
