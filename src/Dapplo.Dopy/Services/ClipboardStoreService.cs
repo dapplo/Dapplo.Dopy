@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
+using Caliburn.Micro;
 using Dapplo.Addons;
 using Dapplo.Dopy.Configuration;
 using Dapplo.Dopy.Entities;
@@ -46,6 +47,7 @@ namespace Dapplo.Dopy.Services
         private readonly SynchronizationContext _uiSynchronizationContext;
         private readonly IClipRepository _clipRepository;
         private readonly IDopyConfiguration _dopyConfiguration;
+        private readonly IEventAggregator _eventAggregator;
 
         /// <summary>
         /// Initializes the needed depedencies
@@ -53,15 +55,18 @@ namespace Dapplo.Dopy.Services
         /// <param name="clipRepository">IClipRepository</param>
         /// <param name="dopyConfiguration">Configuration</param>
         /// <param name="uiSynchronizationContext">SynchronizationContext to register the Clipboard Monitor with</param>
+        /// <param name="eventAggregator">Used to publish changes</param>
         [ImportingConstructor]
         public ClipboardStoreService(
             IClipRepository clipRepository,
             IDopyConfiguration dopyConfiguration,
-            [Import("ui", typeof(SynchronizationContext))]SynchronizationContext uiSynchronizationContext)
+            [Import("ui", typeof(SynchronizationContext))]SynchronizationContext uiSynchronizationContext,
+            IEventAggregator eventAggregator)
         {
             _clipRepository = clipRepository;
             _uiSynchronizationContext = uiSynchronizationContext;
             _dopyConfiguration = dopyConfiguration;
+            _eventAggregator = eventAggregator;
         }
 
         /// <summary>
@@ -122,6 +127,7 @@ namespace Dapplo.Dopy.Services
                         }
                     }
                     _clipRepository.Insert(clip);
+                    _eventAggregator.PublishOnUIThread(new ClipAddedMessage());
                 }
             });
         }

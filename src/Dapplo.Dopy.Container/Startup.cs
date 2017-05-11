@@ -42,6 +42,8 @@ namespace Dapplo.Dopy.Container
         [STAThread]
         public static void Main()
         {
+
+
 #if DEBUG
             // Initialize a debug logger for Dapplo packages
             LogSettings.RegisterDefaultLogger<DebugLogger>(LogLevels.Info);

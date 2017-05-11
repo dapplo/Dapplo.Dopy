@@ -4,14 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModels="clr-namespace:Dapplo.Dopy.UseCases.History.ViewModels"
-             xmlns:utils="clr-namespace:Dapplo.Dopy.Container.Utils;assembly=Dopy"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:HistoryViewModel,IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="700">
     <DataGrid Height="211" HorizontalAlignment="Left" Margin="12,31,0,0" VerticalAlignment="Top" AutoGenerateColumns="False" ItemsSource="{Binding Clips}" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True">
         <DataGrid.Columns>
-            <DataGridTextColumn Binding="{utils:CultureAwareBinding Path=Timestamp, StringFormat=D}" Header="Date" />
-            <DataGridTextColumn Binding="{utils:CultureAwareBinding Path=Timestamp, StringFormat=T}" Header="Time" />
+            <DataGridTextColumn Binding="{Binding Path=Timestamp, StringFormat=D}" Header="Date" />
+            <DataGridTextColumn Binding="{Binding Path=Timestamp, StringFormat=T}" Header="Time" />
             <DataGridTextColumn Binding="{Binding Path=Domain}" Header="Domain" />
             <DataGridTextColumn Binding="{Binding Path=Username}" Header="Username" />
             <DataGridTextColumn Binding="{Binding Path=WindowTitle}" Header="Title" />

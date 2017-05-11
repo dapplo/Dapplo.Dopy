@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
@@ -34,10 +33,10 @@ using Dapplo.Dopy.Translations;
 namespace Dapplo.Dopy.UseCases.History.ViewModels
 {
     [Export]
-    public class HistoryViewModel : Screen
+    public class HistoryViewModel : Screen, IHandle<ClipAddedMessage>
     {
         private readonly IClipRepository _clipRepository;
-
+        private readonly IEventAggregator _eventAggregator;
 #if DEBUG
         public HistoryViewModel()
         {
@@ -69,11 +68,13 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         [ImportingConstructor]
         public HistoryViewModel(
             IClipRepository clipRepository,
-            IDopyTranslations dopyTranslations
+            IDopyTranslations dopyTranslations,
+            IEventAggregator eventAggregator
             )
         {
             _clipRepository = clipRepository;
             dopyTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));
+            _eventAggregator = eventAggregator;
         }
 
         /// <summary>
@@ -85,6 +86,14 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         {
             Load();
             base.OnActivate();
+            _eventAggregator.Subscribe(this);
+
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            _eventAggregator.Unsubscribe(this);
+            base.OnDeactivate(close);
         }
 
         /// <summary>
@@ -93,7 +102,13 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         public void Load()
         {
             Clips.Clear();
-            Clips.AddRange(_clipRepository.List().Take(10));
+            Clips.AddRange(_clipRepository.List());
+        }
+
+        /// <inheritdoc />
+        public void Handle(ClipAddedMessage message)
+        {
+            Load();
         }
     }
 }
