@@ -21,11 +21,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
+using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Entities;
 using Dapplo.Dopy.Repositories;
 using Dapplo.Dopy.Translations;
@@ -45,6 +48,8 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         private readonly IClipRepository _clipRepository;
         private readonly IEventAggregator _eventAggregator;
         private bool _autoScroll;
+        private Clip _selectedItem;
+        private readonly IEnumerable<IMenuItem> _historyMenuItems;
 
         /// <summary>
         /// Changing this makes the history autoscroll
@@ -58,6 +63,25 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
                 NotifyOfPropertyChange();
             }
         }
+
+        /// <summary>
+        /// The currently selected item
+        /// </summary>
+        public Clip SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                _selectedItem = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        /// <summary>
+        /// The items for the context menu of a Clip entry in the history
+        /// </summary>
+        public ObservableCollection<ITreeNode<IMenuItem>> MenuItems { get; } = new ObservableCollection<ITreeNode<IMenuItem>>();
+
 #if DEBUG
         /// <summary>
         /// Designtime constructor, not compiled in release
@@ -97,16 +121,21 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// <param name="clipRepository">IClipRepository</param>
         /// <param name="dopyTranslations">IDopyTranslations</param>
         /// <param name="eventAggregator">IEventAggregator to publish new clips</param>
+        /// <param name="historyMenuItems">IMenuItems for the history menu</param>
         [ImportingConstructor]
         public HistoryViewModel(
             IClipRepository clipRepository,
             IDopyTranslations dopyTranslations,
-            IEventAggregator eventAggregator
+            IEventAggregator eventAggregator,
+            [ImportMany("historyMenu", typeof(IMenuItem))]
+            IEnumerable<Lazy<IMenuItem>> historyMenuItems
             )
         {
             _clipRepository = clipRepository;
             dopyTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));
             _eventAggregator = eventAggregator;
+
+            _historyMenuItems = historyMenuItems.Select(lazy => lazy.Value).ToList();
         }
 
         /// <summary>
@@ -118,6 +147,16 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         protected override void OnActivate()
         {
             Load();
+            // Make sure all items are initialized
+            foreach (var menuItem in _historyMenuItems)
+            {
+                menuItem.Initialize();
+            }
+
+            foreach (var historyMenuItem in _historyMenuItems.CreateTree())
+            {
+                MenuItems.Add(historyMenuItem);
+            }
             base.OnActivate();
             _eventAggregator.Subscribe(this);
 

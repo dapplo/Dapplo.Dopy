@@ -39,5 +39,11 @@ namespace Dapplo.Dopy.Translations
         /// </summary>
         [DefaultValue("History")]
         string History { get; }
+
+        /// <summary>
+        /// The translation for the delete menu item
+        /// </summary>
+        [DefaultValue("Delete")]
+        string Delete { get; }
     }
 }
