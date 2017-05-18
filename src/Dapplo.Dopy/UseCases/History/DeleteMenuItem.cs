@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.Composition;
-using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Entities;
 using Dapplo.Dopy.Translations;
-using Dapplo.Dopy.UseCases.History.ViewModels;
 using Dapplo.Log;
 using MahApps.Metro.IconPacks;
 
@@ -14,7 +12,7 @@ namespace Dapplo.Dopy.UseCases.History
     /// This makes a delete of a clip possible
     /// </summary>
     [Export("historyMenu", typeof(IMenuItem))]
-    public sealed class DeleteMenuItem : MenuItem
+    public sealed class DeleteMenuItem : ClickableMenuItem<Clip>
     {
         private static readonly LogSource Log = new LogSource();
         /// <summary>
@@ -22,8 +20,7 @@ namespace Dapplo.Dopy.UseCases.History
         /// </summary>
         /// <param name="dopyContextMenuTranslations"></param>
         [ImportingConstructor]
-        public DeleteMenuItem(IDopyTranslations dopyContextMenuTranslations
-        )
+        public DeleteMenuItem(IDopyTranslations dopyContextMenuTranslations)
         {
             // automatically update the DisplayName
             dopyContextMenuTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.Delete));
@@ -34,7 +31,8 @@ namespace Dapplo.Dopy.UseCases.History
             };
         }
 
-        new public void Click(Clip clip)
+        /// <inheritdoc />
+        public override void Click(Clip clip)
         {
             Log.Debug().WriteLine("Id = {0}", clip.Id);
         }
