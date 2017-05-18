@@ -33,5 +33,10 @@ namespace Dapplo.Dopy.UseCases.History
                 Kind = PackIconMaterialKind.Delete,
             };
         }
+
+        new public void Click(Clip clip)
+        {
+            Log.Debug().WriteLine("Id = {0}", clip.Id);
+        }
     }
 }

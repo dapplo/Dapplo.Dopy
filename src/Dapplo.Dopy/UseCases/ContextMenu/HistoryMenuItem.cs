@@ -37,7 +37,7 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
     ///     This will add an extry for the exit to the context menu
     /// </summary>
     [Export("contextmenu", typeof(IMenuItem))]
-    public sealed class HistoryMenuItem : MenuItem
+    public sealed class HistoryMenuItem : ClickableMenuItem
     {
         /// <summary>
         /// The constructor for the history MenuItem
