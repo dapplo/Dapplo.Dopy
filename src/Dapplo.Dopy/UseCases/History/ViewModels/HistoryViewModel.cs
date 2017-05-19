@@ -136,6 +136,17 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             _eventAggregator = eventAggregator;
 
             _historyMenuItems = historyMenuItems.Select(lazy => lazy.Value).ToList();
+
+            // Make sure the $clip is supported
+            MessageBinder.SpecialValues.Add("$clip", context =>
+            {
+                if (context?.EventArgs == null)
+                {
+                    return null;
+                }
+
+                return SelectedItem;
+            });
         }
 
         /// <summary>

@@ -19,13 +19,14 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
+using System;
 using System.ComponentModel.Composition;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Entities;
-using Dapplo.Dopy.Repositories;
 using Dapplo.Dopy.Translations;
-using Dapplo.Log;
+using Dapplo.Windows.Clipboard;
+using Dapplo.Windows.Desktop;
 using MahApps.Metro.IconPacks;
 
 namespace Dapplo.Dopy.UseCases.History
@@ -34,36 +35,41 @@ namespace Dapplo.Dopy.UseCases.History
     /// This makes a delete of a clip possible
     /// </summary>
     [Export("historyMenu", typeof(IMenuItem))]
-    public sealed class DeleteMenuItem : ClickableMenuItem<Clip>
+    public sealed class RestoreMenuItem : ClickableMenuItem<Clip>
     {
-        private readonly IClipRepository _clipRepository;
-
-        private static readonly LogSource Log = new LogSource();
-
         /// <summary>
         /// The constructor for the history MenuItem
         /// </summary>
         /// <param name="dopyContextMenuTranslations"></param>
-        /// <param name="clipRepository">IClipRepository to perform actions on</param>
         [ImportingConstructor]
-        public DeleteMenuItem(IDopyTranslations dopyContextMenuTranslations,
-            IClipRepository clipRepository)
+        public RestoreMenuItem(IDopyTranslations dopyContextMenuTranslations)
         {
-            _clipRepository = clipRepository;
             // automatically update the DisplayName
-            dopyContextMenuTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.Delete));
-            Id = "B_Delete";
+            dopyContextMenuTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.Restore));
+            Id = "A_Restore";
             Icon = new PackIconMaterial
             {
-                Kind = PackIconMaterialKind.Delete,
+                Kind = PackIconMaterialKind.Restore,
             };
         }
 
         /// <inheritdoc />
         public override void Click(Clip clip)
         {
-            Log.Debug().WriteLine("Id = {0}", clip.Id);
-            _clipRepository.Delete(clip);
+            var handle = IntPtr.Zero;
+
+            if (InteropWindowFactory.CreateFor(clip.OriginalWindowHandle).Exists())
+            {
+                handle = clip.OriginalWindowHandle;
+            }
+            using (ClipboardNative.Lock(handle))
+            {
+                ClipboardNative.Clear();
+                foreach (var key in clip.Contents.Keys)
+                {
+                    ClipboardNative.SetAsStream(key, clip.Contents[key]);
+                }
+            }
         }
     }
 }

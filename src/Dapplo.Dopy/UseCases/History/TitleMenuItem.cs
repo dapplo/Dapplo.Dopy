@@ -19,43 +19,35 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-#region using
+using System.ComponentModel.Composition;
+using Dapplo.CaliburnMicro.Extensions;
+using Dapplo.CaliburnMicro.Menu;
+using Dapplo.Dopy.Translations;
+using MahApps.Metro.IconPacks;
 
-using System.ComponentModel;
-using Dapplo.Language;
-
-#endregion
-
-namespace Dapplo.Dopy.Translations
+namespace Dapplo.Dopy.UseCases.History
 {
     /// <summary>
-    /// Translations for Dopy
+    /// This makes a delete of a clip possible
     /// </summary>
-    [Language("Dopy")]
-    public interface IDopyTranslations : ILanguage, INotifyPropertyChanged
+    [Export("historyMenu", typeof(IMenuItem))]
+    public sealed class TitleMenuItem : MenuItem
     {
         /// <summary>
-        /// The translation for the history window and menu item
+        /// The constructor for the history MenuItem
         /// </summary>
-        [DefaultValue("History")]
-        string History { get; }
-
-        /// <summary>
-        /// The translation for the delete menu item
-        /// </summary>
-        [DefaultValue("Delete")]
-        string Delete { get; }
-
-        /// <summary>
-        /// The translation for the process of the context menu of a clipboard entry
-        /// </summary>
-        [DefaultValue("Process")]
-        string Process { get; }
-
-        /// <summary>
-        /// The translation for the restore menu item
-        /// </summary>
-        [DefaultValue("Restore")]
-        string Restore { get; }
+        /// <param name="dopyContextMenuTranslations"></param>
+        [ImportingConstructor]
+        public TitleMenuItem(IDopyTranslations dopyContextMenuTranslations)
+        {
+            // automatically update the DisplayName
+            dopyContextMenuTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.Process));
+            Id = "_Title";
+            Style = MenuItemStyles.Title;
+            Icon = new PackIconMaterial
+            {
+                Kind = PackIconMaterialKind.Clipboard,
+            };
+        }
     }
 }

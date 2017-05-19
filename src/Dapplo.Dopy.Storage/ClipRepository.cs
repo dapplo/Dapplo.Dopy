@@ -152,9 +152,12 @@ namespace Dapplo.Dopy.Storage
         /// <returns>Clip</returns>
         private Clip LoadContentFor(Clip clip)
         {
-            foreach (var format in clip.Contents.Keys)
+            foreach (var format in clip.Formats)
             {
-                clip.Contents[format] = LoadContent(clip, format);
+                if (_liteStorage.Exists(FileIdGenerator(clip, format)))
+                {
+                    clip.Contents[format] = LoadContent(clip, format);
+                }
             }
             return clip;
         }

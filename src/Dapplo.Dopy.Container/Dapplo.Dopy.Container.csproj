@@ -52,36 +52,36 @@
     <Reference Include="Dapplo.Addons.Bootstrapper, Version=0.4.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapplo.Addons.Bootstrapper.0.4.7\lib\net45\Dapplo.Addons.Bootstrapper.dll</HintPath>
     </Reference>
-    <Reference Include="Dapplo.CaliburnMicro, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.CaliburnMicro.0.4.27\lib\net45\Dapplo.CaliburnMicro.dll</HintPath>
+    <Reference Include="Dapplo.CaliburnMicro, Version=0.4.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.CaliburnMicro.0.4.29\lib\net45\Dapplo.CaliburnMicro.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.CaliburnMicro.Configuration, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.CaliburnMicro.Configuration.0.4.27\lib\net45\Dapplo.CaliburnMicro.Configuration.dll</HintPath>
+    <Reference Include="Dapplo.CaliburnMicro.Configuration, Version=0.4.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.CaliburnMicro.Configuration.0.4.29\lib\net45\Dapplo.CaliburnMicro.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.CaliburnMicro.Dapp, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.CaliburnMicro.Dapp.0.4.27\lib\net45\Dapplo.CaliburnMicro.Dapp.dll</HintPath>
+    <Reference Include="Dapplo.CaliburnMicro.Dapp, Version=0.4.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.CaliburnMicro.Dapp.0.4.29\lib\net45\Dapplo.CaliburnMicro.Dapp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.CaliburnMicro.Menu, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.CaliburnMicro.Menu.0.4.27\lib\net45\Dapplo.CaliburnMicro.Menu.dll</HintPath>
+    <Reference Include="Dapplo.CaliburnMicro.Menu, Version=0.4.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.CaliburnMicro.Menu.0.4.29\lib\net45\Dapplo.CaliburnMicro.Menu.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.CaliburnMicro.Metro, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.CaliburnMicro.Metro.0.4.27\lib\net45\Dapplo.CaliburnMicro.Metro.dll</HintPath>
+    <Reference Include="Dapplo.CaliburnMicro.Metro, Version=0.4.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.CaliburnMicro.Metro.0.4.29\lib\net45\Dapplo.CaliburnMicro.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.CaliburnMicro.NotifyIconWpf, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.CaliburnMicro.NotifyIconWpf.0.4.27\lib\net45\Dapplo.CaliburnMicro.NotifyIconWpf.dll</HintPath>
+    <Reference Include="Dapplo.CaliburnMicro.NotifyIconWpf, Version=0.4.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.CaliburnMicro.NotifyIconWpf.0.4.29\lib\net45\Dapplo.CaliburnMicro.NotifyIconWpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.CaliburnMicro.Security, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.CaliburnMicro.Security.0.4.27\lib\net45\Dapplo.CaliburnMicro.Security.dll</HintPath>
+    <Reference Include="Dapplo.CaliburnMicro.Security, Version=0.4.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.CaliburnMicro.Security.0.4.29\lib\net45\Dapplo.CaliburnMicro.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.CaliburnMicro.Translations, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.CaliburnMicro.Translations.0.4.27\lib\net45\Dapplo.CaliburnMicro.Translations.dll</HintPath>
+    <Reference Include="Dapplo.CaliburnMicro.Translations, Version=0.4.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.CaliburnMicro.Translations.0.4.29\lib\net45\Dapplo.CaliburnMicro.Translations.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dapplo.Ini, Version=0.5.17.0, Culture=neutral, processorArchitecture=MSIL">
@@ -102,36 +102,36 @@
     <Reference Include="Dapplo.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapplo.Utils.1.0.132\lib\net45\Dapplo.Utils.dll</HintPath>
     </Reference>
-    <Reference Include="Dapplo.Windows, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.Windows.0.4.27\lib\net45\Dapplo.Windows.dll</HintPath>
+    <Reference Include="Dapplo.Windows, Version=0.4.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Windows.0.4.28\lib\net45\Dapplo.Windows.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.Windows.Common, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.Windows.Common.0.4.27\lib\net45\Dapplo.Windows.Common.dll</HintPath>
+    <Reference Include="Dapplo.Windows.Common, Version=0.4.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Windows.Common.0.4.28\lib\net45\Dapplo.Windows.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.Windows.DesktopWindowsManager, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.Windows.DesktopWindowsManager.0.4.27\lib\net45\Dapplo.Windows.DesktopWindowsManager.dll</HintPath>
+    <Reference Include="Dapplo.Windows.DesktopWindowsManager, Version=0.4.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Windows.DesktopWindowsManager.0.4.28\lib\net45\Dapplo.Windows.DesktopWindowsManager.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.Windows.Dpi, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.Windows.Dpi.0.4.27\lib\net45\Dapplo.Windows.Dpi.dll</HintPath>
+    <Reference Include="Dapplo.Windows.Dpi, Version=0.4.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Windows.Dpi.0.4.28\lib\net45\Dapplo.Windows.Dpi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.Windows.Gdi32, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.Windows.Gdi32.0.4.27\lib\net45\Dapplo.Windows.Gdi32.dll</HintPath>
+    <Reference Include="Dapplo.Windows.Gdi32, Version=0.4.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Windows.Gdi32.0.4.28\lib\net45\Dapplo.Windows.Gdi32.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.Windows.Input, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.Windows.Input.0.4.27\lib\net45\Dapplo.Windows.Input.dll</HintPath>
+    <Reference Include="Dapplo.Windows.Input, Version=0.4.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Windows.Input.0.4.28\lib\net45\Dapplo.Windows.Input.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.Windows.Messages, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.Windows.Messages.0.4.27\lib\net45\Dapplo.Windows.Messages.dll</HintPath>
+    <Reference Include="Dapplo.Windows.Messages, Version=0.4.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Windows.Messages.0.4.28\lib\net45\Dapplo.Windows.Messages.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapplo.Windows.User32, Version=0.4.27.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.Windows.User32.0.4.27\lib\net45\Dapplo.Windows.User32.dll</HintPath>
+    <Reference Include="Dapplo.Windows.User32, Version=0.4.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Windows.User32.0.4.28\lib\net45\Dapplo.Windows.User32.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">

@@ -98,11 +98,11 @@ namespace Dapplo.Dopy.Services
         /// <summary>
         /// Create the full-blown Clip object
         /// </summary>
-        /// <param name="clipboardContents">ClipboardContents</param>
+        /// <param name="clipboardUpdateInformation">ClipboardContents</param>
         /// <returns>Clip</returns>
-        private Clip CreateClip(ClipboardContents clipboardContents)
+        private Clip CreateClip(ClipboardUpdateInformation clipboardUpdateInformation)
         {
-            var interopWindow = InteropWindowFactory.CreateFor(clipboardContents.OwnerHandle);
+            var interopWindow = InteropWindowFactory.CreateFor(clipboardUpdateInformation.OwnerHandle);
 
             // Make sure we use the parent window (top level) for the title.
             IInteropWindow toplevelWindow = interopWindow;
@@ -142,14 +142,14 @@ namespace Dapplo.Dopy.Services
                     WindowTitle = caption,
                     ProcessName = process.ProcessName,
                     ProductName = productName,
-                    OriginalWindowHandle = clipboardContents.OwnerHandle,
-                    SequenceNumber = clipboardContents.Id,
-                    OriginalFormats = clipboardContents.Formats.ToList()
+                    OriginalWindowHandle = clipboardUpdateInformation.OwnerHandle,
+                    SequenceNumber = clipboardUpdateInformation.Id,
+                    OriginalFormats = clipboardUpdateInformation.Formats.ToList()
                 };
             }
             using (ClipboardNative.Lock())
             {
-                foreach (var format in clipboardContents.Formats)
+                foreach (var format in clipboardUpdateInformation.Formats)
                 {
                     if (!_dopyConfiguration.CopyAlways.Contains(format))
                     {
