@@ -19,55 +19,35 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Dapplo.Dopy.Entities;
-
 namespace Dapplo.Dopy.Repositories
 {
     /// <summary>
     /// Generic interface for a repository
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface IRepository<T> where T : EntityBase
+    /// <typeparam name="TEntity">Type for the entity</typeparam>
+    /// <typeparam name="TKey">Type for the key</typeparam>
+    public interface IRepository<TEntity, in TKey> where TEntity : class
     {
         /// <summary>
         /// Get an element by ID
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        T GetById(int id);
-
+        /// <param name="id">TKey with the ID</param>
+        /// <returns>TEntity</returns>
+        TEntity GetById(TKey id);
         /// <summary>
-        /// Retrieve all the entities
+        /// Creates a TEntity in the repository
         /// </summary>
-        /// <returns></returns>
-        IEnumerable<T> List();
-
+        /// <param name="entity">TEntity</param>
+        void Create(TEntity entity);
         /// <summary>
-        /// Retrieve all the entities defined by a predicate
+        /// Updates a TEntity in the repository
         /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        IEnumerable<T> List(Expression<Func<T, bool>> predicate);
-
+        /// <param name="entity">TEntity</param>
+        void Update(TEntity entity);
         /// <summary>
-        /// Add a new entity
+        /// Deletes a TEntity from the repository
         /// </summary>
         /// <param name="entity"></param>
-        void Insert(T entity);
-
-        /// <summary>
-        /// Remove an existing entity
-        /// </summary>
-        /// <param name="clip"></param>
-        void Delete(T clip);
-
-        /// <summary>
-        /// Modify an entity
-        /// </summary>
-        /// <param name="clip"></param>
-        void Update(T clip);
+        void Delete(TEntity entity);
     }
 }

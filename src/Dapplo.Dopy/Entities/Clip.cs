@@ -28,7 +28,7 @@ namespace Dapplo.Dopy.Entities
     /// <summary>
     /// Clip is the entity for the clipboard contents in the database
     /// </summary>
-    public class Clip : EntityBase
+    public class Clip : EntityBase<int>
     {
         /// <summary>
         /// User for which the clip was stored

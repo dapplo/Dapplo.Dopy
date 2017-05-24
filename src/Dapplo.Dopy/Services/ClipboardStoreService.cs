@@ -88,9 +88,9 @@ namespace Dapplo.Dopy.Services
                 var clip = CreateClip(clipboardContents);
 
                 // Store it in the repository
-                _clipRepository.Insert(clip);
+                _clipRepository.Create(clip);
 
-                // Provide the UI with the new clip
+                // Provide the UI with the new clip, TODO: Move notification to repository
                 _eventAggregator.BeginPublishOnUIThread(new ClipAddedMessage(clip));
             });
         }

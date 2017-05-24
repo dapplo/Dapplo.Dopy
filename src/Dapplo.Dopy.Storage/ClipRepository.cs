@@ -28,6 +28,7 @@ using System.Linq.Expressions;
 using Dapplo.Dopy.Entities;
 using Dapplo.Dopy.Repositories;
 using LiteDB;
+using System.Reactive.Subjects;
 
 namespace Dapplo.Dopy.Storage
 {
@@ -39,6 +40,7 @@ namespace Dapplo.Dopy.Storage
     {
         private readonly LiteCollection<Clip> _clips;
         private readonly LiteStorage _liteStorage;
+        private readonly BehaviorSubject<RepositoryUpdateArgs<Clip>> _repositoryUpdates;
         /// <summary>
         /// Constructor which sets up the database
         /// </summary>
@@ -51,43 +53,33 @@ namespace Dapplo.Dopy.Storage
         {
             _clips =  database.GetCollection<Clip>();
             _liteStorage = database.FileStorage;
+            _repositoryUpdates = new BehaviorSubject<RepositoryUpdateArgs<Clip>>(new RepositoryUpdateArgs<Clip>(null, CrudActions.None));
         }
 
-        /// <summary>
-        /// This returns the clip by ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
+
         public Clip GetById(int id)
         {
             return LoadContentFor(_clips.FindById(id));
         }
 
-        /// <summary>
-        /// Returns all Clip object from the database
-        /// </summary>
-        /// <returns>IEnumerable with Clip entities</returns>
-        public IEnumerable<Clip> List()
+        /// <inheritdoc />
+        public IObservable<RepositoryUpdateArgs<Clip>> Updates => _repositoryUpdates;
+
+        /// <inheritdoc />
+        public IEnumerable<Clip> Find(Expression<Func<Clip, bool>> predicate = null)
         {
-            return _clips.FindAll().Select(LoadContentFor);
+
+            return _clips.Find(predicate ?? (clip => true) ).Select(LoadContentFor);
         }
 
-        /// <summary>
-        /// Returns the clips specified by the predicate
-        /// </summary>
-        /// <param name="predicate">Expression</param>
-        /// <returns>IEnumerable with Clip entities</returns>
-        public IEnumerable<Clip> List(Expression<Func<Clip, bool>> predicate)
+        /// <inheritdoc />
+        public void Create(Clip clip)
         {
-            return _clips.Find(predicate).Select(LoadContentFor);
-        }
-
-        /// <summary>
-        /// Insert a new clip into the repository
-        /// </summary>
-        /// <param name="clip">Clip</param>
-        public void Insert(Clip clip)
-        {
+            if (clip == null)
+            {
+                throw new ArgumentNullException(nameof(clip));
+            }
             _clips.Insert(clip);
             foreach (var contentsKey in clip.Contents.Keys)
             {
@@ -95,27 +87,41 @@ namespace Dapplo.Dopy.Storage
                 var fileId = FileIdGenerator(clip, contentsKey);
                 _liteStorage.Upload(fileId, fileId, stream);
             }
+            _repositoryUpdates.OnNext(new RepositoryUpdateArgs<Clip>(clip, CrudActions.Create));
         }
 
-        /// <summary>
-        /// Delete a clip from the repository
-        /// </summary>
-        /// <param name="clip">Clip</param>
+        /// <inheritdoc />
         public void Delete(Clip clip)
         {
+            if (clip == null)
+            {
+                throw new ArgumentNullException(nameof(clip));
+            }
+            if (clip.Id == 0)
+            {
+                throw new NotSupportedException("Cannot delete a clip without an ID");
+            }
             _clips.Delete(clip.Id);
             foreach (var contentsKey in clip.Contents.Keys)
             {
                 _liteStorage.Delete(FileIdGenerator(clip, contentsKey));
             }
+            _repositoryUpdates.OnNext(new RepositoryUpdateArgs<Clip>(clip, CrudActions.Delete));
         }
 
-        /// <summary>
-        /// Update the specified clip
-        /// </summary>
-        /// <param name="clip">Clip</param>
+        /// <inheritdoc />
         public void Update(Clip clip)
         {
+            if (clip == null)
+            {
+                throw new ArgumentNullException(nameof(clip));
+            }
+            if (clip.Id == 0)
+            {
+                throw new NotSupportedException("Cannot update a clip without an ID");
+            }
+            _repositoryUpdates.OnNext(new RepositoryUpdateArgs<Clip>(clip, CrudActions.Update));
+
             throw new NotSupportedException("Currently not implemented");
         }
 

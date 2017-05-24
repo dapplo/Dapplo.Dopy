@@ -21,26 +21,27 @@
 
 using System.Collections.Generic;
 
+
 namespace Dapplo.Dopy.Entities
 {
     /// <summary>
     /// Base class for all entities
     /// </summary>
-    public abstract class EntityBase : IEqualityComparer<EntityBase>
+    public abstract class EntityBase<TKey> : IEqualityComparer<EntityBase<TKey>> where TKey : struct 
     {
         /// <summary>
         /// A unique ID for the entity
         /// </summary>
-        public int Id { get; protected set; }
+        public TKey Id { get; protected set; }
 
         /// <inheritdoc />
-        public bool Equals(EntityBase x, EntityBase y)
+        public bool Equals(EntityBase<TKey> x, EntityBase<TKey> y)
         {
-            return x?.Id == y?.Id;
+            return Equals(x?.Id, y?.Id);
         }
 
         /// <inheritdoc />
-        public int GetHashCode(EntityBase entity)
+        public int GetHashCode(EntityBase<TKey> entity)
         {
             return entity.Id.GetHashCode();
         }

@@ -19,6 +19,7 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
+using System;
 using System.ComponentModel.Composition;
 using Dapplo.Addons;
 using Dapplo.Dopy.Entities;
@@ -36,7 +37,7 @@ namespace Dapplo.Dopy.Storage.Services
         /// Clipboard database
         /// </summary>
         [Export("clipboard")]
-        public LiteDatabase Database { get; private set; } = new LiteDatabase(@"clipboard.db");
+        public LiteDatabase Database { get; private set; } = new LiteDatabase($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\Dapplo.Dopy\clipboard.db");
 
         /// <inheritdoc />
         public void Start()

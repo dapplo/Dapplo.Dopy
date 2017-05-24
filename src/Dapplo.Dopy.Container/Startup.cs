@@ -22,6 +22,7 @@
 #region using
 
 using System;
+using System.Linq;
 using System.Windows;
 using Dapplo.CaliburnMicro.Dapp;
 using Dapplo.Log;
@@ -53,17 +54,6 @@ namespace Dapplo.Dopy.Container
                 ShutdownMode = ShutdownMode.OnExplicitShutdown
             };
 
-            // Add the directory where scanning takes place
-#if DEBUG
-            application.Bootstrapper.AddScanDirectory(@"..\..\..\Dapplo.Dopy\bin\Debug");
-            application.Bootstrapper.AddScanDirectory(@"..\..\..\Dapplo.Dopy.Storage\bin\Debug");
-#else
-            application.Bootstrapper.AddScanDirectory(@"..\..\..\Dapplo.Dopy\bin\Release");
-            application.Bootstrapper.AddScanDirectory(@"..\..\..\Dapplo.Dopy.Storage\bin\Release");
-#endif
-
-            // Load the Dapplo.CaliburnMicro.* assemblies
-            application.Bootstrapper.FindAndLoadAssemblies("Dapplo.CaliburnMicro*");
             // Load the Application.Demo.* assemblies
             application.Bootstrapper.FindAndLoadAssemblies("Dapplo.Dopy*");
 

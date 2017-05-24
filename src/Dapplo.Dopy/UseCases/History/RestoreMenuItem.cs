@@ -62,6 +62,7 @@ namespace Dapplo.Dopy.UseCases.History
             {
                 handle = clip.OriginalWindowHandle;
             }
+            // TODO: Prevent detecting the restore, especially if Dopy doesn't "paste" with it's Window handle
             using (ClipboardNative.Lock(handle))
             {
                 ClipboardNative.Clear();

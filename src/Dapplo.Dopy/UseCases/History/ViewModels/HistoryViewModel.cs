@@ -32,9 +32,6 @@ using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Entities;
 using Dapplo.Dopy.Repositories;
 using Dapplo.Dopy.Translations;
-using Dapplo.Log;
-using Dapplo.Windows.Clipboard;
-using Dapplo.Windows.Desktop;
 
 namespace Dapplo.Dopy.UseCases.History.ViewModels
 {
@@ -42,11 +39,10 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
     /// Viewmodel for the history
     /// </summary>
     [Export]
-    public class HistoryViewModel : Screen, IHandle<ClipAddedMessage>
+    public class HistoryViewModel : Screen
     {
-        private static readonly LogSource Log = new LogSource();
         private readonly IClipRepository _clipRepository;
-        private readonly IEventAggregator _eventAggregator;
+        private IDisposable _updateSubscription;
         private bool _autoScroll;
         private Clip _selectedItem;
         private readonly IEnumerable<IMenuItem> _historyMenuItems;
@@ -120,20 +116,17 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// </summary>
         /// <param name="clipRepository">IClipRepository</param>
         /// <param name="dopyTranslations">IDopyTranslations</param>
-        /// <param name="eventAggregator">IEventAggregator to publish new clips</param>
         /// <param name="historyMenuItems">IMenuItems for the history menu</param>
         [ImportingConstructor]
         public HistoryViewModel(
             IClipRepository clipRepository,
             IDopyTranslations dopyTranslations,
-            IEventAggregator eventAggregator,
             [ImportMany("historyMenu", typeof(IMenuItem))]
             IEnumerable<Lazy<IMenuItem>> historyMenuItems
             )
         {
             _clipRepository = clipRepository;
             dopyTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));
-            _eventAggregator = eventAggregator;
 
             _historyMenuItems = historyMenuItems.Select(lazy => lazy.Value).ToList();
 
@@ -158,6 +151,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         protected override void OnActivate()
         {
             Load();
+            
             // Make sure all items are initialized
             foreach (var menuItem in _historyMenuItems)
             {
@@ -169,14 +163,14 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
                 MenuItems.Add(historyMenuItem);
             }
             base.OnActivate();
-            _eventAggregator.Subscribe(this);
 
         }
 
         /// <inheritdoc />
         protected override void OnDeactivate(bool close)
         {
-            _eventAggregator.Unsubscribe(this);
+            MenuItems.Clear();
+            _updateSubscription?.Dispose();
             base.OnDeactivate(close);
         }
 
@@ -186,47 +180,24 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         public void Load()
         {
             Clips.Clear();
-            Clips.AddRange(_clipRepository.List());
-        }
+            Clips.AddRange(_clipRepository.Find());
 
-        /// <inheritdoc />
-        public void Handle(ClipAddedMessage message)
-        {
-            Clips.Add(message.NewClip);
-            AutoScroll = true;
-        }
-
-        /// <summary>
-        /// Delete the specified clip
-        /// </summary>
-        /// <param name="clip">Clip</param>
-        public void Delete(Clip clip)
-        {
-            Log.Debug().WriteLine("Clip {0} is going to be deleted.", clip.Id);
-            _clipRepository.Delete(clip);
-            Clips.Remove(clip);
-        }
-
-        /// <summary>
-        /// Place the specified clip back on the clipboard
-        /// </summary>
-        /// <param name="clip">Clip</param>
-        public void Restore(Clip clip)
-        {
-            var handle = IntPtr.Zero;
-            
-            if (InteropWindowFactory.CreateFor(clip.OriginalWindowHandle).Exists())
+            _updateSubscription = _clipRepository.Updates.Subscribe(args =>
             {
-                handle = clip.OriginalWindowHandle;
-            }
-            using (ClipboardNative.Lock(handle))
-            {
-                ClipboardNative.Clear();
-                foreach (var key in clip.Contents.Keys)
+                switch (args.CrudAction)
                 {
-                    ClipboardNative.SetAsStream(key, clip.Contents[key]);
+                    case CrudActions.Create:
+                        Clips.Add(args.Entity);
+                        AutoScroll = true;
+                        break;
+                    case CrudActions.Delete:
+                        Clips.Remove(args.Entity);
+                        AutoScroll = true;
+                        break;
                 }
-            }
+
+            });
+
         }
     }
 }

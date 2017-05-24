@@ -19,28 +19,32 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Dapplo.Dopy.Entities;
-
 namespace Dapplo.Dopy.Repositories
 {
     /// <summary>
-    /// Interface for the Clip repository
+    /// Possible crud actions
     /// </summary>
-    public interface IClipRepository : IRepository<Clip, int>
+    public enum CrudActions
     {
         /// <summary>
-        /// Observable to subscribe to updates
+        /// Nop
         /// </summary>
-        IObservable<RepositoryUpdateArgs<Clip>> Updates { get; }
-
-            /// <summary>
-        /// Returns the clips specified by the predicate, or all if this is null
+        None,
+        /// <summary>
+        /// Create
         /// </summary>
-        /// <param name="predicate">Expression</param>
-        /// <returns>IEnumerable with Clip entities</returns>
-        IEnumerable<Clip> Find(Expression<Func<Clip, bool>> predicate = null);
+        Create,
+        /// <summary>
+        /// Read
+        /// </summary>
+        Read,
+        /// <summary>
+        /// Update
+        /// </summary>
+        Update,
+        /// <summary>
+        /// Delete
+        /// </summary>
+        Delete
     }
 }
