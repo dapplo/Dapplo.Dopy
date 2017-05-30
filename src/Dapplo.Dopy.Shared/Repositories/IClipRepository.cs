@@ -19,31 +19,28 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using Dapplo.Dopy.Shared.Entities;
 
-
-namespace Dapplo.Dopy.Entities
+namespace Dapplo.Dopy.Shared.Repositories
 {
     /// <summary>
-    /// Base class for all entities
+    /// Interface for the Clip repository
     /// </summary>
-    public abstract class EntityBase<TKey> : IEqualityComparer<EntityBase<TKey>> where TKey : struct 
+    public interface IClipRepository : IRepository<Clip, int>
     {
         /// <summary>
-        /// A unique ID for the entity
+        /// Observable to subscribe to updates
         /// </summary>
-        public TKey Id { get; protected set; }
+        IObservable<RepositoryUpdateArgs<Clip>> Updates { get; }
 
-        /// <inheritdoc />
-        public bool Equals(EntityBase<TKey> x, EntityBase<TKey> y)
-        {
-            return Equals(x?.Id, y?.Id);
-        }
-
-        /// <inheritdoc />
-        public int GetHashCode(EntityBase<TKey> entity)
-        {
-            return entity.Id.GetHashCode();
-        }
+            /// <summary>
+        /// Returns the clips specified by the predicate, or all if this is null
+        /// </summary>
+        /// <param name="predicate">Expression</param>
+        /// <returns>IEnumerable with Clip entities</returns>
+        IEnumerable<Clip> Find(Expression<Func<Clip, bool>> predicate = null);
     }
 }

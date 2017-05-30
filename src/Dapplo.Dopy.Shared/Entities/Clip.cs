@@ -23,13 +23,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Dapplo.Dopy.Entities
+namespace Dapplo.Dopy.Shared.Entities
 {
     /// <summary>
     /// Clip is the entity for the clipboard contents in the database
     /// </summary>
     public class Clip : EntityBase<int>
     {
+        /// <summary>
+        /// Test if this clip was modified by Dopy
+        /// </summary>
+        public bool IsModifiedByDopy { get; set; }
+
         /// <summary>
         /// User for which the clip was stored
         /// </summary>
@@ -69,6 +74,11 @@ namespace Dapplo.Dopy.Entities
         /// Title of the window which created the clip
         /// </summary>
         public string WindowTitle { get; set; }
+
+        /// <summary>
+        /// The actualy Text of the clipboard, if there was any
+        /// </summary>
+        public string ClipboardText { get; set; }
 
         /// <summary>
         /// Formats originally stored in the clip

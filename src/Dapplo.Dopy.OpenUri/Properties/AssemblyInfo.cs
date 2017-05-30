@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Dapplo.Dopy.Sharing")]
+[assembly: AssemblyTitle("Dapplo.Dopy.OpenUri")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ING-DiBa AG")]
-[assembly: AssemblyProduct("Dapplo.Dopy.Sharing")]
+[assembly: AssemblyProduct("Dapplo.Dopy.OpenUri")]
 [assembly: AssemblyCopyright("Copyright © ING-DiBa AG 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("24e32944-cc69-485b-8ac5-04b84b06c608")]
+[assembly: Guid("15dee0b1-cb6a-42bb-83c6-60197e3e0064")]
 
 // Version information for an assembly consists of the following four values:
 //

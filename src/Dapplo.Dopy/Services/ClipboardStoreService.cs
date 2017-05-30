@@ -25,11 +25,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
-using Caliburn.Micro;
 using Dapplo.Addons;
 using Dapplo.Dopy.Configuration;
-using Dapplo.Dopy.Entities;
-using Dapplo.Dopy.Repositories;
+using Dapplo.Dopy.Shared;
+using Dapplo.Dopy.Shared.Entities;
+using Dapplo.Dopy.Shared.Repositories;
 using Dapplo.Log;
 using Dapplo.Windows.Clipboard;
 using Dapplo.Windows.Desktop;
@@ -48,7 +48,6 @@ namespace Dapplo.Dopy.Services
         private readonly SynchronizationContext _uiSynchronizationContext;
         private readonly IClipRepository _clipRepository;
         private readonly IDopyConfiguration _dopyConfiguration;
-        private readonly IEventAggregator _eventAggregator;
 
         /// <summary>
         /// Initializes the needed depedencies
@@ -56,18 +55,15 @@ namespace Dapplo.Dopy.Services
         /// <param name="clipRepository">IClipRepository</param>
         /// <param name="dopyConfiguration">Configuration</param>
         /// <param name="uiSynchronizationContext">SynchronizationContext to register the Clipboard Monitor with</param>
-        /// <param name="eventAggregator">Used to publish changes</param>
         [ImportingConstructor]
         public ClipboardStoreService(
             IClipRepository clipRepository,
             IDopyConfiguration dopyConfiguration,
-            [Import("ui", typeof(SynchronizationContext))]SynchronizationContext uiSynchronizationContext,
-            IEventAggregator eventAggregator)
+            [Import("ui", typeof(SynchronizationContext))]SynchronizationContext uiSynchronizationContext)
         {
             _clipRepository = clipRepository;
             _uiSynchronizationContext = uiSynchronizationContext;
             _dopyConfiguration = dopyConfiguration;
-            _eventAggregator = eventAggregator;
         }
 
         /// <summary>
@@ -75,23 +71,23 @@ namespace Dapplo.Dopy.Services
         /// </summary>
         public void Start()
         {
+            ClipboardFormats.RegisterDapploDopy();
             _clipboardMonitor = ClipboardMonitor
                 .OnUpdate
                 .SubscribeOn(_uiSynchronizationContext)
                 .Where(contents => contents.OwnerHandle != WinProcHandler.Instance.Handle)
-                // TODO: Add check for myself
-                // .Where(contents => contents.Formats.Contains("Dopy"))
                 .Synchronize().Subscribe(clipboardContents =>
             {
-
+                if (clipboardContents.IsModifiedByDopy())
+                {
+                    Log.Info().WriteLine("Skipping clipboard id {0} as it was pasted by 'us'", clipboardContents.Id);
+                    return;
+                }
                 Log.Info().WriteLine("Processing clipboard id {0}", clipboardContents.Id);
                 var clip = CreateClip(clipboardContents);
 
                 // Store it in the repository
                 _clipRepository.Create(clip);
-
-                // Provide the UI with the new clip, TODO: Move notification to repository
-                _eventAggregator.BeginPublishOnUIThread(new ClipAddedMessage(clip));
             });
         }
 
@@ -149,6 +145,11 @@ namespace Dapplo.Dopy.Services
             }
             using (ClipboardNative.Lock())
             {
+                if (clip.OriginalFormats.Contains("CF_UNICODETEXT"))
+                {
+                    clip.ClipboardText = ClipboardNative.GetAsUnicodeString();
+                }
+
                 foreach (var format in clipboardUpdateInformation.Formats)
                 {
                     if (!_dopyConfiguration.CopyAlways.Contains(format))

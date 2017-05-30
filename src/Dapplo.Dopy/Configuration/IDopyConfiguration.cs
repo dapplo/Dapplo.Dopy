@@ -35,7 +35,7 @@ namespace Dapplo.Dopy.Configuration
         /// <summary>
         /// Which formats are 
         /// </summary>
-        [DefaultValue("PNG,CF_UNICODETEXT,CF_WAVE,HTML Format")]
+        [DefaultValue("PNG,CF_WAVE,HTML Format")]
         IList<string> CopyAlways { get; set; }
     }
 }

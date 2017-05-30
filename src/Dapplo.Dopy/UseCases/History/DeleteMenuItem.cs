@@ -22,8 +22,8 @@
 using System.ComponentModel.Composition;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
-using Dapplo.Dopy.Entities;
-using Dapplo.Dopy.Repositories;
+using Dapplo.Dopy.Shared.Entities;
+using Dapplo.Dopy.Shared.Repositories;
 using Dapplo.Dopy.Translations;
 using Dapplo.Log;
 using MahApps.Metro.IconPacks;

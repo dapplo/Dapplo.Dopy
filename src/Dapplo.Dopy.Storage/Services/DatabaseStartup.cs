@@ -22,7 +22,7 @@
 using System;
 using System.ComponentModel.Composition;
 using Dapplo.Addons;
-using Dapplo.Dopy.Entities;
+using Dapplo.Dopy.Shared.Entities;
 using LiteDB;
 
 namespace Dapplo.Dopy.Storage.Services
@@ -46,7 +46,9 @@ namespace Dapplo.Dopy.Storage.Services
             mapper.Entity<Clip>()
                 .Id(x => x.Id) // set your document ID
                 .Ignore(x => x.Contents) // ignore this property (do not store)
+                .Ignore(x => x.IsModifiedByDopy) // ignore this property (do not store)
                 .Index(x => x.Username)
+                .Index(x => x.ClipboardText)
                 .Index(x => x.Domain)
                 .Index(x => x.Timestamp)
                 .Index(x => x.ProcessName)

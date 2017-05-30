@@ -19,42 +19,40 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System.ComponentModel.Composition;
-using Dapplo.CaliburnMicro.Extensions;
-using Dapplo.CaliburnMicro.Menu;
+using Dapplo.CaliburnMicro.Toasts.ViewModels;
 using Dapplo.Dopy.Shared.Entities;
 using Dapplo.Dopy.Shared.Extensions;
-using Dapplo.Dopy.Translations;
-using MahApps.Metro.IconPacks;
 
-namespace Dapplo.Dopy.UseCases.History
+namespace Dapplo.Dopy.SimplifyStacktrace.ViewModels
 {
     /// <summary>
-    /// This makes a delete of a clip possible
+    /// The ViewModel which presents the user a toast where (s)he can select to update the clipboard with a cleaned stacktrace.
     /// </summary>
-    [Export("historyMenu", typeof(IMenuItem))]
-    public sealed class RestoreMenuItem : ClickableMenuItem<Clip>
+    public class CleanStacktraceToastViewModel : ToastBaseViewModel
     {
+        private readonly Clip _clip;
+        private readonly JavaStacktraceCleaner _javaStacktraceCleaner;
+
         /// <summary>
-        /// The constructor for the history MenuItem
+        /// Create the ViewModel for the JavaStacktraceCleaner which detected changes
         /// </summary>
-        /// <param name="dopyContextMenuTranslations"></param>
-        [ImportingConstructor]
-        public RestoreMenuItem(IDopyTranslations dopyContextMenuTranslations)
+        /// <param name="clip">Clip</param>
+        /// <param name="javaStacktraceCleaner">JavaStacktraceCleaner</param>
+        public CleanStacktraceToastViewModel(Clip clip, JavaStacktraceCleaner javaStacktraceCleaner)
         {
-            // automatically update the DisplayName
-            dopyContextMenuTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.Restore));
-            Id = "A_Restore";
-            Icon = new PackIconMaterial
-            {
-                Kind = PackIconMaterialKind.Restore,
-            };
+            _clip = clip;
+            _javaStacktraceCleaner = javaStacktraceCleaner;
         }
 
-        /// <inheritdoc />
-        public override void Click(Clip clip)
+        /// <summary>
+        /// Place the modified clip to the clipboard, called from the view
+        /// </summary>
+        public void Cleanup()
         {
-            clip.PlaceOnClipboard();
+            _clip.ClipboardText = _javaStacktraceCleaner.CleanStacktrace;
+            _clip.IsModifiedByDopy = true;
+            _clip.PlaceOnClipboard();
+            TryClose(true);
         }
     }
 }

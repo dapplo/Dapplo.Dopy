@@ -22,7 +22,6 @@
 #region using
 
 using System;
-using System.Linq;
 using System.Windows;
 using Dapplo.CaliburnMicro.Dapp;
 using Dapplo.Log;

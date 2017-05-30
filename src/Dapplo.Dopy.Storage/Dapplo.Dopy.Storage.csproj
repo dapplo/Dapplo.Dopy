@@ -32,8 +32,8 @@
     <DocumentationFile>bin\Release\Dapplo.Dopy.Storage.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapplo.Addons, Version=0.5.11.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapplo.Addons.0.5.11\lib\net45\Dapplo.Addons.dll</HintPath>
+    <Reference Include="Dapplo.Addons, Version=0.5.20.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Addons.0.5.20\lib\net45\Dapplo.Addons.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dapplo.Log, Version=1.0.29.0, Culture=neutral, processorArchitecture=MSIL">
@@ -71,9 +71,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dapplo.Dopy\Dapplo.Dopy.csproj">
-      <Project>{cfb4f82e-53c3-40ed-b54f-316e8d300c6c}</Project>
-      <Name>Dapplo.Dopy</Name>
+    <ProjectReference Include="..\Dapplo.Dopy.Shared\Dapplo.Dopy.Shared.csproj">
+      <Project>{f6639371-09c1-42b9-b307-3e0c2ab30609}</Project>
+      <Name>Dapplo.Dopy.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

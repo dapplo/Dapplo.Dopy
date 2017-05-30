@@ -29,8 +29,8 @@ using System.Windows;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
-using Dapplo.Dopy.Entities;
-using Dapplo.Dopy.Repositories;
+using Dapplo.Dopy.Shared.Entities;
+using Dapplo.Dopy.Shared.Repositories;
 using Dapplo.Dopy.Translations;
 
 namespace Dapplo.Dopy.UseCases.History.ViewModels
@@ -131,15 +131,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             _historyMenuItems = historyMenuItems.Select(lazy => lazy.Value).ToList();
 
             // Make sure the $clip is supported
-            MessageBinder.SpecialValues.Add("$clip", context =>
-            {
-                if (context?.EventArgs == null)
-                {
-                    return null;
-                }
-
-                return SelectedItem;
-            });
+            MessageBinder.SpecialValues.Add("$clip", context => context?.EventArgs == null ? null : SelectedItem);
         }
 
         /// <summary>

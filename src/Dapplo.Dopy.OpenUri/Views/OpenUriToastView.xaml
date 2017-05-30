@@ -1,0 +1,22 @@
+﻿<core:NotificationDisplayPart x:Class="Dapplo.Dopy.OpenUri.Views.OpenUriToastView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Dapplo.Dopy.OpenUri.Views"
+             xmlns:core="clr-namespace:ToastNotifications.Core;assembly=ToastNotifications"
+             mc:Ignorable="d">
+    <StackPanel Background="Green">
+            <DockPanel>
+                <Label Content="Uri(s) detected!!" Foreground="White"/>
+            </DockPanel>
+        <ListView ItemsSource="{Binding Uris}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Button Name="Open" Content="{Binding}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackPanel>
+</core:NotificationDisplayPart>
+

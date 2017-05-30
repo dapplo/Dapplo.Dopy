@@ -19,42 +19,30 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System.ComponentModel.Composition;
-using Dapplo.CaliburnMicro.Extensions;
-using Dapplo.CaliburnMicro.Menu;
-using Dapplo.Dopy.Shared.Entities;
-using Dapplo.Dopy.Shared.Extensions;
-using Dapplo.Dopy.Translations;
-using MahApps.Metro.IconPacks;
+using System.Collections.Generic;
 
-namespace Dapplo.Dopy.UseCases.History
+namespace Dapplo.Dopy.Shared.Entities
 {
     /// <summary>
-    /// This makes a delete of a clip possible
+    /// Base class for all entities
     /// </summary>
-    [Export("historyMenu", typeof(IMenuItem))]
-    public sealed class RestoreMenuItem : ClickableMenuItem<Clip>
+    public abstract class EntityBase<TKey> : IEqualityComparer<EntityBase<TKey>> where TKey : struct 
     {
         /// <summary>
-        /// The constructor for the history MenuItem
+        /// A unique ID for the entity
         /// </summary>
-        /// <param name="dopyContextMenuTranslations"></param>
-        [ImportingConstructor]
-        public RestoreMenuItem(IDopyTranslations dopyContextMenuTranslations)
+        public TKey Id { get; protected set; }
+
+        /// <inheritdoc />
+        public bool Equals(EntityBase<TKey> x, EntityBase<TKey> y)
         {
-            // automatically update the DisplayName
-            dopyContextMenuTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.Restore));
-            Id = "A_Restore";
-            Icon = new PackIconMaterial
-            {
-                Kind = PackIconMaterialKind.Restore,
-            };
+            return Equals(x?.Id, y?.Id);
         }
 
         /// <inheritdoc />
-        public override void Click(Clip clip)
+        public int GetHashCode(EntityBase<TKey> entity)
         {
-            clip.PlaceOnClipboard();
+            return entity.Id.GetHashCode();
         }
     }
 }

@@ -19,31 +19,37 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-namespace Dapplo.Dopy.Repositories
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using Dapplo.CaliburnMicro.Toasts.ViewModels;
+
+namespace Dapplo.Dopy.OpenUri.ViewModels
 {
     /// <summary>
-    /// This specifies which crud action was taken on an entiry
+    /// The ViewModel which presents the user a toast where (s)he can select to open Uri's on the clipboard
     /// </summary>
-    /// <typeparam name="TEntity">Type of the Entity</typeparam>
-    public class RepositoryUpdateArgs<TEntity>
+    public class OpenUriToastViewModel : ToastBaseViewModel
     {
+        public ObservableCollection<Uri> Uris { get; }
+
         /// <summary>
-        /// The actual entity
+        /// Create the ViewModel for the OpenUriToastViewModel
         /// </summary>
-        public TEntity Entity { get; }
-        /// <summary>
-        /// The crud action which was performed
-        /// </summary>
-        public CrudActions CrudAction { get; }
-        /// <summary>
-        /// Create a RepositoryUpdateArgs
-        /// </summary>
-        /// <param name="entity">Entity which was passed to the Repository</param>
-        /// <param name="crudAction"></param>
-        public RepositoryUpdateArgs(TEntity entity, CrudActions crudAction)
+        /// <param name="uris">Uris</param>
+        public OpenUriToastViewModel(IEnumerable<Uri> uris)
         {
-            CrudAction = crudAction;
-            Entity = entity;
+            Uris = new ObservableCollection<Uri>(uris);
+        }
+
+        /// <summary>
+        /// Place the modified clip to the clipboard, called from the view
+        /// </summary>
+        public void Open(Uri uri)
+        {
+            // TODO: Better handling!
+            Process.Start(uri.AbsoluteUri);
         }
     }
 }

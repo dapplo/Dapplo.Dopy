@@ -19,28 +19,31 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Dapplo.Dopy.Entities;
-
-namespace Dapplo.Dopy.Repositories
+namespace Dapplo.Dopy.Shared.Repositories
 {
     /// <summary>
-    /// Interface for the Clip repository
+    /// This specifies which crud action was taken on an entiry
     /// </summary>
-    public interface IClipRepository : IRepository<Clip, int>
+    /// <typeparam name="TEntity">Type of the Entity</typeparam>
+    public class RepositoryUpdateArgs<TEntity>
     {
         /// <summary>
-        /// Observable to subscribe to updates
+        /// The actual entity
         /// </summary>
-        IObservable<RepositoryUpdateArgs<Clip>> Updates { get; }
-
-            /// <summary>
-        /// Returns the clips specified by the predicate, or all if this is null
+        public TEntity Entity { get; }
+        /// <summary>
+        /// The crud action which was performed
         /// </summary>
-        /// <param name="predicate">Expression</param>
-        /// <returns>IEnumerable with Clip entities</returns>
-        IEnumerable<Clip> Find(Expression<Func<Clip, bool>> predicate = null);
+        public CrudActions CrudAction { get; }
+        /// <summary>
+        /// Create a RepositoryUpdateArgs
+        /// </summary>
+        /// <param name="entity">Entity which was passed to the Repository</param>
+        /// <param name="crudAction"></param>
+        public RepositoryUpdateArgs(TEntity entity, CrudActions crudAction)
+        {
+            CrudAction = crudAction;
+            Entity = entity;
+        }
     }
 }

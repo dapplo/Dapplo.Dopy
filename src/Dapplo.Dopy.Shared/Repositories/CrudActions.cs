@@ -19,7 +19,7 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-namespace Dapplo.Dopy.Repositories
+namespace Dapplo.Dopy.Shared.Repositories
 {
     /// <summary>
     /// Possible crud actions

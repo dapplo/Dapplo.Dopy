@@ -25,10 +25,10 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using Dapplo.Dopy.Entities;
-using Dapplo.Dopy.Repositories;
 using LiteDB;
 using System.Reactive.Subjects;
+using Dapplo.Dopy.Shared.Entities;
+using Dapplo.Dopy.Shared.Repositories;
 
 namespace Dapplo.Dopy.Storage
 {
@@ -120,9 +120,23 @@ namespace Dapplo.Dopy.Storage
             {
                 throw new NotSupportedException("Cannot update a clip without an ID");
             }
-            _repositoryUpdates.OnNext(new RepositoryUpdateArgs<Clip>(clip, CrudActions.Update));
+            _clips.Update(clip);
 
-            throw new NotSupportedException("Currently not implemented");
+            // TODO: Optimize!
+
+            // Remove all contents
+            foreach (var contentsKey in clip.Contents.Keys)
+            {
+                _liteStorage.Delete(FileIdGenerator(clip, contentsKey));
+            }
+            // add them again
+            foreach (var contentsKey in clip.Contents.Keys)
+            {
+                var stream = clip.Contents[contentsKey];
+                var fileId = FileIdGenerator(clip, contentsKey);
+                _liteStorage.Upload(fileId, fileId, stream);
+            }
+            _repositoryUpdates.OnNext(new RepositoryUpdateArgs<Clip>(clip, CrudActions.Update));
         }
 
         /// <summary>
