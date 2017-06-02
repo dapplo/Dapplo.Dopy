@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Dapplo.Dopy.OpenUri.Views"
              xmlns:core="clr-namespace:ToastNotifications.Core;assembly=ToastNotifications"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d">
     <StackPanel Background="Green">
             <DockPanel>
@@ -13,7 +14,7 @@
         <ListView ItemsSource="{Binding Uris}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Name="Open" Content="{Binding}" />
+                    <Button Content="{Binding}" cal:Message.Attach="Open($dataContext)"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

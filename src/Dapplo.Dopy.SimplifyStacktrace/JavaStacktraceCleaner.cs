@@ -52,7 +52,15 @@ namespace Dapplo.Dopy.SimplifyStacktrace
             @"^java\.lang\.Thread\..*",
             @"^org\.eclipse\.jetty.*",
             @"^java\.io\..*",
-            @"^java\.util\..*"
+            @"^java\.util\..*",
+            @"^com\.ing\.diba\.mws\.tcore\.intercept\..*",
+            @"^com\.ing\.diba\.mws\.tcore\.service.remoting\..*",
+            @"^com\.ing\.diba\.mws\.tcore\.exception\..*",
+            @"^com\.ing\.diba\.callimero\.core\.auth\.AuthorizationFilter\.doFilter.*",
+            @"^com\.ing\.diba\.mws.tcore\.service\.authentication\.AuthenticationContextFilter\.doFilter.*",
+            @"^com\.ing\.diba\.callimero\.logging\.LoggingFilter\.doFilter.*",
+            @"^com\.ing\.diba\.client\.common\.core\.filter\.ExposeJstlLocalizationContextFilter\.doFilter.*",
+            @"^com\.ing\.diba\.mws\.tcore\.aop\..*"
         };
         private const string RegexpExceptionClassname = @"[a-zA-Z_\$0-9]+(?:\.[a-zA-Z_\$0-9]+)+\((?:[a-zA-Z_\$0-9\.]+:[0-9]+|Unknown Source)\)";
 

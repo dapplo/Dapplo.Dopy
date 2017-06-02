@@ -40,6 +40,7 @@ namespace Dapplo.Dopy.OpenUri
     [StartupAction]
     public class OpenUriService : IStartupAction
     {
+        private static readonly Regex UriRegex = new Regex(@"([a-z]+://[a-zA-Z0-9-_]+(?::[0-9]+)?[^\s]+)", RegexOptions.Compiled);
         private readonly IClipRepository _clipRepository;
         private readonly IEventAggregator _eventAggregator;
 
@@ -73,7 +74,7 @@ namespace Dapplo.Dopy.OpenUri
                 return;
             }
 
-            var matches = Regex.Matches(clip.ClipboardText, @"([a-z]+://[a-zA-Z0-9-_]+(?::[0-9]+)?[^\s]+)");
+            var matches = UriRegex.Matches(clip.ClipboardText);
             var uris = matches.Cast<Match>().Select(match => new Uri(match.Value)).ToList();
             if (uris.Count == 0)
             {
@@ -90,7 +91,6 @@ namespace Dapplo.Dopy.OpenUri
         private void ShowToast(IEnumerable<Uri> uris)
         {
             var viewModel = new OpenUriToastViewModel(uris);
-
 
             // Show the ViewModel as toast 
             _eventAggregator.PublishOnUIThread(viewModel);
