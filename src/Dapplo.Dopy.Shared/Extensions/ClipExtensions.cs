@@ -62,7 +62,6 @@ namespace Dapplo.Dopy.Shared.Extensions
                 if (clip.IsModifiedByDopy)
                 {
                     ClipboardNative.SetAsUnicodeString($"On {DateTime.Now:O}", ClipboardFormats.Dopy);
-
                 }
                 foreach (var key in clip.Contents.Keys)
                 {

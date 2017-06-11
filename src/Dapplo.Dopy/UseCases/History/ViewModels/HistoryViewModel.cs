@@ -39,12 +39,11 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
     /// Viewmodel for the history
     /// </summary>
     [Export]
-    public class HistoryViewModel : Screen
+    public class HistoryViewModel : Conductor<ClipViewModel>.Collection.OneActive
     {
         private readonly IClipRepository _clipRepository;
         private IDisposable _updateSubscription;
         private bool _autoScroll;
-        private Clip _selectedItem;
         private readonly IEnumerable<IMenuItem> _historyMenuItems;
 
         /// <summary>
@@ -60,18 +59,6 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             }
         }
 
-        /// <summary>
-        /// The currently selected item
-        /// </summary>
-        public Clip SelectedItem
-        {
-            get { return _selectedItem; }
-            set
-            {
-                _selectedItem = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         /// <summary>
         /// The items for the context menu of a Clip entry in the history
@@ -88,25 +75,29 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             {
                 throw new InvalidOperationException("Should only be used in design mode.");
             }
-            Clips.Add(new Clip
-            {
-                SequenceNumber = 10,
-                OriginalWindowHandle = new IntPtr(100000),
-                Formats = new List<string> {"CF_TEXT", "PNG" },
-                OriginalFormats = new List<string> { "CF_TEXT", "PNG", "Something unneeded" },
-                WindowTitle = "Not existing",
-                ProcessName = "bollocks.exe",
-                ProductName = "Not the Dapplo"
+            Items.Add(new ClipViewModel {
+                Item = new Clip {
+                    SequenceNumber = 10,
+                    OriginalWindowHandle = new IntPtr(100000),
+                    Formats = new List<string> {"CF_TEXT", "PNG" },
+                    OriginalFormats = new List<string> { "CF_TEXT", "PNG", "Something unneeded" },
+                    WindowTitle = "Not existing",
+                    ProcessName = "bollocks.exe",
+                    ProductName = "Not the Dapplo"
+                }
             });
-            Clips.Add(new Clip
+            Items.Add(new ClipViewModel
             {
-                SequenceNumber = 12,
-                OriginalWindowHandle = new IntPtr(100001),
-                Formats = new List<string> { "CF_TEXT", "CF_UNICODETEXT" },
-                OriginalFormats = new List<string> { "CF_TEXT", "PNG", "Something unneeded" },
-                WindowTitle = "Not existing",
-                ProcessName = "bollocks.exe",
-                ProductName = "Not the Dapplo"
+                Item = new Clip
+                {
+                    SequenceNumber = 12,
+                    OriginalWindowHandle = new IntPtr(100001),
+                    Formats = new List<string> { "CF_TEXT", "CF_UNICODETEXT" },
+                    OriginalFormats = new List<string> { "CF_TEXT", "PNG", "Something unneeded" },
+                    WindowTitle = "Not existing",
+                    ProcessName = "bollocks.exe",
+                    ProductName = "Not the Dapplo"
+                }
             });
         }
 #endif
@@ -131,13 +122,8 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             _historyMenuItems = historyMenuItems.Select(lazy => lazy.Value).ToList();
 
             // Make sure the $clip is supported
-            MessageBinder.SpecialValues.Add("$clip", context => context?.EventArgs == null ? null : SelectedItem);
+            MessageBinder.SpecialValues.Add("$clip", context => context?.EventArgs == null ? null : ActiveItem);
         }
-
-        /// <summary>
-        /// Public access for the View
-        /// </summary>
-        public IObservableCollection<Clip> Clips { get; } = new BindableCollection<Clip>();
 
         /// <inheritdoc />
         protected override void OnActivate()
@@ -171,25 +157,22 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// </summary>
         public void Load()
         {
-            Clips.Clear();
-            Clips.AddRange(_clipRepository.Find());
+            Items.Clear();
+            Items.AddRange(_clipRepository.Find().Select(clip => new ClipViewModel{ Item = clip}));
 
             _updateSubscription = _clipRepository.Updates.Subscribe(args =>
             {
                 switch (args.CrudAction)
                 {
                     case CrudActions.Create:
-                        Clips.Add(args.Entity);
+                        Items.Add(new ClipViewModel{ Item = args.Entity});
                         AutoScroll = true;
                         break;
                     case CrudActions.Delete:
-                        Clips.Remove(args.Entity);
-                        AutoScroll = true;
+                        Items.Remove(Items.First(model => model.Item.Id == args.Entity.Id));
                         break;
                 }
-
             });
-
         }
     }
 }

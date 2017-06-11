@@ -22,8 +22,8 @@
             <Separator />
         </ControlTemplate>
     </UserControl.Resources>
-    <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-              AutoGenerateColumns="False" ItemsSource="{Binding Clips}" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" utils:DataGridBehavior.Autoscroll="{Binding AutoScroll}" Height="300">
+    <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" SelectedItem="{Binding ActiveItem, Mode=TwoWay}"
+              AutoGenerateColumns="False" ItemsSource="{Binding Items}" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" utils:DataGridBehavior.Autoscroll="{Binding AutoScroll}" Height="300">
         <DataGrid.ContextMenu>
             <ContextMenu ItemsSource="{Binding MenuItems}">
                 <ContextMenu.Resources>

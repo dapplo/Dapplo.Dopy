@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Configuration;
-using Dapplo.CaliburnMicro.Translations;
 using ICoreTranslations = Dapplo.Dopy.Container.Translations.ICoreTranslations;
 using IConfigTranslations = Dapplo.Dopy.Container.Translations.IConfigTranslations;
 using Dapplo.CaliburnMicro.Extensions;
