@@ -19,61 +19,19 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.Windows;
 using Caliburn.Micro;
-using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.Dopy.Shared.Entities;
-using Dapplo.Dopy.Translations;
 
 namespace Dapplo.Dopy.UseCases.History.ViewModels
 {
     /// <summary>
     /// Viewmodel for the clipboard "clip" entry
     /// </summary>
-    [Export]
     public class ClipViewModel : Screen
     {
         /// <summary>
         /// The actual clip to display
         /// </summary>
         public Clip Item { get; set; }
-
-#if DEBUG
-        /// <summary>
-        /// Designtime constructor, not compiled in release
-        /// </summary>
-        public ClipViewModel()
-        {
-            if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-            {
-                throw new InvalidOperationException("Should only be used in design mode.");
-            }
-            Item = new Clip
-            {
-                SequenceNumber = 10,
-                OriginalWindowHandle = new IntPtr(100000),
-                Formats = new List<string> {"CF_TEXT", "PNG" },
-                OriginalFormats = new List<string> { "CF_TEXT", "PNG", "Something unneeded" },
-                WindowTitle = "Not existing",
-                ProcessName = "bollocks.exe",
-                ProductName = "Not the Dapplo"
-            };
-        }
-#endif
-
-        /// <summary>
-        /// Constructor for runtime
-        /// </summary>
-        /// <param name="dopyTranslations">IDopyTranslations</param>
-        [ImportingConstructor]
-        public ClipViewModel(IDopyTranslations dopyTranslations
-            )
-        {
-            dopyTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));
-        }
     }
 }

@@ -14,89 +14,96 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:HistoryViewModel,IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="700">
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
-        <converters:HasInterfaceConverter x:Key="HasInterfaceConverter"/>
-        <securityConverters:AuthenticationTargetPropertyConverter x:Key="AuthenticationTargetPropertyConverter" />
-        <ControlTemplate x:Key="MenuSeparatorTemplate">
-            <Separator />
-        </ControlTemplate>
-    </UserControl.Resources>
-    <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" SelectedItem="{Binding ActiveItem, Mode=TwoWay}"
-              AutoGenerateColumns="False" ItemsSource="{Binding Items}" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" utils:DataGridBehavior.Autoscroll="{Binding AutoScroll}" Height="300">
-        <DataGrid.ContextMenu>
-            <ContextMenu ItemsSource="{Binding MenuItems}">
-                <ContextMenu.Resources>
-                    <Style TargetType="{x:Type ContextMenu}">
-                        <Style.Triggers>
-                            <Trigger Property="HasItems" Value="False">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
-                        <Setter Property="Tag" Value="{Binding}" />
-                        <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
-                        <Setter Property="Visibility" Value="{Binding IsVisible,  Converter={StaticResource BooleanToVisibility} }" />
-                        <Setter Property="Icon" Value="{Binding Icon}" />
-                        <Setter Property="Header" Value="{Binding DisplayName}" />
-                        <Setter Property="ItemsSource" Value="{Binding ChildNodes}" />
-                        <Setter Property="InputGestureText" Value="{Binding HotKeyHint}" />
-                        <Setter Property="cal:Action.TargetWithoutContext" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=.,Converter={StaticResource HasInterfaceConverter}, ConverterParameter={x:Type caliburnMicro:ICanBeClicked}}" Value="True">
-                                <Setter Property="cal:Message.Attach" Value="Click($clip)" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Style}" Value="{x:Static cmMenu:MenuItemStyles.Separator}">
-                                <Setter Property="Template" Value="{StaticResource MenuSeparatorTemplate}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Style}" Value="{x:Static cmMenu:MenuItemStyles.Title}">
-                                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
-                                <Setter Property="FontWeight" Value="Bold" />
-                                <Setter Property="IsEnabled" Value="False" />
-                                <Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Converter={StaticResource AuthenticationTargetPropertyConverter}}"
-                                         Value="{x:Static security:AuthenticationTargetProperties.Visibility}">
-                                <Setter Property="security:AuthenticationVisibility.Permissions" Value="{Binding Permissions}" />
-                                <Setter Property="security:AuthenticationVisibility.WhenPermissions" Value="{Binding WhenPermission}" />
-                                <Setter Property="security:AuthenticationVisibility.WhenPermissionsMissing"
-                                        Value="{Binding WhenPermissionMissing}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Converter={StaticResource AuthenticationTargetPropertyConverter}}"
-                                         Value="{x:Static security:AuthenticationTargetProperties.IsEnabled}">
-                                <Setter Property="security:AuthenticationEnabled.Permissions" Value="{Binding Permissions}" />
-                                <Setter Property="security:AuthenticationEnabled.WhenPermissions" Value="{Binding WhenPermission}" />
-                                <Setter Property="security:AuthenticationEnabled.WhenPermissionsMissing" Value="{Binding WhenPermissionMissing}" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ContextMenu.Resources>
-            </ContextMenu>
-        </DataGrid.ContextMenu>
-        <DataGrid.Columns>
-            <DataGridTextColumn Binding="{Binding Path=Timestamp, StringFormat=D}" Header="Date" />
-            <DataGridTextColumn Binding="{Binding Path=Timestamp, StringFormat=T}" Header="Time" />
-            <DataGridTextColumn Binding="{Binding Path=Domain}" Header="Domain" />
-            <DataGridTextColumn Binding="{Binding Path=Username}" Header="Username" />
-            <DataGridTextColumn Binding="{Binding Path=WindowTitle}" Header="Title" />
-            <DataGridTextColumn Binding="{Binding Path=ProcessName}" Header="Process" />
-            <DataGridTextColumn Binding="{Binding Path=ProductName}" Header="Product" />
-            <DataGridTemplateColumn Header="Formats" >
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <ItemsControl ItemsSource="{Binding OriginalFormats}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-        </DataGrid.Columns>
-    </DataGrid>
+	<UserControl.Resources>
+		<BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+		<converters:HasInterfaceConverter x:Key="HasInterfaceConverter"/>
+		<securityConverters:AuthenticationTargetPropertyConverter x:Key="AuthenticationTargetPropertyConverter" />
+		<ControlTemplate x:Key="MenuSeparatorTemplate">
+			<Separator />
+		</ControlTemplate>
+	</UserControl.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<ContentControl x:Name="ActiveItem" Grid.Column="0"/>
+		<DataGrid Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" SelectedItem="{Binding ActiveItem, Mode=TwoWay}"
+		          AutoGenerateColumns="False" ItemsSource="{Binding Items}" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" utils:DataGridBehavior.Autoscroll="{Binding AutoScroll}" Height="300">
+			<DataGrid.ContextMenu>
+				<ContextMenu ItemsSource="{Binding MenuItems}">
+					<ContextMenu.Resources>
+						<Style TargetType="{x:Type ContextMenu}">
+							<Style.Triggers>
+								<Trigger Property="HasItems" Value="False">
+									<Setter Property="Visibility" Value="Collapsed" />
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+						<Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+							<Setter Property="Tag" Value="{Binding}" />
+							<Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
+							<Setter Property="Visibility" Value="{Binding IsVisible,  Converter={StaticResource BooleanToVisibility} }" />
+							<Setter Property="Icon" Value="{Binding Icon}" />
+							<Setter Property="Header" Value="{Binding DisplayName}" />
+							<Setter Property="ItemsSource" Value="{Binding ChildNodes}" />
+							<Setter Property="InputGestureText" Value="{Binding HotKeyHint}" />
+							<Setter Property="cal:Action.TargetWithoutContext" Value="{Binding Path=Tag, RelativeSource={RelativeSource Self}}" />
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Path=.,Converter={StaticResource HasInterfaceConverter}, ConverterParameter={x:Type caliburnMicro:ICanBeClicked}}" Value="True">
+									<Setter Property="cal:Message.Attach" Value="Click($clip)" />
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Style}" Value="{x:Static cmMenu:MenuItemStyles.Separator}">
+									<Setter Property="Template" Value="{StaticResource MenuSeparatorTemplate}" />
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Style}" Value="{x:Static cmMenu:MenuItemStyles.Title}">
+									<Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+									<Setter Property="FontWeight" Value="Bold" />
+									<Setter Property="IsEnabled" Value="False" />
+									<Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}" />
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Converter={StaticResource AuthenticationTargetPropertyConverter}}"
+								             Value="{x:Static security:AuthenticationTargetProperties.Visibility}">
+									<Setter Property="security:AuthenticationVisibility.Permissions" Value="{Binding Permissions}" />
+									<Setter Property="security:AuthenticationVisibility.WhenPermissions" Value="{Binding WhenPermission}" />
+									<Setter Property="security:AuthenticationVisibility.WhenPermissionsMissing"
+									        Value="{Binding WhenPermissionMissing}" />
+								</DataTrigger>
+								<DataTrigger Binding="{Binding Converter={StaticResource AuthenticationTargetPropertyConverter}}"
+								             Value="{x:Static security:AuthenticationTargetProperties.IsEnabled}">
+									<Setter Property="security:AuthenticationEnabled.Permissions" Value="{Binding Permissions}" />
+									<Setter Property="security:AuthenticationEnabled.WhenPermissions" Value="{Binding WhenPermission}" />
+									<Setter Property="security:AuthenticationEnabled.WhenPermissionsMissing" Value="{Binding WhenPermissionMissing}" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</ContextMenu.Resources>
+				</ContextMenu>
+			</DataGrid.ContextMenu>
+			<DataGrid.Columns>
+				<DataGridTextColumn Binding="{Binding Path=Item.Timestamp, StringFormat=D}" Header="Date" />
+				<DataGridTextColumn Binding="{Binding Path=Item.Timestamp, StringFormat=T}" Header="Time" />
+				<DataGridTextColumn Binding="{Binding Path=Item.Domain}" Header="Domain" />
+				<DataGridTextColumn Binding="{Binding Path=Item.Username}" Header="Username" />
+				<DataGridTextColumn Binding="{Binding Path=Item.WindowTitle}" Header="Title" />
+				<DataGridTextColumn Binding="{Binding Path=Item.ProcessName}" Header="Process" />
+				<DataGridTextColumn Binding="{Binding Path=Item.ProductName}" Header="Product" />
+				<DataGridTemplateColumn Header="Formats" >
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<ItemsControl ItemsSource="{Binding Path=Item.OriginalFormats}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<StackPanel Orientation="Horizontal">
+											<TextBlock Text="{Binding}"/>
+										</StackPanel>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+	</Grid>
 </UserControl>

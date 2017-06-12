@@ -113,8 +113,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             IClipRepository clipRepository,
             IDopyTranslations dopyTranslations,
             [ImportMany("historyMenu", typeof(IMenuItem))]
-            IEnumerable<Lazy<IMenuItem>> historyMenuItems
-            )
+            IEnumerable<Lazy<IMenuItem>> historyMenuItems)
         {
             _clipRepository = clipRepository;
             dopyTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));
@@ -122,7 +121,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             _historyMenuItems = historyMenuItems.Select(lazy => lazy.Value).ToList();
 
             // Make sure the $clip is supported
-            MessageBinder.SpecialValues.Add("$clip", context => context?.EventArgs == null ? null : ActiveItem);
+            MessageBinder.SpecialValues.Add("$clip", context => context?.EventArgs == null ? null : ActiveItem.Item);
         }
 
         /// <inheritdoc />
