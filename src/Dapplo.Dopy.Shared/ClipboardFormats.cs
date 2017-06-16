@@ -27,13 +27,5 @@ namespace Dapplo.Dopy.Shared
         {
             return clipboardUpdateInformation.Formats.Contains(Dopy);
         }
-
-        /// <summary>
-        /// Make sure the format for tracking changes is registered
-        /// </summary>
-        public static void RegisterDapploDopy()
-        {
-            ClipboardNative.RegisterFormat(Dopy);
-        }
     }
 }

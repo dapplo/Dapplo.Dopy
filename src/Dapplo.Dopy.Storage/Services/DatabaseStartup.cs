@@ -47,6 +47,8 @@ namespace Dapplo.Dopy.Storage.Services
                 .Id(x => x.Id) // set your document ID
                 .Ignore(x => x.Contents) // ignore this property (do not store)
                 .Ignore(x => x.IsModifiedByDopy) // ignore this property (do not store)
+                .Ignore(x => x.OwnerIcon) // ignore this property (do not store)
+                .Index(x => x.WindowsStartup)
                 .Index(x => x.Username)
                 .Index(x => x.ClipboardText)
                 .Index(x => x.Domain)

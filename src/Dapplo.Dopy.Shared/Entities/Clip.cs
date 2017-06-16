@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Dapplo.Dopy.Shared.Entities
 {
@@ -36,6 +37,12 @@ namespace Dapplo.Dopy.Shared.Entities
         public bool IsModifiedByDopy { get; set; }
 
         /// <summary>
+        /// Defines the time when the window
+        /// Together with the SequenceNumber (and hostname, domain, user) the clip is uniquely identifyable
+        /// </summary>
+        public DateTimeOffset WindowsStartup { get; set; }
+
+        /// <summary>
         /// User for which the clip was stored
         /// </summary>
         public string Username { get; set; } = Environment.UserName;
@@ -44,6 +51,11 @@ namespace Dapplo.Dopy.Shared.Entities
         /// Domain of the user for which the clip was stored
         /// </summary>
         public string Domain { get; set; } = Environment.UserDomainName;
+
+        /// <summary>
+        /// The icon for the owner of the clipboard
+        /// </summary>
+        public BitmapSource OwnerIcon { get; set; }
 
         /// <summary>
         /// Timestamp when the clip was created

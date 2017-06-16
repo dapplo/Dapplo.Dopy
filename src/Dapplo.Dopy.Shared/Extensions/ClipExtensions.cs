@@ -20,6 +20,8 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using System;
+using System.IO;
+using System.Windows.Media.Imaging;
 using Dapplo.Dopy.Shared.Entities;
 using Dapplo.Windows.Clipboard;
 using Dapplo.Windows.Desktop;
@@ -40,6 +42,39 @@ namespace Dapplo.Dopy.Shared.Extensions
         public static bool HasText(this Clip clip)
         {
             return clip.OriginalFormats.Contains(ClipboardFormats.UnicodeText);
+        }
+
+        /// <summary>
+        /// Write the OwnerIcon of the clip to a memorystream
+        /// </summary>
+        /// <param name="clip">Clip</param>
+        /// <returns>MemoryStream you will need to dispose this yourself</returns>
+        public static MemoryStream OwnerIconAsStream(this Clip clip)
+        {
+            if (clip.OwnerIcon == null)
+            {
+                return null;
+            }
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(clip.OwnerIcon));
+            var memoryStreamResult = new MemoryStream();
+            encoder.Save(memoryStreamResult);
+            return memoryStreamResult;
+        }
+
+        /// <summary>
+        /// Read the stream into the OwnerIcon of the clip
+        /// </summary>
+        /// <param name="clip">Clip</param>
+        /// <param name="iconMemoryStream">MemoryStream</param>
+        public static void OwnerIconFromStream(this Clip clip, MemoryStream iconMemoryStream)
+        {
+            if (iconMemoryStream == null)
+            {
+                return;
+            }
+            var decoder = new PngBitmapDecoder(iconMemoryStream, BitmapCreateOptions.None, BitmapCacheOption.Default);
+            clip.OwnerIcon = decoder.Frames[0];
         }
 
         /// <summary>

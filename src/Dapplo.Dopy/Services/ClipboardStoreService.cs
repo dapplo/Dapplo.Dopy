@@ -25,15 +25,19 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
+using System.Windows.Media.Imaging;
 using Dapplo.Addons;
 using Dapplo.Dopy.Configuration;
 using Dapplo.Dopy.Shared;
 using Dapplo.Dopy.Shared.Entities;
+using Dapplo.Dopy.Shared.Extensions;
 using Dapplo.Dopy.Shared.Repositories;
 using Dapplo.Log;
 using Dapplo.Windows.Clipboard;
 using Dapplo.Windows.Desktop;
 using Dapplo.Windows.Messages;
+using Dapplo.Windows.Icons;
+using Dapplo.Windows.Kernel32;
 
 namespace Dapplo.Dopy.Services
 {
@@ -71,18 +75,30 @@ namespace Dapplo.Dopy.Services
         /// </summary>
         public void Start()
         {
-            ClipboardFormats.RegisterDapploDopy();
             _clipboardMonitor = ClipboardMonitor
                 .OnUpdate
                 .SubscribeOn(_uiSynchronizationContext)
                 .Where(contents => contents.OwnerHandle != WinProcHandler.Instance.Handle)
                 .Synchronize().Subscribe(clipboardContents =>
             {
+                // TODO: Detect if the clip is a double (stop Dopy & start it again)
+
+
                 if (clipboardContents.IsModifiedByDopy())
                 {
                     Log.Info().WriteLine("Skipping clipboard id {0} as it was pasted by 'us'", clipboardContents.Id);
                     return;
                 }
+
+                // Ignore empty clips (e.g. if Dopy is started directly at windows startup)
+                if (!clipboardContents.Formats.Any())
+                {
+                    Log.Info().WriteLine("Empty clipboard, restoring newest from DB");
+                    // Empty clipboard, Place the last stored on the clipboard
+                    _clipRepository.Find().OrderByDescending(databaseClip => databaseClip.Timestamp).LastOrDefault()?.PlaceOnClipboard();
+                    return;
+                }
+
                 Log.Info().WriteLine("Processing clipboard id {0}", clipboardContents.Id);
                 var clip = CreateClip(clipboardContents);
 
@@ -136,6 +152,8 @@ namespace Dapplo.Dopy.Services
                 clip = new Clip
                 {
                     WindowTitle = caption,
+                    OwnerIcon = interopWindow.GetIcon<BitmapSource>() ?? toplevelWindow.GetIcon<BitmapSource>(),
+                    WindowsStartup = Kernel32Api.SystemStartup,
                     ProcessName = process.ProcessName,
                     ProductName = productName,
                     OriginalWindowHandle = clipboardUpdateInformation.OwnerHandle,
