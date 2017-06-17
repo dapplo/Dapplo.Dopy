@@ -190,6 +190,10 @@
     <Compile Include="UseCases\History\ViewModels\ClipViewModel.cs" />
     <Compile Include="UseCases\History\ViewModels\HistoryViewModel.cs" />
     <Compile Include="Utils\DataGridBehavior.cs" />
+    <Compile Include="Utils\SessionUtils.cs" />
+    <Compile Include="Utils\SidAndAttributes.cs" />
+    <Compile Include="Utils\TokenGroups.cs" />
+    <Compile Include="Utils\TokenInformationClasses.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
