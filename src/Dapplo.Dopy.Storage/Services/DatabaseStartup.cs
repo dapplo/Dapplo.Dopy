@@ -37,7 +37,7 @@ namespace Dapplo.Dopy.Storage.Services
         /// Clipboard database
         /// </summary>
         [Export("clipboard")]
-        public LiteDatabase Database { get; private set; } = new LiteDatabase($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\Dapplo.Dopy\clipboard.db");
+        public LiteDatabase Database { get; private set; } = new LiteDatabase($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\Dapplo.Dopy\dopy.db");
 
         /// <inheritdoc />
         public void Start()
@@ -48,10 +48,9 @@ namespace Dapplo.Dopy.Storage.Services
                 .Ignore(x => x.Contents) // ignore this property (do not store)
                 .Ignore(x => x.IsModifiedByDopy) // ignore this property (do not store)
                 .Ignore(x => x.OwnerIcon) // ignore this property (do not store)
-                .Index(x => x.WindowsStartup)
-                .Index(x => x.Username)
+                .Index(x => x.SessionId)
+                .Index(x => x.SequenceNumber)
                 .Index(x => x.ClipboardText)
-                .Index(x => x.Domain)
                 .Index(x => x.Timestamp)
                 .Index(x => x.ProcessName)
                 .Index(x => x.ProductName)
@@ -59,6 +58,13 @@ namespace Dapplo.Dopy.Storage.Services
                 .Index(x => x.Formats)
                 .Index(x => x.OriginalFormats)
                 .Index(x => x.OriginalWindowHandle);
+            mapper.Entity<Session>()
+                .Id(x => x.Id)
+                .Index(x => x.WindowsStartup)
+                .Index(x => x.SessionSid)
+                .Index(x => x.Username)
+                .Index(x => x.Domain)
+                .Index(x => x.Timestamp);
         }
 
         /// <inheritdoc />

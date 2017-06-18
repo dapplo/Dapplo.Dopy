@@ -32,25 +32,14 @@ namespace Dapplo.Dopy.Shared.Entities
     public class Clip : EntityBase<int>
     {
         /// <summary>
+        /// The ID for the session
+        /// </summary>
+        public int SessionId { get; set; }
+
+        /// <summary>
         /// Test if this clip was modified by Dopy
         /// </summary>
         public bool IsModifiedByDopy { get; set; }
-
-        /// <summary>
-        /// Defines the time when the window
-        /// Together with the SequenceNumber (and hostname, domain, user) the clip is uniquely identifyable
-        /// </summary>
-        public DateTimeOffset WindowsStartup { get; set; }
-
-        /// <summary>
-        /// User for which the clip was stored
-        /// </summary>
-        public string Username { get; set; } = Environment.UserName;
-
-        /// <summary>
-        /// Domain of the user for which the clip was stored
-        /// </summary>
-        public string Domain { get; set; } = Environment.UserDomainName;
 
         /// <summary>
         /// The icon for the owner of the clipboard

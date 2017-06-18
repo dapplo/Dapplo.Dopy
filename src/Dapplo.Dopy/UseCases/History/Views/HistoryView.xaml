@@ -83,8 +83,6 @@
 			<DataGrid.Columns>
 				<DataGridTextColumn Binding="{Binding Path=Item.Timestamp, StringFormat=D}" Header="Date" />
 				<DataGridTextColumn Binding="{Binding Path=Item.Timestamp, StringFormat=T}" Header="Time" />
-				<DataGridTextColumn Binding="{Binding Path=Item.Domain}" Header="Domain" />
-				<DataGridTextColumn Binding="{Binding Path=Item.Username}" Header="Username" />
 			    <DataGridTemplateColumn Header="Icon" >
 			        <DataGridTemplateColumn.CellTemplate>
 			            <DataTemplate>

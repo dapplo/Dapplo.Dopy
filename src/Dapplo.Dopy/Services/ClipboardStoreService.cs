@@ -32,6 +32,7 @@ using Dapplo.Dopy.Shared;
 using Dapplo.Dopy.Shared.Entities;
 using Dapplo.Dopy.Shared.Extensions;
 using Dapplo.Dopy.Shared.Repositories;
+using Dapplo.Dopy.Utils;
 using Dapplo.Log;
 using Dapplo.Windows.Clipboard;
 using Dapplo.Windows.Desktop;
@@ -52,22 +53,34 @@ namespace Dapplo.Dopy.Services
         private readonly SynchronizationContext _uiSynchronizationContext;
         private readonly IClipRepository _clipRepository;
         private readonly IDopyConfiguration _dopyConfiguration;
+        private readonly Session _currentSession;
 
         /// <summary>
         /// Initializes the needed depedencies
         /// </summary>
         /// <param name="clipRepository">IClipRepository</param>
+        /// <param name="sessionRepository">ISessionRepository</param>
         /// <param name="dopyConfiguration">Configuration</param>
         /// <param name="uiSynchronizationContext">SynchronizationContext to register the Clipboard Monitor with</param>
         [ImportingConstructor]
         public ClipboardStoreService(
             IClipRepository clipRepository,
+            ISessionRepository sessionRepository,
             IDopyConfiguration dopyConfiguration,
             [Import("ui", typeof(SynchronizationContext))]SynchronizationContext uiSynchronizationContext)
         {
             _clipRepository = clipRepository;
             _uiSynchronizationContext = uiSynchronizationContext;
             _dopyConfiguration = dopyConfiguration;
+
+            var currentSession = CreateSession();
+            _currentSession = sessionRepository.Find(session => session.SessionSid == currentSession.SessionSid).FirstOrDefault();
+            if (_currentSession != null)
+            {
+                return;
+            }
+            sessionRepository.Create(currentSession);
+            _currentSession = currentSession;
         }
 
         /// <summary>
@@ -75,15 +88,14 @@ namespace Dapplo.Dopy.Services
         /// </summary>
         public void Start()
         {
+            bool firstClip = true;
             _clipboardMonitor = ClipboardMonitor
                 .OnUpdate
                 .SubscribeOn(_uiSynchronizationContext)
                 .Where(contents => contents.OwnerHandle != WinProcHandler.Instance.Handle)
                 .Synchronize().Subscribe(clipboardContents =>
             {
-                // TODO: Detect if the clip is a double (stop Dopy & start it again)
-
-
+                // Ignore our own modifications
                 if (clipboardContents.IsModifiedByDopy())
                 {
                     Log.Info().WriteLine("Skipping clipboard id {0} as it was pasted by 'us'", clipboardContents.Id);
@@ -91,20 +103,46 @@ namespace Dapplo.Dopy.Services
                 }
 
                 // Ignore empty clips (e.g. if Dopy is started directly at windows startup)
-                if (!clipboardContents.Formats.Any())
+                if (!clipboardContents.Formats.Any() && firstClip)
                 {
-                    Log.Info().WriteLine("Empty clipboard, restoring newest from DB");
+                    firstClip = false;
+                    Log.Info().WriteLine("Empty clipboard at startup, restoring latest from DB");
                     // Empty clipboard, Place the last stored on the clipboard
                     _clipRepository.Find().OrderByDescending(databaseClip => databaseClip.Timestamp).LastOrDefault()?.PlaceOnClipboard();
                     return;
                 }
+                firstClip = false;
 
-                Log.Info().WriteLine("Processing clipboard id {0}", clipboardContents.Id);
-                var clip = CreateClip(clipboardContents);
+                // Double detection, if there is already a clip with the same sequence and session, we already got it
+                if (_clipRepository.Find(clip => clip.SequenceNumber == clipboardContents.Id && clip.SessionId == _currentSession.Id).Any())
+                {
+                    Log.Info().WriteLine("Clipboard with id {0} already stored.", clipboardContents.Id);
+                    return;
+                }
+
+                // The clipboard contents are unique, so store them
+                Log.Info().WriteLine("Processing clipboard id {0}.", clipboardContents.Id);
+                var newClip = CreateClip(clipboardContents);
 
                 // Store it in the repository
-                _clipRepository.Create(clip);
+                _clipRepository.Create(newClip);
             });
+        }
+
+        /// <summary>
+        /// Create the session object instance, this is used to reference from every clip
+        /// </summary>
+        /// <returns>Session</returns>
+        private Session CreateSession()
+        {
+            return new Session
+            {
+                SessionSid = SessionUtils.GetSessionId(),
+                Domain = Environment.UserDomainName,
+                Username = Environment.UserName,
+                WindowsStartup = Kernel32Api.SystemStartup,
+                Timestamp = DateTimeOffset.Now
+            };
         }
 
         /// <summary>
@@ -153,7 +191,7 @@ namespace Dapplo.Dopy.Services
                 {
                     WindowTitle = caption,
                     OwnerIcon = interopWindow.GetIcon<BitmapSource>() ?? toplevelWindow.GetIcon<BitmapSource>(),
-                    WindowsStartup = Kernel32Api.SystemStartup,
+                    SessionId = _currentSession.Id,
                     ProcessName = process.ProcessName,
                     ProductName = productName,
                     OriginalWindowHandle = clipboardUpdateInformation.OwnerHandle,
