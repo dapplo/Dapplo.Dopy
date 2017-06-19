@@ -73,7 +73,7 @@ namespace Dapplo.Dopy.Shared.Extensions
             {
                 return;
             }
-            var decoder = new PngBitmapDecoder(iconMemoryStream, BitmapCreateOptions.None, BitmapCacheOption.Default);
+            var decoder = new PngBitmapDecoder(iconMemoryStream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
             clip.OwnerIcon = decoder.Frames[0];
         }
 

@@ -20,6 +20,7 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using System;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
@@ -170,27 +171,31 @@ namespace Dapplo.Dopy.Services
             Clip clip;
             using (var process = Process.GetProcessById(interopWindow.GetProcessId()))
             {
-                string productName = process.ProcessName;
 
                 // Make sure we got something, when the caption is emtry up to now
                 if (string.IsNullOrEmpty(caption))
                 {
                     caption = process.MainWindowTitle;
                 }
+
+                // Try to create the product name
+                string productName = process.ProcessName;
+
                 try
                 {
                     var versionInfo = FileVersionInfo.GetVersionInfo(process.MainModule.FileName);
                     productName = versionInfo.ProductName;
                 }
-                catch (Exception ex)
+                catch (Win32Exception ex)
                 {
-                    Log.Error().WriteLine(ex, "Problem retrieving process information for a process with ID {0} and name {1}", process.Id, process.ProcessName);
+                    // This happens with elevated processes
+                    Log.Warn().WriteLine(ex, "Problem retrieving process information for a process with ID {0} and name {1}", process.Id, process.ProcessName);
                 }
 
                 clip = new Clip
                 {
                     WindowTitle = caption,
-                    OwnerIcon = interopWindow.GetIcon<BitmapSource>() ?? toplevelWindow.GetIcon<BitmapSource>(),
+                    OwnerIcon = interopWindow.GetIcon<BitmapSource>(true) ?? toplevelWindow.GetIcon<BitmapSource>(true),
                     SessionId = _currentSession.Id,
                     ProcessName = process.ProcessName,
                     ProductName = productName,
