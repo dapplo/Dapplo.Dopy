@@ -57,5 +57,23 @@ namespace Dapplo.Dopy.Translations
         /// </summary>
         [DefaultValue("Restore")]
         string Restore { get; }
+
+        /// <summary>
+        /// The translation for the formats configuration
+        /// </summary>
+        [DefaultValue("Formats")]
+        string FormatsConfigTitle { get; }
+
+        /// <summary>
+        /// The translation in the formats configuration for the available formats 
+        /// </summary>
+        [DefaultValue("Available formats")]
+        string FormatsAvailable { get; }
+
+        /// <summary>
+        /// The translation in the formats configuration for the selected formats 
+        /// </summary>
+        [DefaultValue("Selected formats")]
+        string FormatsSelected { get; }
     }
 }

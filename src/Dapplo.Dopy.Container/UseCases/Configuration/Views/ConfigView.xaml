@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dapplo.Dopy.Container.UseCases.Configuration.Views.ConfigView"
+﻿<controls:MetroWindow x:Class="Dapplo.Dopy.Container.UseCases.Configuration.Views.ConfigView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:cal="http://www.caliburnproject.org"
@@ -6,14 +6,15 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:security="clr-namespace:Dapplo.CaliburnMicro.Security.Behaviors;assembly=Dapplo.CaliburnMicro.Security"
              xmlns:converters="clr-namespace:Dapplo.CaliburnMicro.Security.Converters;assembly=Dapplo.CaliburnMicro.Security"
-             Width="500" Height="400">
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             Width="500" Height="400" Title="{Binding DisplayName}" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
 	<behaviors:FrameworkElementIcon.Value>
 		<iconPacks:PackIconMaterial Kind="Settings" Margin="10" Visibility="Visible" />
 	</behaviors:FrameworkElementIcon.Value>
-	<UserControl.Resources>
+    <controls:MetroWindow.Resources>
 		<BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
 		<converters:AuthenticationTargetPropertyConverter x:Key="AuthenticationTargetPropertyConverter" />
-	</UserControl.Resources>
+	</controls:MetroWindow.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
@@ -62,4 +63,4 @@
 			<Button x:Name="Ok" Content="{Binding CoreTranslations.Ok}" />
 		</UniformGrid>
 	</Grid>
-</UserControl>
+</controls:MetroWindow>

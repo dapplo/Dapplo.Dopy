@@ -33,9 +33,9 @@ namespace Dapplo.Dopy.Configuration
     public interface IDopyConfiguration : IIniSection, IDefaultValue
     {
         /// <summary>
-        /// Which formats are 
+        /// Which formats are stored
         /// </summary>
         [DefaultValue("PNG,CF_WAVE,HTML Format")]
-        IList<string> CopyAlways { get; set; }
+        IList<string> IncludeFormats { get; set; }
     }
 }

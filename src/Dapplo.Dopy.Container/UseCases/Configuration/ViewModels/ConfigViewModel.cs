@@ -57,7 +57,7 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
                     // Prevent should it multiple times
                     if (!IsActive)
                     {
-                        windowsManager.ShowWindow(this);
+                        windowsManager.ShowDialog(this);
                     }
                 }
             };

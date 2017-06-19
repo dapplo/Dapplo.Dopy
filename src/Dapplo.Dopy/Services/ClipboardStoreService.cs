@@ -213,7 +213,7 @@ namespace Dapplo.Dopy.Services
 
                 foreach (var format in clipboardUpdateInformation.Formats)
                 {
-                    if (!_dopyConfiguration.CopyAlways.Contains(format))
+                    if (!_dopyConfiguration.IncludeFormats.Contains(format))
                     {
                         continue;
                     }
