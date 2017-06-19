@@ -6,8 +6,10 @@
              xmlns:viewModels="clr-namespace:Dapplo.Dopy.UseCases.History.ViewModels"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:ClipViewModel,IsDesignTimeCreatable=True}"
-             d:DesignHeight="200" d:DesignWidth="200">
-	<StackPanel>
-		<Label Content="{Binding Path=Item.ProductName}"></Label>
-	</StackPanel>
- </UserControl>
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+        <Image Source="{Binding Path=Item.OwnerIcon}"></Image>
+        <Label Content="{Binding Path=Item.WindowTitle}"></Label>
+        <TextBox Text="{Binding Path=Item.ClipboardText}"></TextBox>
+    </StackPanel>
+</UserControl>
