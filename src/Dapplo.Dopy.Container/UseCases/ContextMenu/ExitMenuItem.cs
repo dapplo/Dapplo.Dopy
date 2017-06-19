@@ -25,6 +25,7 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
+using Dapplo.CaliburnMicro.Dapp;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Container.Translations;
@@ -61,7 +62,7 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu
             };
             ClickAction = clickedItem =>
             {
-                Application.Current.Shutdown();
+                Dapplication.Current.Shutdown();
             };
             this.ApplyIconForegroundColor(Brushes.DarkRed);
         }

@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClipboardFormats.cs" />
+    <Compile Include="ConfigurationNodeIds.cs" />
     <Compile Include="Entities\Session.cs" />
     <Compile Include="Entities\Clip.cs" />
     <Compile Include="Entities\EntityBase.cs" />

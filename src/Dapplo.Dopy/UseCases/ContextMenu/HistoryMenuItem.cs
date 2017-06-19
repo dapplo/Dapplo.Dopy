@@ -21,12 +21,17 @@
 
 #region using
 
+using System;
 using System.ComponentModel.Composition;
+using System.Reactive.Linq;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Translations;
 using Dapplo.Dopy.UseCases.History.ViewModels;
+using Dapplo.Windows.Input;
+using Dapplo.Windows.Input.Enums;
 using MahApps.Metro.IconPacks;
 
 #endregion
@@ -59,6 +64,25 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
             {
                 Kind = PackIconMaterialKind.History,
             };
+
+            KeyboardHook.KeyboardEvents
+                // The hotkey to listen do
+                .Where(args => args.IsControl && args.IsShift && args.Key == VirtualKeyCodes.KEY_V)
+                // What to do
+                .Subscribe(args =>
+                {
+                    Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+                    {
+                        // Prevent should it multiple times
+                        if (!historyViewModel.IsActive)
+                        {
+                            windowManager.ShowWindow(historyViewModel);
+                        }
+                    });
+                    args.Handled = true;
+                });
+
+            HotKeyHint = "Ctrl + Shift + V";
             ClickAction = clickedItem =>
             {
                 // Prevent should it multiple times

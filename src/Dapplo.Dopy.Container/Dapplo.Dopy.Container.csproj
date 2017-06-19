@@ -210,7 +210,10 @@
     <Compile Include="Translations\IConfigTranslations.cs" />
     <Compile Include="Translations\ICoreTranslations.cs" />
     <Compile Include="Translations\IMainContextMenuTranslations.cs" />
+    <Compile Include="Configuration\IUiConfiguration.cs" />
     <Compile Include="UseCases\Configuration\ViewModels\ConfigViewModel.cs" />
+    <Compile Include="UseCases\Configuration\ViewModels\ThemeConfigViewModel.cs" />
+    <Compile Include="UseCases\Configuration\ViewModels\UiConfigNodeViewModel.cs" />
     <Compile Include="UseCases\ContextMenu\ExitMenuItem.cs" />
     <Compile Include="UseCases\ContextMenu\TitleMenuItem.cs" />
     <Compile Include="UseCases\ContextMenu\ViewModels\DapploTrayIconViewModel.cs" />
@@ -253,6 +256,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="UseCases\Configuration\Views\ConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UseCases\Configuration\Views\ThemeConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

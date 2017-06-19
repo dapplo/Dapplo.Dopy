@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:Dapplo.Dopy.UseCases.Configuration.ViewModels"
              xmlns:dd="urn:gong-wpf-dragdrop"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:FormatsViewModel,IsDesignTimeCreatable=True}"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:FormatsViewModel,IsDesignTimeCreatable=False}"
              d:DesignHeight="300" d:DesignWidth="400">
     <StackPanel>
         <!-- Title -->
-        <Label Content="{Binding DisplayName}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20" />
+        <Label x:Name="DisplayName" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20" />
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -19,11 +19,11 @@
                 <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" >
-                <Label Content="{Binding DopyTranslations.FormatsAvailable}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="15" />
+                <Label x:Name="DopyTranslations_FormatsAvailable" HorizontalAlignment="Center" FontWeight="Bold" FontSize="15" />
                 <ListBox ItemsSource="{Binding AvailableFormats}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"/>
             </StackPanel>
             <StackPanel Grid.Column="1" >
-                <Label Content="{Binding DopyTranslations.FormatsSelected}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="15" />
+                <Label x:Name="DopyTranslations_FormatsSelected" HorizontalAlignment="Center" FontWeight="Bold" FontSize="15" />
                 <ListBox ItemsSource="{Binding SelectedFormats}" Grid.Column="1"  dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"/>
             </StackPanel>
         </Grid>

@@ -31,5 +31,10 @@ namespace Dapplo.Dopy.Container.Translations
     [Language("Config")]
     public interface IConfigTranslations : ILanguage, CaliburnMicro.Translations.IConfigTranslations, INotifyPropertyChanged
     {
+        [DefaultValue("UI")]
+        string Ui { get; }
+
+        [DefaultValue("Theme")]
+        string Theme { get; }
     }
 }
