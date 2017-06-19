@@ -13,7 +13,7 @@
              xmlns:caliburnMicro="clr-namespace:Dapplo.CaliburnMicro;assembly=Dapplo.CaliburnMicro"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:HistoryViewModel,IsDesignTimeCreatable=True}"
-             d:DesignHeight="300" d:DesignWidth="700">
+             d:DesignHeight="300" d:DesignWidth="700" MaxHeight="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
         <converters:HasInterfaceConverter x:Key="HasInterfaceConverter"/>
@@ -25,11 +25,13 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <ContentControl x:Name="ActiveItem" Grid.Column="0"/>
-        <DataGrid Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" SelectedItem="{Binding ActiveItem, Mode=TwoWay}"
-                  AutoGenerateColumns="False" ItemsSource="{Binding Items}" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" utils:DataGridBehavior.Autoscroll="{Binding AutoScroll}" Height="300">
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+        <DataGrid Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Single" SelectedItem="{Binding ActiveItem, Mode=TwoWay}"
+                  AutoGenerateColumns="False" ItemsSource="{Binding Items}" CanUserResizeColumns="True" CanUserSortColumns="True" IsReadOnly="True" utils:DataGridBehavior.Autoscroll="{Binding AutoScroll}">
             <DataGrid.ContextMenu>
                 <ContextMenu ItemsSource="{Binding MenuItems}">
                     <ContextMenu.Resources>

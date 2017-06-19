@@ -4,14 +4,34 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModels="clr-namespace:Dapplo.Dopy.UseCases.History.ViewModels"
+             xmlns:utils="clr-namespace:Dapplo.Dopy.Utils"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:ClipViewModel,IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <StackPanel Orientation="Horizontal">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+    </UserControl.Resources>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" >
             <Image Source="{Binding Path=Item.OwnerIcon}" Width="48" Height="48"></Image>
             <Label Content="{Binding Path=Item.WindowTitle}" VerticalAlignment="Center"></Label>
         </StackPanel>
-        <TextBox Text="{Binding Path=Item.ClipboardText}"></TextBox>
-    </StackPanel>
+        <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit" FontFamily="Consolas" FontSize="10pt" Grid.Row="1" Visibility="{Binding IsText, Converter={StaticResource BooleanToVisibility}}">
+            <i:Interaction.Behaviors>
+                <utils:AvalonEditBehaviour GiveMeTheText="{Binding Item.ClipboardText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </i:Interaction.Behaviors>
+        </avalonEdit:TextEditor>
+        <Border BorderThickness="1" BorderBrush="Black" Grid.Row="1" Visibility="{Binding IsImage, Converter={StaticResource BooleanToVisibility}}">
+            <Image Source="{Binding ImageContainer.ImageData}" RenderTransformOrigin=".5,.5">
+                <Image.LayoutTransform>
+                    <RotateTransform Angle="{Binding ImageContainer.Rotation}"/>
+                </Image.LayoutTransform>
+            </Image>
+        </Border>
+    </Grid>
 </UserControl>

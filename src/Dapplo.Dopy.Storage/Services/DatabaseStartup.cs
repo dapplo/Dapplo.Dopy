@@ -56,6 +56,7 @@ namespace Dapplo.Dopy.Storage.Services
                 .Index(x => x.ProductName)
                 .Index(x => x.WindowTitle)
                 .Index(x => x.Formats)
+                .Index(x => x.Filenames)
                 .Index(x => x.OriginalFormats)
                 .Index(x => x.OriginalWindowHandle);
             mapper.Entity<Session>()

@@ -20,9 +20,13 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using Dapplo.Dopy.Shared.Entities;
+using Dapplo.Dopy.Utils;
 using Dapplo.Windows.Clipboard;
 using Dapplo.Windows.Desktop;
 using Dapplo.Windows.Messages;
@@ -45,13 +49,55 @@ namespace Dapplo.Dopy.Shared.Extensions
         }
 
         /// <summary>
+        /// Test if the clip has an image
+        /// </summary>
+        /// <param name="clip">Clip</param>
+        /// <returns>true if it has image content</returns>
+        public static bool HasImage(this Clip clip)
+        {
+            if (clip?.Contents == null)
+            {
+                return false;
+            }
+            if (clip.Filenames.Any(file => file.EndsWith(".png") && File.Exists(file)))
+            {
+                return true;
+            }
+            return clip.Contents.ContainsKey(ClipboardFormats.Png);
+        }
+
+        /// <summary>
+        /// Get the "best" image from a clip
+        /// </summary>
+        /// <param name="clip">Clip</param>
+        /// <returns>image content</returns>
+        public static ImageContainer GetImage(this Clip clip)
+        {
+            if (clip?.Contents == null)
+            {
+                return null;
+            }
+
+            var imageFile = clip.Filenames.FirstOrDefault(file => file.EndsWith(".png") && File.Exists(file));
+            if (imageFile != null)
+            {
+                return new ImageContainer(imageFile);
+            }
+            if (clip.Contents.ContainsKey(ClipboardFormats.Png))
+            {
+                return new ImageContainer(clip.Contents[ClipboardFormats.Png]);
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Write the OwnerIcon of the clip to a memorystream
         /// </summary>
         /// <param name="clip">Clip</param>
         /// <returns>MemoryStream you will need to dispose this yourself</returns>
         public static MemoryStream OwnerIconAsStream(this Clip clip)
         {
-            if (clip.OwnerIcon == null)
+            if (clip?.OwnerIcon == null)
             {
                 return null;
             }

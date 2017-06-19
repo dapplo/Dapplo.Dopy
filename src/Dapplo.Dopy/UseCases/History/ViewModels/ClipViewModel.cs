@@ -25,6 +25,8 @@ using System.ComponentModel;
 using System.Windows;
 using Caliburn.Micro;
 using Dapplo.Dopy.Shared.Entities;
+using Dapplo.Dopy.Shared.Extensions;
+using Dapplo.Dopy.Utils;
 
 namespace Dapplo.Dopy.UseCases.History.ViewModels
 {
@@ -33,10 +35,39 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
     /// </summary>
     public class ClipViewModel : Screen
     {
+        private Clip _item;
+
         /// <summary>
         /// The actual clip to display
         /// </summary>
-        public Clip Item { get; set; }
+        public Clip Item
+        {
+            get { return _item; }
+            set
+            {
+                _item = value;
+                if (_item != null)
+                {
+                    ImageContainer = _item.GetImage();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tells the view if the content has text
+        /// </summary>
+        public bool IsText => Item.HasText();
+
+
+        /// <summary>
+        /// Tells the view if the content has text
+        /// </summary>
+        public bool IsImage => ImageContainer != null;
+
+        /// <summary>
+        /// The image container
+        /// </summary>
+        public ImageContainer ImageContainer { get; private set; }
 
 #if DEBUG
         /// <summary>

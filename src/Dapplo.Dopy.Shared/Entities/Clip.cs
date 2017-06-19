@@ -92,6 +92,11 @@ namespace Dapplo.Dopy.Shared.Entities
         public IList<string> Formats { get; set; } = new List<string>();
 
         /// <summary>
+        /// The filenames on the clipboard
+        /// </summary>
+        public IList<string> Filenames { get; set; } = new List<string>();
+
+        /// <summary>
         /// The actual clipboard contents
         /// </summary>
         public IDictionary<string, MemoryStream> Contents { get; } = new Dictionary<string, MemoryStream>();

@@ -16,7 +16,17 @@ namespace Dapplo.Dopy.Shared
         /// <summary>
         /// CF_UNICODETEXT
         /// </summary>
-        public static string UnicodeText { get; } = "CF_UNICODETEXT";
+        public static  string UnicodeText { get; } = "CF_UNICODETEXT";
+
+        public static string FileContents { get; } = "FileContents";
+        public static  string Png { get; } = "PNG";
+        private static string PngOfficeart { get; } = "PNG+Office Art";
+        private static string Format17 { get; } = "Format17";
+        private static string Jpg { get; } = "JPG";
+        private static string Jfif { get; } = "JFIF";
+        private static string JfifOfficeart { get; } = "JFIF+Office Art";
+        private static string Gif { get; } = "GIF";
+        private static string Bitmap { get; } = "System.Drawing.Bitmap";
 
         /// <summary>
         /// Test if the ClipboardUpdateInformation was created indirectly by Dopy, so we can excluding this from processing
