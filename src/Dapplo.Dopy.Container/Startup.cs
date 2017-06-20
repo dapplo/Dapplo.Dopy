@@ -46,7 +46,7 @@ namespace Dapplo.Dopy.Container
 
 #if DEBUG
             // Initialize a debug logger for Dapplo packages
-            LogSettings.RegisterDefaultLogger<DebugLogger>(LogLevels.Info);
+            LogSettings.RegisterDefaultLogger<DebugLogger>(LogLevels.Verbose);
 #endif
             var application = new Dapplication("Dapplo.Dopy", "06486F0F-0DBC-4912-9C5C-5C9C777BA34E")
             {
