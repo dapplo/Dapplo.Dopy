@@ -41,7 +41,7 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
         private MetroWindowManager MetroWindowManager { get; set; }
 
         [Import]
-        public IUiConfiguration UiConfiguration { get; set; }
+        public IDopyUiConfiguration UiConfiguration { get; set; }
 
         [Import]
         public IConfigTranslations UiTranslations { get; set; }
