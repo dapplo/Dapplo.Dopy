@@ -7,7 +7,7 @@ using Dapplo.InterfaceImpl.Extensions;
 namespace Dapplo.Dopy.Container.Configuration
 {
     [IniSection("Ui")]
-    public interface IDopyUiConfiguration : IIniSection, ITransactionalProperties, IUiConfiguration
+    public interface IDopyUiConfiguration : IUiConfiguration, ITransactionalProperties
     {
         [DefaultValue(Themes.BaseLight)]
         Themes Theme { get; set; }

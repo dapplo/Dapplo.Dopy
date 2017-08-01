@@ -57,9 +57,20 @@ namespace Dapplo.Dopy.UseCases.Configuration.ViewModels
         }
 
         /// <inheritdoc />
+        public override void Rollback()
+        {
+            // Nothing to do
+        }
+
+        /// <inheritdoc />
+        public override void Terminate()
+        {
+            // Nothing to do
+        }
+
+        /// <inheritdoc />
         public override void Commit()
         {
-            base.Commit();
             DopyConfiguration.IncludeFormats = new List<string>(SelectedFormats);
         }
 

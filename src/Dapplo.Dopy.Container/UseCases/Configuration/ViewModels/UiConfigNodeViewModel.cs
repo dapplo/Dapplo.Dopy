@@ -10,7 +10,7 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
     /// This represents a node in the config
     /// </summary>
     [Export(typeof(IConfigScreen))]
-    public sealed class UiConfigNodeViewModel : ConfigScreen
+    public sealed class UiConfigNodeViewModel : ConfigNode
     {
         public IConfigTranslations ConfigTranslations { get; }
 

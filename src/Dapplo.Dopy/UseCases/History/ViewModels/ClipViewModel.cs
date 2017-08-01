@@ -24,9 +24,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using Caliburn.Micro;
+using Dapplo.Dopy.Shared;
 using Dapplo.Dopy.Shared.Entities;
 using Dapplo.Dopy.Shared.Extensions;
-using Dapplo.Dopy.Utils;
 
 namespace Dapplo.Dopy.UseCases.History.ViewModels
 {

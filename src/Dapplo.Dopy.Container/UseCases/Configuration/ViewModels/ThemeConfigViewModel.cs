@@ -11,7 +11,6 @@ using Dapplo.CaliburnMicro.Metro;
 using Dapplo.Dopy.Container.Configuration;
 using Dapplo.Dopy.Container.Translations;
 using Dapplo.Dopy.Shared;
-using Dapplo.Log;
 using Dapplo.Utils.Extensions;
 
 namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
@@ -20,8 +19,6 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
     [SuppressMessage("Sonar Code Smell", "S110:Inheritance tree of classes should not be too deep", Justification = "MVVM Framework brings huge interitance tree.")]
     public sealed class ThemeConfigViewModel : ConfigScreen, IDisposable
     {
-        private static readonly LogSource Log = new LogSource();
-
         /// <summary>
         ///     Here all disposables are registered, so we can clean the up
         /// </summary>
@@ -52,13 +49,25 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
         [Import]
         private IWindowManager WindowsManager { get; set; }
 
+        /// <inheritdoc />
+        public override void Rollback()
+        {
+            // Nothing to do
+        }
+
+        /// <inheritdoc />
+        public override void Terminate()
+        {
+            // Nothing to do
+        }
+
+        /// <inheritdoc />
         public override void Commit()
         {
             // Manually commit
             UiConfiguration.CommitTransaction();
             MetroWindowManager.ChangeTheme(UiConfiguration.Theme);
             MetroWindowManager.ChangeThemeAccent(UiConfiguration.ThemeAccent);
-            base.Commit();
         }
 
         public override void Initialize(IConfig config)

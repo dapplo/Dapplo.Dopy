@@ -26,7 +26,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
-using System.Windows;
 using System.Windows.Media.Imaging;
 using Dapplo.Addons;
 using Dapplo.Dopy.Configuration;

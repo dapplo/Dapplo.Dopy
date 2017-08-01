@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interactivity;
 using ICSharpCode.AvalonEdit;
@@ -14,14 +10,23 @@ namespace Dapplo.Dopy.Utils
     /// </summary>
     public sealed class AvalonEditBehaviour : Behavior<TextEditor>
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static readonly DependencyProperty GiveMeTheTextProperty = DependencyProperty.Register("GiveMeTheText", typeof(string), typeof(AvalonEditBehaviour), new FrameworkPropertyMetadata(default(string), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PropertyChangedCallback));
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string GiveMeTheText
         {
             get { return (string)GetValue(GiveMeTheTextProperty); }
             set { SetValue(GiveMeTheTextProperty, value); }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -29,6 +34,9 @@ namespace Dapplo.Dopy.Utils
                 AssociatedObject.TextChanged += AssociatedObjectOnTextChanged;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected override void OnDetaching()
         {
             base.OnDetaching();
@@ -45,7 +53,7 @@ namespace Dapplo.Dopy.Utils
         private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var behavior = dependencyObject as AvalonEditBehaviour;
-            var editor = behavior?.AssociatedObject as TextEditor;
+            var editor = behavior?.AssociatedObject;
             if (editor?.Document == null)
             {
                 return;

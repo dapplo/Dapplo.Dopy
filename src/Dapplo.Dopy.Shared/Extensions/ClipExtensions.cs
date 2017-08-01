@@ -20,13 +20,10 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Media.Imaging;
 using Dapplo.Dopy.Shared.Entities;
-using Dapplo.Dopy.Utils;
 using Dapplo.Windows.Clipboard;
 using Dapplo.Windows.Desktop;
 using Dapplo.Windows.Messages;
