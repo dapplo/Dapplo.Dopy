@@ -48,6 +48,11 @@ namespace Dapplo.Dopy.Storage
             )
         {
             _sessions =  database.GetCollection<Session>();
+	        _sessions.EnsureIndex(x => x.WindowsStartup);
+	        _sessions.EnsureIndex(x => x.SessionSid);
+	        _sessions.EnsureIndex(x => x.Username);
+	        _sessions.EnsureIndex(x => x.Domain);
+	        _sessions.EnsureIndex(x => x.Timestamp);
         }
 
         /// <inheritdoc />

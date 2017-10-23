@@ -43,29 +43,13 @@ namespace Dapplo.Dopy.Storage.Services
         public void Start()
         {
             var mapper = BsonMapper.Global;
-            mapper.Entity<Clip>()
-                .Id(x => x.Id) // set your document ID
-                .Ignore(x => x.Contents) // ignore this property (do not store)
-                .Ignore(x => x.IsModifiedByDopy) // ignore this property (do not store)
-                .Ignore(x => x.OwnerIcon) // ignore this property (do not store)
-                .Index(x => x.SessionId)
-                .Index(x => x.SequenceNumber)
-                .Index(x => x.ClipboardText)
-                .Index(x => x.Timestamp)
-                .Index(x => x.ProcessName)
-                .Index(x => x.ProductName)
-                .Index(x => x.WindowTitle)
-                .Index(x => x.Formats)
-                .Index(x => x.Filenames)
-                .Index(x => x.OriginalFormats)
-                .Index(x => x.OriginalWindowHandle);
+	        mapper.Entity<Clip>()
+		        .Id(x => x.Id) // set your document ID
+		        .Ignore(x => x.Contents) // ignore this property (do not store)
+		        .Ignore(x => x.IsModifiedByDopy) // ignore this property (do not store)
+		        .Ignore(x => x.OwnerIcon); // ignore this property (do not store)
             mapper.Entity<Session>()
-                .Id(x => x.Id)
-                .Index(x => x.WindowsStartup)
-                .Index(x => x.SessionSid)
-                .Index(x => x.Username)
-                .Index(x => x.Domain)
-                .Index(x => x.Timestamp);
+                .Id(x => x.Id);
         }
 
         /// <inheritdoc />

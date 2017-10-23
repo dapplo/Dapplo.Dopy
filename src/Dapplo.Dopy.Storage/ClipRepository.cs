@@ -53,7 +53,19 @@ namespace Dapplo.Dopy.Storage
             )
         {
             _clips =  database.GetCollection<Clip>();
-            _liteStorage = database.FileStorage;
+			_clips.EnsureIndex(x => x.SessionId);
+	        _clips.EnsureIndex(x => x.SequenceNumber);
+	        _clips.EnsureIndex(x => x.ClipboardText);
+	        _clips.EnsureIndex(x => x.Timestamp);
+	        _clips.EnsureIndex(x => x.ProcessName);
+	        _clips.EnsureIndex(x => x.ProductName);
+	        _clips.EnsureIndex(x => x.WindowTitle);
+	        _clips.EnsureIndex(x => x.Formats);
+	        _clips.EnsureIndex(x => x.Filenames);
+	        _clips.EnsureIndex(x => x.OriginalFormats);
+	        _clips.EnsureIndex(x => x.OriginalWindowHandle);
+
+			_liteStorage = database.FileStorage;
             _repositoryUpdates = new BehaviorSubject<RepositoryUpdateArgs<Clip>>(new RepositoryUpdateArgs<Clip>(null, CrudActions.None));
         }
 
