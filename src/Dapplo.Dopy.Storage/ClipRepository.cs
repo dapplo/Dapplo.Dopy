@@ -55,7 +55,6 @@ namespace Dapplo.Dopy.Storage
             _clips =  database.GetCollection<Clip>();
 			_clips.EnsureIndex(x => x.SessionId);
 	        _clips.EnsureIndex(x => x.SequenceNumber);
-	        _clips.EnsureIndex(x => x.ClipboardText);
 	        _clips.EnsureIndex(x => x.Timestamp);
 	        _clips.EnsureIndex(x => x.ProcessName);
 	        _clips.EnsureIndex(x => x.ProductName);
