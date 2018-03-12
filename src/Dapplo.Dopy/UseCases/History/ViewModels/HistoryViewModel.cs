@@ -1,5 +1,5 @@
 ﻿//  Dapplo - building blocks for desktop applications
-//  Copyright (C) 2016-2017 Dapplo
+//  Copyright (C) 2016-2018 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -51,7 +51,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// </summary>
         public bool AutoScroll
         {
-            get { return _autoScroll; }
+            get => _autoScroll;
             set
             {
                 _autoScroll = value;

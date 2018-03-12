@@ -60,8 +60,8 @@ namespace Dapplo.Dopy.Utils
                     {
                         continue;
                     }
-                    IntPtr pstr;
-                    NativeMethods.ConvertSidToStringSid(sidAndAttributes.Sid, out pstr);
+
+                    NativeMethods.ConvertSidToStringSid(sidAndAttributes.Sid, out var pstr);
                     try
                     {
                         retVal = Marshal.PtrToStringAuto(pstr);

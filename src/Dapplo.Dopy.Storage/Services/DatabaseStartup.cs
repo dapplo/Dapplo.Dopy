@@ -1,5 +1,5 @@
 ﻿//  Dapplo - building blocks for desktop applications
-//  Copyright (C) 2016-2017 Dapplo
+//  Copyright (C) 2016-2018 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -37,7 +37,7 @@ namespace Dapplo.Dopy.Storage.Services
         /// Clipboard database
         /// </summary>
         [Export("clipboard")]
-        public LiteDatabase Database { get; private set; } = new LiteDatabase($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\Dapplo.Dopy\dopy.db");
+        public LiteDatabase Database { get; private set; } = new LiteDatabase($@"Mode=Shared;Upgrade=true;Filename={Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\Dapplo.Dopy\dopy.db");
 
         /// <inheritdoc />
         public void Start()

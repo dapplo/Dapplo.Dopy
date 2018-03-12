@@ -22,8 +22,7 @@ namespace Dapplo.Dopy.Utils
 
         private static void AutoscrollChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
-            var dataGrid = dependencyObject as DataGrid;
-            if (dataGrid == null)
+            if (!(dependencyObject is DataGrid dataGrid))
             {
                 throw new InvalidOperationException("Dependency object is not DataGrid.");
             }
@@ -52,8 +51,7 @@ namespace Dapplo.Dopy.Utils
 
         private static void Unsubscribe(DataGrid dataGrid)
         {
-            NotifyCollectionChangedEventHandler handler;
-            Handlers.TryGetValue(dataGrid, out handler);
+            Handlers.TryGetValue(dataGrid, out var handler);
             if (handler == null)
             {
                 return;

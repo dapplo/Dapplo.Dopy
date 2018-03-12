@@ -50,7 +50,7 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
                 Id = "D_Configure",
                 Icon = new PackIconMaterial
                 {
-                    Kind = PackIconMaterialKind.Settings,
+                    Kind = PackIconMaterialKind.Settings
                 },
                 ClickAction = clickedItem =>
                 {

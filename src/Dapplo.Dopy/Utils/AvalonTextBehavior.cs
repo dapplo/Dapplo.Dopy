@@ -20,8 +20,8 @@ namespace Dapplo.Dopy.Utils
         /// </summary>
         public string GiveMeTheText
         {
-            get { return (string)GetValue(GiveMeTheTextProperty); }
-            set { SetValue(GiveMeTheTextProperty, value); }
+            get => (string)GetValue(GiveMeTheTextProperty);
+            set => SetValue(GiveMeTheTextProperty, value);
         }
 
         /// <summary>

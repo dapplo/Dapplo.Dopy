@@ -18,5 +18,5 @@ namespace Dapplo.Dopy.Utils
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
         public SidAndAttributes[] Groups;
-    };
+    }
 }
