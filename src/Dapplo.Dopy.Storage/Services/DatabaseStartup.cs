@@ -21,6 +21,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.IO;
 using Dapplo.Addons;
 using Dapplo.Dopy.Shared.Entities;
 using LiteDB;
@@ -33,11 +34,24 @@ namespace Dapplo.Dopy.Storage.Services
     [StartupAction, ShutdownAction]
     public class DatabaseStartup : IStartupAction, IShutdownAction
     {
+        private static readonly string DbFilename = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Dapplo.Dopy\dopy.db"; 
         /// <summary>
         /// Clipboard database
         /// </summary>
         [Export("clipboard")]
-        public LiteDatabase Database { get; private set; } = new LiteDatabase($@"Mode=Shared;Upgrade=true;Filename={Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\Dapplo.Dopy\dopy.db");
+        public LiteDatabase Database { get; private set; } = new LiteDatabase($@"Mode=Shared;Upgrade=true;Filename={DbFilename}");
+
+        /// <inheritdoc />
+        public DatabaseStartup()
+        {
+            // Make sure the DB path is available
+            var dbDirectory = Path.GetDirectoryName(DbFilename);
+
+            if (dbDirectory != null && !Directory.Exists(dbDirectory))
+            {
+                Directory.CreateDirectory(dbDirectory);
+            }
+        }
 
         /// <inheritdoc />
         public void Start()
