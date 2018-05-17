@@ -55,6 +55,7 @@ namespace Dapplo.Dopy.Container
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .AssignableTo<IMenuItem>()
                 .As<IMenuItem>()
+                .WithAttributeFiltering()
                 .SingleInstance();
         }
     }

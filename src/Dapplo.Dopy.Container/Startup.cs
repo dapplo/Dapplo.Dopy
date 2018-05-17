@@ -42,8 +42,6 @@ namespace Dapplo.Dopy.Container
         [STAThread]
         public static void Main()
         {
-
-
 #if DEBUG
             // Initialize a debug logger for Dapplo packages
             LogSettings.RegisterDefaultLogger<DebugLogger>(LogLevels.Verbose);
@@ -53,8 +51,10 @@ namespace Dapplo.Dopy.Container
                 ShutdownMode = ShutdownMode.OnExplicitShutdown
             };
 
-            // Load the Application.Demo.* assemblies
-            application.Bootstrapper.FindAndLoadAssemblies("Dapplo.Dopy*");
+            // Load the Application.Demo.* and other assemblies
+            application.Bootstrapper
+                .FindAndLoadAssemblies("Dapplo.Addons.Config")
+                .FindAndLoadAssemblies("Dapplo.Dopy*");
 
             application.Run();
         }

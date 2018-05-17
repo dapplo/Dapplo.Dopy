@@ -79,6 +79,9 @@
     <Reference Include="Dapplo.Addons.Bootstrapper, Version=1.0.32.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapplo.Addons.Bootstrapper.1.0.32-beta\lib\net45\Dapplo.Addons.Bootstrapper.dll</HintPath>
     </Reference>
+    <Reference Include="Dapplo.Addons.Config, Version=1.0.32.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapplo.Addons.Config.1.0.32-beta\lib\net45\Dapplo.Addons.Config.dll</HintPath>
+    </Reference>
     <Reference Include="Dapplo.CaliburnMicro, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapplo.CaliburnMicro.1.0.37-beta\lib\net45\Dapplo.CaliburnMicro.dll</HintPath>
     </Reference>

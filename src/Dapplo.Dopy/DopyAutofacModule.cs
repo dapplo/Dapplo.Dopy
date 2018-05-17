@@ -20,6 +20,7 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using Autofac;
+using Autofac.Features.AttributeFilters;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Services;
@@ -48,6 +49,7 @@ namespace Dapplo.Dopy
             builder
                 .RegisterType<ClipboardStoreService>()
                 .AsSelf()
+                .WithAttributeFiltering()
                 .SingleInstance();
 
             builder
