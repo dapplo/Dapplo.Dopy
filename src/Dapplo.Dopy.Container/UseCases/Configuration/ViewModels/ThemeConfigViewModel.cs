@@ -1,6 +1,26 @@
-﻿using System;
+﻿//  Dapplo - building blocks for desktop applications
+//  Copyright (C) 2016-2018 Dapplo
+// 
+//  For more information see: http://dapplo.net/
+//  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
+// 
+//  This file is part of Dapplo.Dopy
+// 
+//  Dapplo.Dopy is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU Lesser General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+// 
+//  Dapplo.Dopy is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+// 
+//  You should have a copy of the GNU Lesser General Public License
+//  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+
+using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -15,7 +35,6 @@ using Dapplo.Utils.Extensions;
 
 namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
 {
-    [Export(typeof(IConfigScreen))]
     [SuppressMessage("Sonar Code Smell", "S110:Inheritance tree of classes should not be too deep", Justification = "MVVM Framework brings huge interitance tree.")]
     public sealed class ThemeConfigViewModel : ConfigScreen, IDisposable
     {
@@ -34,20 +53,29 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
         /// </summary>
         public ObservableCollection<Tuple<Themes, string>> AvailableThemes { get; set; } = new ObservableCollection<Tuple<Themes, string>>();
 
-        [Import(typeof(IWindowManager))]
-        private MetroWindowManager MetroWindowManager { get; set; }
+        private readonly MetroWindowManager _metroWindowManager;
 
-        [Import]
-        public IDopyUiConfiguration UiConfiguration { get; set; }
+        public IDopyUiConfiguration UiConfiguration { get; }
 
-        [Import]
-        public IConfigTranslations UiTranslations { get; set; }
+        public IConfigTranslations UiTranslations { get; }
 
         /// <summary>
         ///     Used to show a "normal" dialog
         /// </summary>
-        [Import]
-        private IWindowManager WindowsManager { get; set; }
+        private readonly IWindowManager _windowsManager;
+
+        public ThemeConfigViewModel(
+                IDopyUiConfiguration uiConfiguration,
+                IConfigTranslations uiTranslations,
+                MetroWindowManager metroWindowManager,
+                IWindowManager windowsManager
+            )
+        {
+            UiConfiguration = uiConfiguration;
+            UiTranslations = uiTranslations;
+            _metroWindowManager = metroWindowManager;
+            _windowsManager = windowsManager;
+        }
 
         /// <inheritdoc />
         public override void Rollback()
@@ -66,8 +94,8 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
         {
             // Manually commit
             UiConfiguration.CommitTransaction();
-            MetroWindowManager.ChangeTheme(UiConfiguration.Theme);
-            MetroWindowManager.ChangeThemeAccent(UiConfiguration.ThemeAccent);
+            _metroWindowManager.ChangeTheme(UiConfiguration.Theme);
+            _metroWindowManager.ChangeThemeAccent(UiConfiguration.ThemeAccent);
         }
 
         public override void Initialize(IConfig config)

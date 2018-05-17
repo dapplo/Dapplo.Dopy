@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -36,23 +35,19 @@ namespace Dapplo.Dopy.Storage
     /// <summary>
     /// An IClipboardRepository implementation
     /// </summary>
-    [Export(typeof(IClipRepository))]
     public class ClipRepository : IClipRepository
     {
         private readonly LiteCollection<Clip> _clips;
         private readonly LiteStorage _liteStorage;
         private readonly BehaviorSubject<RepositoryUpdateArgs<Clip>> _repositoryUpdates;
+
         /// <summary>
         /// Constructor which sets up the database
         /// </summary>
-        /// <param name="database">LiteDatabase</param>
-        [ImportingConstructor]
-        public ClipRepository(
-            [Import("clipboard", typeof(LiteDatabase))]
-            LiteDatabase database
-            )
+        /// <param name="databaseProvider">DatabaseProvider</param>
+        public ClipRepository(DatabaseProvider databaseProvider)
         {
-            _clips =  database.GetCollection<Clip>();
+            _clips = databaseProvider.Database.GetCollection<Clip>();
 			_clips.EnsureIndex(x => x.SessionId);
 	        _clips.EnsureIndex(x => x.SequenceNumber);
 	        _clips.EnsureIndex(x => x.Timestamp);
@@ -64,7 +59,7 @@ namespace Dapplo.Dopy.Storage
 	        _clips.EnsureIndex(x => x.OriginalFormats);
 	        _clips.EnsureIndex(x => x.OriginalWindowHandle);
 
-			_liteStorage = database.FileStorage;
+			_liteStorage = databaseProvider.Database.FileStorage;
             _repositoryUpdates = new BehaviorSubject<RepositoryUpdateArgs<Clip>>(new RepositoryUpdateArgs<Clip>(null, CrudActions.None));
         }
 

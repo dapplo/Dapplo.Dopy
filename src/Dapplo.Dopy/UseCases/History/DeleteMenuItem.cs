@@ -19,7 +19,6 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System.ComponentModel.Composition;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Shared.Entities;
@@ -33,7 +32,7 @@ namespace Dapplo.Dopy.UseCases.History
     /// <summary>
     /// This makes a delete of a clip possible
     /// </summary>
-    [Export("historyMenu", typeof(IMenuItem))]
+    [Menu("historymenu")]
     public sealed class DeleteMenuItem : ClickableMenuItem<Clip>
     {
         private readonly IClipRepository _clipRepository;
@@ -45,7 +44,6 @@ namespace Dapplo.Dopy.UseCases.History
         /// </summary>
         /// <param name="dopyContextMenuTranslations"></param>
         /// <param name="clipRepository">IClipRepository to perform actions on</param>
-        [ImportingConstructor]
         public DeleteMenuItem(IDopyTranslations dopyContextMenuTranslations,
             IClipRepository clipRepository)
         {

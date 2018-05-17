@@ -22,7 +22,6 @@
 #region using
 
 using System;
-using System.ComponentModel.Composition;
 using System.Reactive.Linq;
 using System.Windows.Threading;
 using Caliburn.Micro;
@@ -41,7 +40,7 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
     /// <summary>
     ///     This will add an extry for the exit to the context menu
     /// </summary>
-    [Export("contextmenu", typeof(IMenuItem))]
+    [Menu("contextmenu")]
     public sealed class HistoryMenuItem : ClickableMenuItem
     {
         /// <summary>
@@ -50,7 +49,6 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
         /// <param name="dopyContextMenuTranslations"></param>
         /// <param name="windowManager"></param>
         /// <param name="historyViewModel"></param>
-        [ImportingConstructor]
         public HistoryMenuItem(
             IDopyTranslations dopyContextMenuTranslations,
             IWindowManager windowManager,

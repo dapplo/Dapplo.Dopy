@@ -1,13 +1,30 @@
-﻿using System;
+﻿//  Dapplo - building blocks for desktop applications
+//  Copyright (C) 2016-2018 Dapplo
+// 
+//  For more information see: http://dapplo.net/
+//  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
+// 
+//  This file is part of Dapplo.Dopy
+// 
+//  Dapplo.Dopy is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU Lesser General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+// 
+//  Dapplo.Dopy is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+// 
+//  You should have a copy of the GNU Lesser General Public License
+//  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Configuration;
 using ICoreTranslations = Dapplo.Dopy.Container.Translations.ICoreTranslations;
 using IConfigTranslations = Dapplo.Dopy.Container.Translations.IConfigTranslations;
 using Dapplo.CaliburnMicro.Extensions;
-using Dapplo.CaliburnMicro.Menu;
-using MahApps.Metro.IconPacks;
 
 namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
 {
@@ -15,12 +32,8 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
     ///     The settings view model is, well... for the settings :)
     ///     It is a conductor where one item is active.
     /// </summary>
-    [Export]
     public sealed class ConfigViewModel : Config<IConfigScreen>
     {
-        [Export("contextmenu", typeof(IMenuItem))]
-        private ClickableMenuItem ConfigureMenuItem { get; }
-
         /// <summary>
         /// Is used from View
         /// </summary>
@@ -31,10 +44,8 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
         /// </summary>
         public ICoreTranslations CoreTranslations { get; }
 
-        [ImportingConstructor]
         public ConfigViewModel(
-            [ImportMany] IEnumerable<Lazy<IConfigScreen>> configScreens,
-            IWindowManager windowsManager,
+            IEnumerable<Lazy<IConfigScreen>> configScreens,
             IConfigTranslations configTranslations,
             ICoreTranslations coreTranslations)
         {
@@ -44,24 +55,6 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
 
             // automatically update the DisplayName
             CoreTranslations.CreateDisplayNameBinding(this, nameof(ICoreTranslations.Cancel));
-
-            ConfigureMenuItem = new ClickableMenuItem
-            {
-                Id = "D_Configure",
-                Icon = new PackIconMaterial
-                {
-                    Kind = PackIconMaterialKind.Settings
-                },
-                ClickAction = clickedItem =>
-                {
-                    // Prevent should it multiple times
-                    if (!IsActive)
-                    {
-                        windowsManager.ShowDialog(this);
-                    }
-                }
-            };
-            CoreTranslations.CreateDisplayNameBinding(ConfigureMenuItem, nameof(ICoreTranslations.Configure));
         }
     }
 

@@ -19,7 +19,6 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System.ComponentModel.Composition;
 using System.Windows.Media;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
@@ -31,10 +30,9 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu
     /// <summary>
     ///     This will add an extry for the title to the context menu
     /// </summary>
-    [Export("contextmenu", typeof(IMenuItem))]
+    [Menu("contextmenu")]
     public sealed class TitleMenuItem : MenuItem
     {
-        [ImportingConstructor]
         public TitleMenuItem(IMainContextMenuTranslations contextMenuTranslations)
         {
             // automatically update the DisplayName

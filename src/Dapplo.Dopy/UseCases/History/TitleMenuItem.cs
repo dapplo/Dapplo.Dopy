@@ -19,7 +19,6 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System.ComponentModel.Composition;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Translations;
@@ -30,14 +29,13 @@ namespace Dapplo.Dopy.UseCases.History
     /// <summary>
     /// This makes a delete of a clip possible
     /// </summary>
-    [Export("historyMenu", typeof(IMenuItem))]
+    [Menu("historymenu")]
     public sealed class TitleMenuItem : MenuItem
     {
         /// <summary>
         /// The constructor for the history MenuItem
         /// </summary>
         /// <param name="dopyContextMenuTranslations"></param>
-        [ImportingConstructor]
         public TitleMenuItem(IDopyTranslations dopyContextMenuTranslations)
         {
             // automatically update the DisplayName

@@ -19,30 +19,41 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
+using Autofac;
 using Dapplo.CaliburnMicro.Configuration;
-using Dapplo.CaliburnMicro.Extensions;
-using Dapplo.Dopy.Container.Translations;
-using Dapplo.Dopy.Shared;
+using Dapplo.CaliburnMicro.Menu;
+using Dapplo.Dopy.Services;
+using Dapplo.Dopy.UseCases.History.ViewModels;
 
-namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
+namespace Dapplo.Dopy
 {
-    /// <summary>
-    /// This represents a node in the config
-    /// </summary>
-    public sealed class UiConfigNodeViewModel : ConfigNode
+    /// <inheritdoc />
+    public class ContainerAutofacModule : Module
     {
-        public IConfigTranslations ConfigTranslations { get; }
-
-        public UiConfigNodeViewModel(IConfigTranslations configTranslations)
+        /// <inheritdoc />
+        protected override void Load(ContainerBuilder builder)
         {
-            ConfigTranslations = configTranslations;
+            // All IMenuItem with the context they belong to
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .AssignableTo<IMenuItem>()
+                .As<IMenuItem>()
+                .SingleInstance();
 
-            // automatically update the DisplayName
-            ConfigTranslations.CreateDisplayNameBinding(this, nameof(IConfigTranslations.Ui));
+            // All config screens
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .AssignableTo<IConfigScreen>()
+                .As<IConfigScreen>()
+                .SingleInstance();
 
-            // automatically update the DisplayName
-            CanActivate = false;
-            Id = nameof(ConfigIds.Ui);
+            builder
+                .RegisterType<ClipboardStoreService>()
+                .AsSelf()
+                .SingleInstance();
+
+            builder
+                .RegisterType<HistoryViewModel>()
+                .AsSelf()
+                .SingleInstance();
         }
     }
 }

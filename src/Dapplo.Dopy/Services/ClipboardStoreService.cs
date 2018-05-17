@@ -21,13 +21,14 @@
 
 using System;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Media.Imaging;
+using Autofac.Features.AttributeFilters;
 using Dapplo.Addons;
+using Dapplo.CaliburnMicro;
 using Dapplo.Dopy.Configuration;
 using Dapplo.Dopy.Shared;
 using Dapplo.Dopy.Shared.Entities;
@@ -46,8 +47,8 @@ namespace Dapplo.Dopy.Services
     /// <summary>
     /// This service takes care of automatically storing every clipboard change to the IClipboardRepository
     /// </summary>
-    [StartupAction, ShutdownAction]
-    public class ClipboardStoreService : IStartupAction, IShutdownAction
+    [ServiceOrder(CaliburnStartOrder.User)]
+    public class ClipboardStoreService : IStartup, IShutdown
     {
         private static readonly LogSource Log = new LogSource();
         private IDisposable _clipboardMonitor;
@@ -63,12 +64,11 @@ namespace Dapplo.Dopy.Services
         /// <param name="sessionRepository">ISessionRepository</param>
         /// <param name="dopyConfiguration">Configuration</param>
         /// <param name="uiSynchronizationContext">SynchronizationContext to register the Clipboard Monitor with</param>
-        [ImportingConstructor]
         public ClipboardStoreService(
             IClipRepository clipRepository,
             ISessionRepository sessionRepository,
             IDopyConfiguration dopyConfiguration,
-            [Import("ui", typeof(SynchronizationContext))]SynchronizationContext uiSynchronizationContext)
+            [KeyFilter("ui")]SynchronizationContext uiSynchronizationContext)
         {
             _clipRepository = clipRepository;
             _uiSynchronizationContext = uiSynchronizationContext;

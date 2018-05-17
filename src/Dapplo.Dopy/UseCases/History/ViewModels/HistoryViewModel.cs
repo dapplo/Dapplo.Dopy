@@ -23,9 +23,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
+using Autofac.Features.AttributeFilters;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
@@ -38,7 +38,6 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
     /// <summary>
     /// Viewmodel for the history
     /// </summary>
-    [Export]
     public class HistoryViewModel : Conductor<ClipViewModel>.Collection.OneActive
     {
         private readonly IClipRepository _clipRepository;
@@ -108,12 +107,10 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// <param name="clipRepository">IClipRepository</param>
         /// <param name="dopyTranslations">IDopyTranslations</param>
         /// <param name="historyMenuItems">IMenuItems for the history menu</param>
-        [ImportingConstructor]
         public HistoryViewModel(
             IClipRepository clipRepository,
             IDopyTranslations dopyTranslations,
-            [ImportMany("historyMenu", typeof(IMenuItem))]
-            IEnumerable<Lazy<IMenuItem>> historyMenuItems)
+            [MetadataFilter("Menu", "menu")]IEnumerable<Lazy<IMenuItem>> historyMenuItems)
         {
             _clipRepository = clipRepository;
             dopyTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));

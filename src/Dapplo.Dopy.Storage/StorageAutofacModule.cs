@@ -19,30 +19,33 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using Dapplo.CaliburnMicro.Configuration;
-using Dapplo.CaliburnMicro.Extensions;
-using Dapplo.Dopy.Container.Translations;
-using Dapplo.Dopy.Shared;
+using System;
+using Autofac;
+using Dapplo.Dopy.Shared.Repositories;
 
-namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
+namespace Dapplo.Dopy.Storage
 {
-    /// <summary>
-    /// This represents a node in the config
-    /// </summary>
-    public sealed class UiConfigNodeViewModel : ConfigNode
+    /// <inheritdoc />
+    public class StorageAutofacModule : Module
     {
-        public IConfigTranslations ConfigTranslations { get; }
-
-        public UiConfigNodeViewModel(IConfigTranslations configTranslations)
+        /// <inheritdoc />
+        protected override void Load(ContainerBuilder builder)
         {
-            ConfigTranslations = configTranslations;
 
-            // automatically update the DisplayName
-            ConfigTranslations.CreateDisplayNameBinding(this, nameof(IConfigTranslations.Ui));
+            builder
+                .RegisterType<DatabaseProvider>()
+                .AsSelf()
+                .SingleInstance();
 
-            // automatically update the DisplayName
-            CanActivate = false;
-            Id = nameof(ConfigIds.Ui);
+            builder
+                .RegisterType<ClipRepository>()
+                .As<IClipRepository>()
+                .SingleInstance();
+
+            builder
+                .RegisterType<SessionRepository>()
+                .As<ISessionRepository>()
+                .SingleInstance();
         }
     }
 }

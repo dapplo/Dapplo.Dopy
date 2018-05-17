@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
@@ -37,8 +36,7 @@ namespace Dapplo.Dopy.OpenUri
     /// <summary>
     /// A service to process 
     /// </summary>
-    [StartupAction]
-    public class OpenUriService : IStartupAction
+    public class OpenUriService : IStartup
     {
         private static readonly Regex UriRegex = new Regex(@"([a-z]+://[a-zA-Z0-9-_]+(?::[0-9]+)?[^\s]+)", RegexOptions.Compiled);
         private readonly IClipRepository _clipRepository;
@@ -49,7 +47,6 @@ namespace Dapplo.Dopy.OpenUri
         /// </summary>
         /// <param name="eventAggregator">IEventAggregator</param>
         /// <param name="clipRepository">IClipRepository</param>
-        [ImportingConstructor]
         public OpenUriService(IEventAggregator eventAggregator, IClipRepository clipRepository)
         {
             _clipRepository = clipRepository;

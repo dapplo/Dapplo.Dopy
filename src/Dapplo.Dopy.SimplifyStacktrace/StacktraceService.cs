@@ -20,7 +20,6 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using System;
-using System.ComponentModel.Composition;
 using System.Reactive.Linq;
 using Caliburn.Micro;
 using Dapplo.Addons;
@@ -34,8 +33,7 @@ namespace Dapplo.Dopy.SimplifyStacktrace
     /// <summary>
     /// A service to process 
     /// </summary>
-    [StartupAction]
-    public class StacktraceService : IStartupAction
+    public class StacktraceService : IStartup
     {
         private readonly IClipRepository _clipRepository;
         private readonly IEventAggregator _eventAggregator;
@@ -45,7 +43,6 @@ namespace Dapplo.Dopy.SimplifyStacktrace
         /// </summary>
         /// <param name="eventAggregator">IEventAggregator</param>
         /// <param name="clipRepository">IClipRepository</param>
-        [ImportingConstructor]
         public StacktraceService(IEventAggregator eventAggregator, IClipRepository clipRepository)
         {
             _clipRepository = clipRepository;

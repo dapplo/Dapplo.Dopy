@@ -20,29 +20,26 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using System;
-using System.ComponentModel.Composition;
 using System.IO;
-using Dapplo.Addons;
 using Dapplo.Dopy.Shared.Entities;
 using LiteDB;
 
-namespace Dapplo.Dopy.Storage.Services
+namespace Dapplo.Dopy.Storage
 {
     /// <summary>
-    /// This initialized the database
+    /// This initializes the database
     /// </summary>
-    [StartupAction, ShutdownAction]
-    public class DatabaseStartup : IStartupAction, IShutdownAction
+    public class DatabaseProvider : IDisposable
     {
-        private static readonly string DbFilename = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Dapplo.Dopy\dopy.db"; 
+        private static readonly string DbFilename = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Dapplo.Dopy\dopy.db";
+
         /// <summary>
-        /// Clipboard database
+        /// The database wich is being used
         /// </summary>
-        [Export("clipboard")]
         public LiteDatabase Database { get; private set; } = new LiteDatabase($@"Mode=Shared;Upgrade=true;Filename={DbFilename}");
 
         /// <inheritdoc />
-        public DatabaseStartup()
+        public DatabaseProvider()
         {
             // Make sure the DB path is available
             var dbDirectory = Path.GetDirectoryName(DbFilename);
@@ -51,23 +48,18 @@ namespace Dapplo.Dopy.Storage.Services
             {
                 Directory.CreateDirectory(dbDirectory);
             }
-        }
-
-        /// <inheritdoc />
-        public void Start()
-        {
             var mapper = BsonMapper.Global;
-	        mapper.Entity<Clip>()
-		        .Id(x => x.Id) // set your document ID
-		        .Ignore(x => x.Contents) // ignore this property (do not store)
-		        .Ignore(x => x.IsModifiedByDopy) // ignore this property (do not store)
-		        .Ignore(x => x.OwnerIcon); // ignore this property (do not store)
+            mapper.Entity<Clip>()
+                .Id(x => x.Id) // set your document ID
+                .Ignore(x => x.Contents) // ignore this property (do not store)
+                .Ignore(x => x.IsModifiedByDopy) // ignore this property (do not store)
+                .Ignore(x => x.OwnerIcon); // ignore this property (do not store)
             mapper.Entity<Session>()
                 .Id(x => x.Id);
         }
 
         /// <inheritdoc />
-        public void Shutdown()
+        public void Dispose()
         {
             Database.Dispose();
         }

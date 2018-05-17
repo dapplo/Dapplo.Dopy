@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq.Expressions;
 using LiteDB;
 using Dapplo.Dopy.Shared.Entities;
@@ -30,9 +29,8 @@ using Dapplo.Dopy.Shared.Repositories;
 namespace Dapplo.Dopy.Storage
 {
     /// <summary>
-    /// An IClipboardRepository implementation
+    /// An ISessionRepository implementation
     /// </summary>
-    [Export(typeof(ISessionRepository))]
     public class SessionRepository : ISessionRepository
     {
         private readonly LiteCollection<Session> _sessions;
@@ -40,14 +38,10 @@ namespace Dapplo.Dopy.Storage
         /// <summary>
         /// Constructor which sets up the database
         /// </summary>
-        /// <param name="database">LiteDatabase</param>
-        [ImportingConstructor]
-        public SessionRepository(
-            [Import("clipboard", typeof(LiteDatabase))]
-            LiteDatabase database
-            )
+        /// <param name="databaseProvider">DatabaseProvider</param>
+        public SessionRepository(DatabaseProvider databaseProvider)
         {
-            _sessions =  database.GetCollection<Session>();
+            _sessions = databaseProvider.Database.GetCollection<Session>();
 	        _sessions.EnsureIndex(x => x.WindowsStartup);
 	        _sessions.EnsureIndex(x => x.SessionSid);
 	        _sessions.EnsureIndex(x => x.Username);
@@ -56,7 +50,6 @@ namespace Dapplo.Dopy.Storage
         }
 
         /// <inheritdoc />
-
         public Session GetById(int id)
         {
             return _sessions.FindById(id);

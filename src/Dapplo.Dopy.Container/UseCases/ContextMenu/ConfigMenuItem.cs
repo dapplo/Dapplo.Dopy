@@ -19,30 +19,45 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using Dapplo.CaliburnMicro.Configuration;
-using Dapplo.CaliburnMicro.Extensions;
-using Dapplo.Dopy.Container.Translations;
-using Dapplo.Dopy.Shared;
+#region using
 
-namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
+using Caliburn.Micro;
+using Dapplo.CaliburnMicro.Extensions;
+using Dapplo.CaliburnMicro.Menu;
+using Dapplo.Dopy.Container.Translations;
+using Dapplo.Dopy.Container.UseCases.Configuration.ViewModels;
+using MahApps.Metro.IconPacks;
+
+#endregion
+
+namespace Dapplo.Dopy.Container.UseCases.ContextMenu
 {
     /// <summary>
-    /// This represents a node in the config
+    ///     This will add an extry for the configuration to the context menu
     /// </summary>
-    public sealed class UiConfigNodeViewModel : ConfigNode
+    [Menu("contextmenu")]
+    public sealed class ConfigMenuItem : ClickableMenuItem
     {
-        public IConfigTranslations ConfigTranslations { get; }
-
-        public UiConfigNodeViewModel(IConfigTranslations configTranslations)
+        public ConfigMenuItem(
+            ICoreTranslations coreTranslations,
+            IWindowManager windowsManager,
+            ConfigViewModel configViewModel
+        )
         {
-            ConfigTranslations = configTranslations;
-
-            // automatically update the DisplayName
-            ConfigTranslations.CreateDisplayNameBinding(this, nameof(IConfigTranslations.Ui));
-
-            // automatically update the DisplayName
-            CanActivate = false;
-            Id = nameof(ConfigIds.Ui);
+            Id = "D_Configure";
+            Icon = new PackIconMaterial
+            {
+                Kind = PackIconMaterialKind.Settings
+            };
+            ClickAction = clickedItem =>
+            {
+                // Prevent should it multiple times
+                if (!configViewModel.IsActive)
+                {
+                    windowsManager.ShowDialog(configViewModel);
+                }
+            };
+            coreTranslations.CreateDisplayNameBinding(this, nameof(ICoreTranslations.Configure));
         }
     }
 }
