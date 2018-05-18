@@ -43,6 +43,8 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
     [Menu("contextmenu")]
     public sealed class HistoryMenuItem : ClickableMenuItem
     {
+        private readonly HistoryViewModel _historyViewModel;
+
         /// <summary>
         /// The constructor for the history MenuItem
         /// </summary>
@@ -55,6 +57,7 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
             HistoryViewModel historyViewModel
         )
         {
+            _historyViewModel = historyViewModel;
             // automatically update the DisplayName
             dopyContextMenuTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));
             Id = "Y_History";
@@ -72,9 +75,9 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
                     Dispatcher.CurrentDispatcher.InvokeAsync(() =>
                     {
                         // Prevent should it multiple times
-                        if (!historyViewModel.IsActive)
+                        if (!_historyViewModel.IsActive)
                         {
-                            windowManager.ShowWindow(historyViewModel);
+                            windowManager.ShowWindow(_historyViewModel);
                         }
                     });
                     args.Handled = true;
@@ -84,9 +87,9 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
             ClickAction = clickedItem =>
             {
                 // Prevent should it multiple times
-                if (!historyViewModel.IsActive)
+                if (!_historyViewModel.IsActive)
                 {
-                    windowManager.ShowWindow(historyViewModel);
+                    windowManager.ShowWindow(_historyViewModel);
                 }
             };
         }

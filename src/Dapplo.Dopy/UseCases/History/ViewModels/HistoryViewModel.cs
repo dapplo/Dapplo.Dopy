@@ -64,11 +64,29 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// </summary>
         public ObservableCollection<ITreeNode<IMenuItem>> MenuItems { get; } = new ObservableCollection<ITreeNode<IMenuItem>>();
 
+        /// <summary>
+        /// Constructor for runtime
+        /// </summary>
+        /// <param name="clipRepository">IClipRepository</param>
+        /// <param name="dopyTranslations">IDopyTranslations</param>
+        /// <param name="historyMenuItems">IMenuItems for the history menu</param>
+        public HistoryViewModel(
+            IClipRepository clipRepository,
+            IDopyTranslations dopyTranslations,
+            [MetadataFilter("Menu", "historymenu")]IEnumerable<Lazy<IMenuItem>> historyMenuItems)
+        {
+            _clipRepository = clipRepository;
+            dopyTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));
+
+            _historyMenuItems = historyMenuItems.Select(lazy => lazy.Value).ToList();
+            // Make sure the $clip is supported
+            MessageBinder.SpecialValues.Add("$clip", context => context?.EventArgs == null ? null : ActiveItem.Item);
+        }
 #if DEBUG
         /// <summary>
         /// Designtime constructor, not compiled in release
         /// </summary>
-        public HistoryViewModel()
+        internal HistoryViewModel()
         {
             if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
@@ -100,26 +118,6 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             });
         }
 #endif
-
-        /// <summary>
-        /// Constructor for runtime
-        /// </summary>
-        /// <param name="clipRepository">IClipRepository</param>
-        /// <param name="dopyTranslations">IDopyTranslations</param>
-        /// <param name="historyMenuItems">IMenuItems for the history menu</param>
-        public HistoryViewModel(
-            IClipRepository clipRepository,
-            IDopyTranslations dopyTranslations,
-            [MetadataFilter("Menu", "menu")]IEnumerable<Lazy<IMenuItem>> historyMenuItems)
-        {
-            _clipRepository = clipRepository;
-            dopyTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));
-
-            _historyMenuItems = historyMenuItems.Select(lazy => lazy.Value).ToList();
-
-            // Make sure the $clip is supported
-            MessageBinder.SpecialValues.Add("$clip", context => context?.EventArgs == null ? null : ActiveItem.Item);
-        }
 
         /// <inheritdoc />
         protected override void OnActivate()
