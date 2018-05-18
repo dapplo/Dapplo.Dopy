@@ -54,7 +54,7 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
             CoreTranslations = coreTranslations;
 
             // automatically update the DisplayName
-            CoreTranslations.CreateDisplayNameBinding(this, nameof(ICoreTranslations.Cancel));
+            CoreTranslations.CreateDisplayNameBinding(this, nameof(ICoreTranslations.Configure));
         }
     }
 
