@@ -57,10 +57,6 @@ namespace Dapplo.Dopy.Container
             {
                 ShutdownMode = ShutdownMode.OnExplicitShutdown
             };
-#if DEBUG
-            // Initialize log activations
-            application.Bootstrapper.EnableActivationLogging = true;
-#endif
 
             application.Run();
         }
