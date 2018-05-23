@@ -23,6 +23,7 @@
 
 using System;
 using System.Windows;
+using Dapplo.Addons.Bootstrapper;
 using Dapplo.CaliburnMicro.Dapp;
 using Dapplo.Log;
 using Dapplo.Log.Loggers;
@@ -46,7 +47,13 @@ namespace Dapplo.Dopy.Container
             // Initialize a debug logger for Dapplo packages
             LogSettings.RegisterDefaultLogger<DebugLogger>(LogLevels.Verbose);
 #endif
-            var application = new Dapplication("Dapplo.Dopy", "06486F0F-0DBC-4912-9C5C-5C9C777BA34E")
+
+            var applicationConfig = ApplicationConfig.Create()
+                .WithApplicationName("Dapplo.Dopy")
+                .WithMutex("06486F0F-0DBC-4912-9C5C-5C9C777BA34E")
+                .WithAssemblyNames("Dapplo.Addons.Config")
+                .WithAssemblyPatterns("Dapplo.Dopy*");
+            var application = new Dapplication(applicationConfig)
             {
                 ShutdownMode = ShutdownMode.OnExplicitShutdown
             };
@@ -54,10 +61,6 @@ namespace Dapplo.Dopy.Container
             // Initialize log activations
             application.Bootstrapper.EnableActivationLogging = true;
 #endif
-            // Load the Application.Demo.* and other assemblies
-            application.Bootstrapper
-                .FindAndLoadAssemblies("Dapplo.Addons.Config")
-                .FindAndLoadAssemblies("Dapplo.Dopy*");
 
             application.Run();
         }

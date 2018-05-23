@@ -21,6 +21,7 @@
 
 using Autofac;
 using Autofac.Features.AttributeFilters;
+using Dapplo.Addons;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.CaliburnMicro.NotifyIconWpf;
@@ -30,7 +31,7 @@ using Dapplo.Dopy.Container.UseCases.ContextMenu.ViewModels;
 namespace Dapplo.Dopy.Container
 {
     /// <inheritdoc />
-    public class ContainerAutofacModule : Module
+    public class ContainerAutofacModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
@@ -57,6 +58,8 @@ namespace Dapplo.Dopy.Container
                 .As<IMenuItem>()
                 .WithAttributeFiltering()
                 .SingleInstance();
+
+            base.Load(builder);
         }
     }
 }

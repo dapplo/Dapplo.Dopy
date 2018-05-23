@@ -26,7 +26,7 @@ using Dapplo.Dopy.Sharing.Services;
 namespace Dapplo.Dopy.Sharing
 {
     /// <inheritdoc />
-    public class SharingAutofacModule : Module
+    public class SharingAutofacModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
@@ -36,6 +36,8 @@ namespace Dapplo.Dopy.Sharing
                 .RegisterType<ShareServer>()
                 .As<IService>()
                 .SingleInstance();
+
+            base.Load(builder);
         }
     }
 }

@@ -19,14 +19,14 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-using System;
 using Autofac;
+using Dapplo.Addons;
 using Dapplo.Dopy.Shared.Repositories;
 
 namespace Dapplo.Dopy.Storage
 {
     /// <inheritdoc />
-    public class StorageAutofacModule : Module
+    public class StorageAutofacModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
@@ -46,6 +46,8 @@ namespace Dapplo.Dopy.Storage
                 .RegisterType<SessionRepository>()
                 .As<ISessionRepository>()
                 .SingleInstance();
+
+            base.Load(builder);
         }
     }
 }

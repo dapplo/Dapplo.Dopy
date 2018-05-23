@@ -25,16 +25,17 @@ using Dapplo.Addons;
 namespace Dapplo.Dopy.SimplifyStacktrace
 {
     /// <inheritdoc />
-    public class SimplifyStacktraceAutofacModule : Module
+    public class SimplifyStacktraceAutofacModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
-
             builder
                 .RegisterType<StacktraceService>()
                 .As<IService>()
                 .SingleInstance();
+
+            base.Load(builder);
         }
     }
 }

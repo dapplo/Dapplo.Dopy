@@ -25,7 +25,7 @@ using Dapplo.Addons;
 namespace Dapplo.Dopy.OpenUri
 {
     /// <inheritdoc />
-    public class OpenUriAutofacModule : Module
+    public class OpenUriAutofacModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
@@ -34,6 +34,8 @@ namespace Dapplo.Dopy.OpenUri
                 .RegisterType<OpenUriService>()
                 .As<IService>()
                 .SingleInstance();
+
+            base.Load(builder);
         }
     }
 }

@@ -21,6 +21,7 @@
 
 using Autofac;
 using Autofac.Features.AttributeFilters;
+using Dapplo.Addons;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Services;
@@ -29,7 +30,7 @@ using Dapplo.Dopy.UseCases.History.ViewModels;
 namespace Dapplo.Dopy
 {
     /// <inheritdoc />
-    public class ContainerAutofacModule : Module
+    public class ContainerAutofacModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
@@ -58,6 +59,8 @@ namespace Dapplo.Dopy
                 .AsSelf()
                 .WithAttributeFiltering()
                 .SingleInstance();
+
+            base.Load(builder);
         }
     }
 }
