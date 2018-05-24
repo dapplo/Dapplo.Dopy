@@ -21,20 +21,30 @@
 
 using Autofac;
 using Dapplo.Addons;
-using Dapplo.Dopy.Sharing.Services;
+using Dapplo.Dopy.Shared.Repositories;
 
-namespace Dapplo.Dopy.Sharing
+namespace Dapplo.Dopy.Storage
 {
     /// <inheritdoc />
-    public class SharingAutofacModule : AddonModule
+    public class StorageAddonModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
 
             builder
-                .RegisterType<ShareServer>()
-                .As<IService>()
+                .RegisterType<DatabaseProvider>()
+                .AsSelf()
+                .SingleInstance();
+
+            builder
+                .RegisterType<ClipRepository>()
+                .As<IClipRepository>()
+                .SingleInstance();
+
+            builder
+                .RegisterType<SessionRepository>()
+                .As<ISessionRepository>()
                 .SingleInstance();
 
             base.Load(builder);

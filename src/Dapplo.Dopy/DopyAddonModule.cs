@@ -20,31 +20,44 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using Autofac;
+using Autofac.Features.AttributeFilters;
 using Dapplo.Addons;
-using Dapplo.Dopy.Shared.Repositories;
+using Dapplo.CaliburnMicro.Configuration;
+using Dapplo.CaliburnMicro.Menu;
+using Dapplo.Dopy.Services;
+using Dapplo.Dopy.UseCases.History.ViewModels;
 
-namespace Dapplo.Dopy.Storage
+namespace Dapplo.Dopy
 {
     /// <inheritdoc />
-    public class StorageAutofacModule : AddonModule
+    public class DopyAddonModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
+            // All IMenuItem with the context they belong to
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .AssignableTo<IMenuItem>()
+                .As<IMenuItem>()
+                //.PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .SingleInstance();
+
+            // All config screens
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .AssignableTo<IConfigScreen>()
+                .As<IConfigScreen>()
+                .SingleInstance();
 
             builder
-                .RegisterType<DatabaseProvider>()
+                .RegisterType<ClipboardStoreService>()
+                .As<IService>()
+                .WithAttributeFiltering()
+                .SingleInstance();
+
+            builder
+                .RegisterType<HistoryViewModel>()
                 .AsSelf()
-                .SingleInstance();
-
-            builder
-                .RegisterType<ClipRepository>()
-                .As<IClipRepository>()
-                .SingleInstance();
-
-            builder
-                .RegisterType<SessionRepository>()
-                .As<ISessionRepository>()
+                .WithAttributeFiltering()
                 .SingleInstance();
 
             base.Load(builder);

@@ -64,7 +64,6 @@ namespace Dapplo.Dopy.Storage
         }
 
         /// <inheritdoc />
-
         public Clip GetById(int id)
         {
             return LoadContentFor(_clips.FindById(id));

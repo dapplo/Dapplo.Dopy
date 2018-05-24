@@ -31,7 +31,7 @@ using Dapplo.Dopy.Container.UseCases.ContextMenu.ViewModels;
 namespace Dapplo.Dopy.Container
 {
     /// <inheritdoc />
-    public class ContainerAutofacModule : AddonModule
+    public class ContainerAddonModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)

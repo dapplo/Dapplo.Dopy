@@ -21,17 +21,19 @@
 
 using Autofac;
 using Dapplo.Addons;
+using Dapplo.Dopy.Sharing.Services;
 
-namespace Dapplo.Dopy.SimplifyStacktrace
+namespace Dapplo.Dopy.Sharing
 {
     /// <inheritdoc />
-    public class SimplifyStacktraceAutofacModule : AddonModule
+    public class SharingAddonModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
+
             builder
-                .RegisterType<StacktraceService>()
+                .RegisterType<ShareServer>()
                 .As<IService>()
                 .SingleInstance();
 

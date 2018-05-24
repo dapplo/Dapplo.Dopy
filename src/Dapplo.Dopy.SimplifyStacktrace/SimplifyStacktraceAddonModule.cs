@@ -20,44 +20,19 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using Autofac;
-using Autofac.Features.AttributeFilters;
 using Dapplo.Addons;
-using Dapplo.CaliburnMicro.Configuration;
-using Dapplo.CaliburnMicro.Menu;
-using Dapplo.Dopy.Services;
-using Dapplo.Dopy.UseCases.History.ViewModels;
 
-namespace Dapplo.Dopy
+namespace Dapplo.Dopy.SimplifyStacktrace
 {
     /// <inheritdoc />
-    public class ContainerAutofacModule : AddonModule
+    public class SimplifyStacktraceAddonModule : AddonModule
     {
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
-            // All IMenuItem with the context they belong to
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .AssignableTo<IMenuItem>()
-                .As<IMenuItem>()
-                //.PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
-                .SingleInstance();
-
-            // All config screens
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .AssignableTo<IConfigScreen>()
-                .As<IConfigScreen>()
-                .SingleInstance();
-
             builder
-                .RegisterType<ClipboardStoreService>()
-                .AsSelf()
-                .WithAttributeFiltering()
-                .SingleInstance();
-
-            builder
-                .RegisterType<HistoryViewModel>()
-                .AsSelf()
-                .WithAttributeFiltering()
+                .RegisterType<StacktraceService>()
+                .As<IService>()
                 .SingleInstance();
 
             base.Load(builder);
