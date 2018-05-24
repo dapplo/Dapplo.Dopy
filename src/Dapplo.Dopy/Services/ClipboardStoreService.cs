@@ -71,7 +71,7 @@ namespace Dapplo.Dopy.Services
             [KeyFilter("ui")]SynchronizationContext uiSynchronizationContext)
         {
             _clipRepository = clipRepository;
-            _uiSynchronizationContext = uiSynchronizationContext;
+            _uiSynchronizationContext = uiSynchronizationContext ?? throw new ArgumentNullException(nameof(uiSynchronizationContext));
             _dopyConfiguration = dopyConfiguration;
 
             var currentSession = CreateSession();

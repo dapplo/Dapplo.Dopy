@@ -39,7 +39,6 @@ namespace Dapplo.Dopy
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .AssignableTo<IMenuItem>()
                 .As<IMenuItem>()
-                //.PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
                 .SingleInstance();
 
             // All config screens
