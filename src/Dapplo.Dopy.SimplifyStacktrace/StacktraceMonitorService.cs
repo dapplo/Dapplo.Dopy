@@ -33,7 +33,7 @@ namespace Dapplo.Dopy.SimplifyStacktrace
     /// <summary>
     /// A service to process 
     /// </summary>
-    public class StacktraceService : IStartup
+    public class StacktraceMonitorService : IStartup
     {
         private readonly IClipRepository _clipRepository;
         private readonly IEventAggregator _eventAggregator;
@@ -43,7 +43,7 @@ namespace Dapplo.Dopy.SimplifyStacktrace
         /// </summary>
         /// <param name="eventAggregator">IEventAggregator</param>
         /// <param name="clipRepository">IClipRepository</param>
-        public StacktraceService(IEventAggregator eventAggregator, IClipRepository clipRepository)
+        public StacktraceMonitorService(IEventAggregator eventAggregator, IClipRepository clipRepository)
         {
             _clipRepository = clipRepository;
             _eventAggregator = eventAggregator;

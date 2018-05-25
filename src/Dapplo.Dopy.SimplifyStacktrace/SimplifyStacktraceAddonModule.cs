@@ -31,7 +31,7 @@ namespace Dapplo.Dopy.SimplifyStacktrace
         protected override void Load(ContainerBuilder builder)
         {
             builder
-                .RegisterType<StacktraceService>()
+                .RegisterType<StacktraceMonitorService>()
                 .As<IService>()
                 .SingleInstance();
 

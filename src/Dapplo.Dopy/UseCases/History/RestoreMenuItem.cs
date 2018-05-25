@@ -52,7 +52,7 @@ namespace Dapplo.Dopy.UseCases.History
         /// <inheritdoc />
         public override void Click(Clip clip)
         {
-            clip.PlaceOnClipboard();
+            clip.PlaceOnClipboard(true);
         }
     }
 }

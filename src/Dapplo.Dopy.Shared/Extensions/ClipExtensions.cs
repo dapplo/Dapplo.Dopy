@@ -124,7 +124,7 @@ namespace Dapplo.Dopy.Shared.Extensions
         /// Place the clip back onto the clipboard
         /// </summary>
         /// <param name="clip">Clip</param>
-        public static void PlaceOnClipboard(this Clip clip)
+        public static void PlaceOnClipboard(this Clip clip, bool fromExisting = false)
         {
             var handle = WinProcHandler.Instance.Handle;
 
@@ -137,7 +137,7 @@ namespace Dapplo.Dopy.Shared.Extensions
             {
                 ClipboardNative.Clear();
                 // Make the clipboard as modified by DOPY
-                if (clip.IsModifiedByDopy)
+                if (fromExisting ||clip.IsModifiedByDopy)
                 {
                     ClipboardNative.SetAsUnicodeString($"On {DateTime.Now:O}", ClipboardFormats.Dopy);
                 }
