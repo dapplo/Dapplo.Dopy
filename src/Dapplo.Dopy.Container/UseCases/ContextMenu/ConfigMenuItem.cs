@@ -21,6 +21,8 @@
 
 #region using
 
+using System;
+using Autofac.Features.OwnedInstances;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
@@ -41,7 +43,7 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu
         public ConfigMenuItem(
             ICoreTranslations coreTranslations,
             IWindowManager windowsManager,
-            ConfigViewModel configViewModel
+            Func<Owned<ConfigViewModel>> configViewModelFactory
         )
         {
             Id = "D_Configure";
@@ -51,10 +53,17 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu
             };
             ClickAction = clickedItem =>
             {
-                // Prevent should it multiple times
-                if (!configViewModel.IsActive)
+                IsEnabled = false;
+                try
                 {
-                    windowsManager.ShowDialog(configViewModel);
+                    using (var configViewModel = configViewModelFactory())
+                    {
+                        windowsManager.ShowDialog(configViewModel.Value);
+                    }
+                }
+                finally
+                {
+                    IsEnabled = true;
                 }
             };
             coreTranslations.CreateDisplayNameBinding(this, nameof(ICoreTranslations.Configure));

@@ -76,11 +76,13 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             [MetadataFilter("Menu", "historymenu")]IEnumerable<Lazy<IMenuItem>> historyMenuItems)
         {
             _clipRepository = clipRepository;
+
+            // Make sure the $clip is supported
+            MessageBinder.SpecialValues.Add("$clip", context => context?.EventArgs == null ? null : ActiveItem.Item);
+
             dopyTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.History));
 
             _historyMenuItems = historyMenuItems.Select(lazy => lazy.Value).ToList();
-            // Make sure the $clip is supported
-            MessageBinder.SpecialValues.Add("$clip", context => context?.EventArgs == null ? null : ActiveItem.Item);
         }
 #if DEBUG
         /// <summary>
@@ -144,6 +146,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             MenuItems.Clear();
             _updateSubscription?.Dispose();
             base.OnDeactivate(close);
+            MessageBinder.SpecialValues.Remove("$clip");
         }
 
         /// <summary>

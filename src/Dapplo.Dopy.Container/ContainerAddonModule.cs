@@ -38,8 +38,7 @@ namespace Dapplo.Dopy.Container
         {
 
             builder.RegisterType<ConfigViewModel>()
-                .AsSelf()
-                .SingleInstance();
+                .AsSelf();
 
             // All config screens
             builder.RegisterAssemblyTypes(ThisAssembly)

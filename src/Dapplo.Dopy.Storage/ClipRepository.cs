@@ -58,8 +58,7 @@ namespace Dapplo.Dopy.Storage
 	        _clips.EnsureIndex(x => x.Filenames);
 	        _clips.EnsureIndex(x => x.OriginalFormats);
 	        _clips.EnsureIndex(x => x.OriginalWindowHandle);
-
-			_liteStorage = databaseProvider.Database.FileStorage;
+            _liteStorage = databaseProvider.Database.FileStorage;
             _repositoryUpdates = new BehaviorSubject<RepositoryUpdateArgs<Clip>>(new RepositoryUpdateArgs<Clip>(null, CrudActions.None));
         }
 
@@ -75,7 +74,6 @@ namespace Dapplo.Dopy.Storage
         /// <inheritdoc />
         public IEnumerable<Clip> Find(Expression<Func<Clip, bool>> predicate = null)
         {
-
             return _clips.Find(predicate ?? (clip => true) ).Select(LoadContentFor);
         }
 

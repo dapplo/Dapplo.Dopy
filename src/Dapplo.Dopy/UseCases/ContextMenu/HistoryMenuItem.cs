@@ -24,6 +24,7 @@
 using System;
 using System.Reactive.Linq;
 using System.Windows.Threading;
+using Autofac.Features.OwnedInstances;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
@@ -48,11 +49,11 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
         /// </summary>
         /// <param name="dopyContextMenuTranslations"></param>
         /// <param name="windowManager"></param>
-        /// <param name="historyViewModel"></param>
+        /// <param name="historyViewModelFactory"></param>
         public HistoryMenuItem(
             IDopyTranslations dopyContextMenuTranslations,
             IWindowManager windowManager,
-            HistoryViewModel historyViewModel
+            Func<Owned<HistoryViewModel>> historyViewModelFactory
         )
         {
             // automatically update the DisplayName
@@ -71,10 +72,9 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
                 {
                     Dispatcher.CurrentDispatcher.InvokeAsync(() =>
                     {
-                        // Prevent should it multiple times
-                        if (!historyViewModel.IsActive)
+                        if (IsEnabled)
                         {
-                            windowManager.ShowWindow(historyViewModel);
+                            Click(this);
                         }
                     });
                     args.Handled = true;
@@ -83,10 +83,18 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
             HotKeyHint = "Ctrl + Shift + V";
             ClickAction = clickedItem =>
             {
-                // Prevent should it multiple times
-                if (!historyViewModel.IsActive)
+                IsEnabled = false;
+
+                try
                 {
-                    windowManager.ShowWindow(historyViewModel);
+                    using (var historyViewModel = historyViewModelFactory())
+                    {
+                        windowManager.ShowDialog(historyViewModel.Value);
+                    }
+                }
+                finally
+                {
+                    IsEnabled = true;
                 }
             };
         }

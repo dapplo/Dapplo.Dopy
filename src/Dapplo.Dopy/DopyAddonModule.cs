@@ -56,8 +56,7 @@ namespace Dapplo.Dopy
             builder
                 .RegisterType<HistoryViewModel>()
                 .AsSelf()
-                .WithAttributeFiltering()
-                .SingleInstance();
+                .WithAttributeFiltering();
 
             base.Load(builder);
         }
