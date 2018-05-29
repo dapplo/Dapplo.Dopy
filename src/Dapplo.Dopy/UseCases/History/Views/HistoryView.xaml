@@ -12,7 +12,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:caliburnMicro="clr-namespace:Dapplo.CaliburnMicro;assembly=Dapplo.CaliburnMicro"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance viewModels:HistoryViewModel,IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance viewModels:HistoryViewModel,IsDesignTimeCreatable=False}"
              d:DesignHeight="300" d:DesignWidth="700" MaxHeight="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
