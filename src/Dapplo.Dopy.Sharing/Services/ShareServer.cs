@@ -24,7 +24,6 @@ using System.Reactive.Linq;
 using Dapplo.Addons;
 using Dapplo.Dopy.Shared.Entities;
 using Dapplo.Dopy.Shared.Repositories;
-using Dapplo.Log;
 
 namespace Dapplo.Dopy.Sharing.Services
 {
@@ -35,7 +34,6 @@ namespace Dapplo.Dopy.Sharing.Services
     public class ShareServer : IStartup, IShutdown
     {
         private readonly IClipRepository _clipRepository;
-        private static readonly LogSource Log = new LogSource();
 
         /// <summary>
         /// Constructor for the dependencies
