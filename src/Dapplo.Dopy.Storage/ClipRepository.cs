@@ -22,13 +22,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Linq.Expressions;
-using LiteDB;
 using System.Reactive.Subjects;
 using Dapplo.Dopy.Shared.Entities;
 using Dapplo.Dopy.Shared.Extensions;
 using Dapplo.Dopy.Shared.Repositories;
+using LiteDB;
 
 namespace Dapplo.Dopy.Storage
 {
@@ -37,8 +36,7 @@ namespace Dapplo.Dopy.Storage
     /// </summary>
     public class ClipRepository : IClipRepository
     {
-        private readonly LiteCollection<Clip> _clips;
-        private readonly LiteStorage _liteStorage;
+        private readonly DatabaseProvider _databaseProvider;
         private readonly BehaviorSubject<RepositoryUpdateArgs<Clip>> _repositoryUpdates;
 
         /// <summary>
@@ -47,25 +45,18 @@ namespace Dapplo.Dopy.Storage
         /// <param name="databaseProvider">DatabaseProvider</param>
         public ClipRepository(DatabaseProvider databaseProvider)
         {
-            _clips = databaseProvider.Database.GetCollection<Clip>();
-			_clips.EnsureIndex(x => x.SessionId);
-	        _clips.EnsureIndex(x => x.SequenceNumber);
-	        _clips.EnsureIndex(x => x.Timestamp);
-	        _clips.EnsureIndex(x => x.ProcessName);
-	        _clips.EnsureIndex(x => x.ProductName);
-	        _clips.EnsureIndex(x => x.WindowTitle);
-	        _clips.EnsureIndex(x => x.Formats);
-	        _clips.EnsureIndex(x => x.Filenames);
-	        _clips.EnsureIndex(x => x.OriginalFormats);
-	        _clips.EnsureIndex(x => x.OriginalWindowHandle);
-            _liteStorage = databaseProvider.Database.FileStorage;
+            _databaseProvider = databaseProvider;
             _repositoryUpdates = new BehaviorSubject<RepositoryUpdateArgs<Clip>>(new RepositoryUpdateArgs<Clip>(null, CrudActions.None));
         }
 
         /// <inheritdoc />
         public Clip GetById(int id)
         {
-            return LoadContentFor(_clips.FindById(id));
+            using (var database = _databaseProvider.CreateReadonly())
+            {
+                var clipsCollection = database.GetCollection<Clip>();
+                return LoadContentFor(database.FileStorage, clipsCollection.FindById(id));
+            }
         }
 
         /// <inheritdoc />
@@ -74,7 +65,14 @@ namespace Dapplo.Dopy.Storage
         /// <inheritdoc />
         public IEnumerable<Clip> Find(Expression<Func<Clip, bool>> predicate = null)
         {
-            return _clips.Find(predicate ?? (clip => true) ).Select(LoadContentFor);
+            using (var database = _databaseProvider.CreateReadonly())
+            {
+                var clipsCollection = database.GetCollection<Clip>();
+                foreach (var foundClip in clipsCollection.Find(predicate ?? (clip => true)))
+                {
+                    yield return LoadContentFor(database.FileStorage, foundClip);
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -84,24 +82,29 @@ namespace Dapplo.Dopy.Storage
             {
                 throw new ArgumentNullException(nameof(clip));
             }
-            _clips.Insert(clip);
-
-            var iconFileId = IconFileIdGenerator(clip);
-
-            using (var memoryStream = clip.OwnerIconAsStream())
+            using (var database = _databaseProvider.Create())
             {
-                if (memoryStream != null)
+                var clipsCollection = database.GetCollection<Clip>();
+                clipsCollection.Insert(clip);
+
+                var iconFileId = IconFileIdGenerator(clip);
+
+                var liteStorage = database.FileStorage;
+                using (var memoryStream = clip.OwnerIconAsStream())
                 {
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    _liteStorage.Upload(iconFileId, $"{iconFileId}.png", memoryStream);
+                    if (memoryStream != null)
+                    {
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        liteStorage.Upload(iconFileId, $"{iconFileId}.png", memoryStream);
+                    }
                 }
-            }
 
-            foreach (var contentsKey in clip.Contents.Keys)
-            {
-                var stream = clip.Contents[contentsKey];
-                var fileId = FileIdGenerator(clip, contentsKey);
-                _liteStorage.Upload(fileId, fileId, stream);
+                foreach (var contentsKey in clip.Contents.Keys)
+                {
+                    var stream = clip.Contents[contentsKey];
+                    var fileId = FileIdGenerator(clip, contentsKey);
+                    liteStorage.Upload(fileId, fileId, stream);
+                }
             }
             _repositoryUpdates.OnNext(new RepositoryUpdateArgs<Clip>(clip, CrudActions.Create));
         }
@@ -117,19 +120,27 @@ namespace Dapplo.Dopy.Storage
             {
                 throw new NotSupportedException("Cannot delete a clip without an ID");
             }
-            _clips.Delete(clip.Id);
 
-            // Remove icon
-            var iconFileId = IconFileIdGenerator(clip);
-            if (_liteStorage.Exists(iconFileId))
+            using (var database = _databaseProvider.Create())
             {
-                _liteStorage.Delete(iconFileId);
+                var clipsCollection = database.GetCollection<Clip>();
+                clipsCollection.Delete(clip.Id);
+
+                var liteStorage = database.FileStorage;
+
+                // Remove icon
+                var iconFileId = IconFileIdGenerator(clip);
+                if (liteStorage.Exists(iconFileId))
+                {
+                    liteStorage.Delete(iconFileId);
+                }
+
+                foreach (var contentsKey in clip.Contents.Keys)
+                {
+                    liteStorage.Delete(FileIdGenerator(clip, contentsKey));
+                }
             }
 
-            foreach (var contentsKey in clip.Contents.Keys)
-            {
-                _liteStorage.Delete(FileIdGenerator(clip, contentsKey));
-            }
             _repositoryUpdates.OnNext(new RepositoryUpdateArgs<Clip>(clip, CrudActions.Delete));
         }
 
@@ -144,37 +155,48 @@ namespace Dapplo.Dopy.Storage
             {
                 throw new NotSupportedException("Cannot update a clip without an ID");
             }
-            _clips.Update(clip);
 
-            // TODO: Optimize!
+            using (var database = _databaseProvider.Create())
+            {
+                var clipsCollection = database.GetCollection<Clip>();
 
-            // Remove icon
-            var iconFileId = IconFileIdGenerator(clip);
-            if (_liteStorage.Exists(iconFileId))
-            {
-                _liteStorage.Delete(iconFileId);
-            }
-            // Write it again
-            using (var memoryStream = clip.OwnerIconAsStream())
-            {
-                if (memoryStream != null)
+                clipsCollection.Update(clip);
+
+                // TODO: Optimize!
+
+                var liteStorage = database.FileStorage;
+
+                // Remove icon
+                var iconFileId = IconFileIdGenerator(clip);
+                if (liteStorage.Exists(iconFileId))
                 {
-                    _liteStorage.Upload(iconFileId, $"{iconFileId}.png", memoryStream);
+                    liteStorage.Delete(iconFileId);
+                }
+
+                // Write it again
+                using (var memoryStream = clip.OwnerIconAsStream())
+                {
+                    if (memoryStream != null)
+                    {
+                        liteStorage.Upload(iconFileId, $"{iconFileId}.png", memoryStream);
+                    }
+                }
+
+                // Remove all contents
+                foreach (var contentsKey in clip.Contents.Keys)
+                {
+                    liteStorage.Delete(FileIdGenerator(clip, contentsKey));
+                }
+
+                // add them again
+                foreach (var contentsKey in clip.Contents.Keys)
+                {
+                    var stream = clip.Contents[contentsKey];
+                    var fileId = FileIdGenerator(clip, contentsKey);
+                    liteStorage.Upload(fileId, fileId, stream);
                 }
             }
-            
-            // Remove all contents
-            foreach (var contentsKey in clip.Contents.Keys)
-            {
-                _liteStorage.Delete(FileIdGenerator(clip, contentsKey));
-            }
-            // add them again
-            foreach (var contentsKey in clip.Contents.Keys)
-            {
-                var stream = clip.Contents[contentsKey];
-                var fileId = FileIdGenerator(clip, contentsKey);
-                _liteStorage.Upload(fileId, fileId, stream);
-            }
+
             _repositoryUpdates.OnNext(new RepositoryUpdateArgs<Clip>(clip, CrudActions.Update));
         }
 
@@ -203,16 +225,17 @@ namespace Dapplo.Dopy.Storage
         /// <summary>
         /// Load the content to a Clip
         /// </summary>
+        /// <param name="fileStorage">LiteStorage</param>
         /// <param name="clip">Clip</param>
         /// <param name="format">string with clipboard format</param>
         /// <returns>MemoryStream</returns>
-        private MemoryStream LoadContent(Clip clip, string format)
+        private MemoryStream LoadContent(LiteStorage fileStorage, Clip clip, string format)
         {
             var stream = new MemoryStream();
             var fileId = FileIdGenerator(clip, format);
-            if (_liteStorage.Exists(fileId))
+            if (fileStorage.Exists(fileId))
             {
-                _liteStorage.Download(fileId, stream);
+                fileStorage.Download(fileId, stream);
             }
             return stream;
         }
@@ -220,16 +243,17 @@ namespace Dapplo.Dopy.Storage
         /// <summary>
         /// Load the content to a Clip
         /// </summary>
+        /// <param name="fileStorage">LiteStorage</param>
         /// <param name="clip">Clip</param>
         /// <returns>Clip</returns>
-        private Clip LoadContentFor(Clip clip)
+        private Clip LoadContentFor(LiteStorage fileStorage, Clip clip)
         {
             var iconFileId = IconFileIdGenerator(clip);
-            if (_liteStorage.Exists(iconFileId))
+            if (fileStorage.Exists(iconFileId))
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    _liteStorage.Download(iconFileId, memoryStream);
+                    fileStorage.Download(iconFileId, memoryStream);
                     memoryStream.Seek(0, SeekOrigin.Begin);
                     clip.OwnerIconFromStream(memoryStream);
                 }
@@ -237,9 +261,9 @@ namespace Dapplo.Dopy.Storage
 
             foreach (var format in clip.Formats)
             {
-                if (_liteStorage.Exists(FileIdGenerator(clip, format)))
+                if (fileStorage.Exists(FileIdGenerator(clip, format)))
                 {
-                    clip.Contents[format] = LoadContent(clip, format);
+                    clip.Contents[format] = LoadContent(fileStorage, clip, format);
                 }
             }
             return clip;

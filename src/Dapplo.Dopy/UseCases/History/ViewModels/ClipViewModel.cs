@@ -33,7 +33,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
     /// <summary>
     /// Viewmodel for the clipboard "clip" entry
     /// </summary>
-    public class ClipViewModel : Screen
+    public class ClipViewModel : Screen, IDisposable
     {
         private Clip _item;
 
@@ -57,7 +57,6 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// Tells the view if the content has text
         /// </summary>
         public bool IsText => Item.HasText();
-
 
         /// <summary>
         /// Tells the view if the content has text
@@ -90,5 +89,10 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             }
         }
 #endif
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Item.Dispose();
+        }
     }
 }

@@ -27,6 +27,7 @@ using System.Linq;
 using System.Windows;
 using Autofac.Features.AttributeFilters;
 using Caliburn.Micro;
+using Dapplo.CaliburnMicro;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Shared.Entities;
@@ -38,7 +39,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
     /// <summary>
     /// Viewmodel for the history
     /// </summary>
-    public class HistoryViewModel : Conductor<ClipViewModel>.Collection.OneActive
+    public class HistoryViewModel : Conductor<ClipViewModel>.Collection.OneActive, IMaintainPosition
     {
         private readonly IClipRepository _clipRepository;
         private IDisposable _updateSubscription;
@@ -76,7 +77,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             [MetadataFilter("Menu", "historymenu")]IEnumerable<Lazy<IMenuItem>> historyMenuItems)
         {
             _clipRepository = clipRepository;
-
+            
             // Make sure the $clip is supported
             MessageBinder.SpecialValues.Add("$clip", context => context?.EventArgs == null ? null : ActiveItem.Item);
 
@@ -125,28 +126,22 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         protected override void OnActivate()
         {
             Load();
-            
-            // Make sure all items are initialized
-            foreach (var menuItem in _historyMenuItems)
-            {
-                menuItem.Initialize();
-            }
 
-            foreach (var historyMenuItem in _historyMenuItems.CreateTree())
+            if (MenuItems.Count < 1)
             {
-                MenuItems.Add(historyMenuItem);
+                // Make sure all items are initialized
+                foreach (var menuItem in _historyMenuItems)
+                {
+                    menuItem.Initialize();
+                }
+
+                foreach (var historyMenuItem in _historyMenuItems.CreateTree())
+                {
+                    MenuItems.Add(historyMenuItem);
+                }
             }
             base.OnActivate();
 
-        }
-
-        /// <inheritdoc />
-        protected override void OnDeactivate(bool close)
-        {
-            MenuItems.Clear();
-            _updateSubscription?.Dispose();
-            base.OnDeactivate(close);
-            MessageBinder.SpecialValues.Remove("$clip");
         }
 
         /// <summary>
@@ -154,6 +149,10 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// </summary>
         public void Load()
         {
+            if (Items.Count > 0)
+            {
+                return;
+            }
             Items.Clear();
             Items.AddRange(_clipRepository.Find().Select(clip => new ClipViewModel{ Item = clip}));
 
@@ -170,6 +169,22 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
                         break;
                 }
             });
+        }
+
+        /// <inheritdoc />
+        protected override void OnDeactivate(bool close)
+        {
+            MenuItems.Clear();
+            _updateSubscription?.Dispose();
+            MessageBinder.SpecialValues.Remove("$clip");
+
+            var itemsToDispose = Items.ToList();
+
+            base.OnDeactivate(close);
+            foreach (var clipViewModel in itemsToDispose)
+            {
+                clipViewModel.Dispose();
+            }
         }
     }
 }

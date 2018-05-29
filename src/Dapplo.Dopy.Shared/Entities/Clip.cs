@@ -29,7 +29,7 @@ namespace Dapplo.Dopy.Shared.Entities
     /// <summary>
     /// Clip is the entity for the clipboard contents in the database
     /// </summary>
-    public class Clip : EntityBase<int>
+    public class Clip : EntityBase<int>, IDisposable
     {
         /// <summary>
         /// The ID for the session
@@ -100,5 +100,18 @@ namespace Dapplo.Dopy.Shared.Entities
         /// The actual clipboard contents
         /// </summary>
         public IDictionary<string, MemoryStream> Contents { get; } = new Dictionary<string, MemoryStream>();
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            foreach (var contentsValue in Contents.Values)
+            {
+                contentsValue.Dispose();
+            }
+            Contents.Clear();
+            Filenames.Clear();
+            Formats.Clear();
+            OriginalFormats.Clear();
+        }
     }
 }

@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using LiteDB;
 using Dapplo.Dopy.Shared.Entities;
 using Dapplo.Dopy.Shared.Repositories;
 
@@ -33,7 +32,7 @@ namespace Dapplo.Dopy.Storage
     /// </summary>
     public class SessionRepository : ISessionRepository
     {
-        private readonly LiteCollection<Session> _sessions;
+        private readonly DatabaseProvider _databaseProvider;
 
         /// <summary>
         /// Constructor which sets up the database
@@ -41,24 +40,35 @@ namespace Dapplo.Dopy.Storage
         /// <param name="databaseProvider">DatabaseProvider</param>
         public SessionRepository(DatabaseProvider databaseProvider)
         {
-            _sessions = databaseProvider.Database.GetCollection<Session>();
-	        _sessions.EnsureIndex(x => x.WindowsStartup);
-	        _sessions.EnsureIndex(x => x.SessionSid);
-	        _sessions.EnsureIndex(x => x.Username);
-	        _sessions.EnsureIndex(x => x.Domain);
-	        _sessions.EnsureIndex(x => x.Timestamp);
+            _databaseProvider = databaseProvider;
         }
 
         /// <inheritdoc />
         public Session GetById(int id)
         {
-            return _sessions.FindById(id);
+            using (var database = _databaseProvider.CreateReadonly())
+            {
+                var sessions = database.GetCollection<Session>();
+                return sessions.FindById(id);
+            }
         }
         
         /// <inheritdoc />
         public IEnumerable<Session> Find(Expression<Func<Session, bool>> predicate = null)
         {
-            return _sessions.Find(predicate ?? (session => true) );
+            using (var database = _databaseProvider.CreateReadonly())
+            {
+                var sessions = database.GetCollection<Session>();
+/*                sessions.EnsureIndex(x => x.WindowsStartup);
+                sessions.EnsureIndex(x => x.SessionSid);
+                sessions.EnsureIndex(x => x.Username);
+                sessions.EnsureIndex(x => x.Domain);
+                sessions.EnsureIndex(x => x.Timestamp);*/
+                foreach (var foundSession in sessions.Find(predicate ?? (session => true)))
+                {
+                    yield return foundSession;
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -68,7 +78,12 @@ namespace Dapplo.Dopy.Storage
             {
                 throw new ArgumentNullException(nameof(session));
             }
-            _sessions.Insert(session);
+
+            using (var database = _databaseProvider.Create())
+            {
+                var sessions = database.GetCollection<Session>();
+                sessions.Insert(session);
+            }
         }
 
         /// <inheritdoc />
@@ -82,7 +97,11 @@ namespace Dapplo.Dopy.Storage
             {
                 throw new NotSupportedException("Cannot delete a session without an ID");
             }
-            _sessions.Delete(session.Id);
+            using (var database = _databaseProvider.Create())
+            {
+                var sessions = database.GetCollection<Session>();
+                sessions.Delete(session.Id);
+            }
         }
 
         /// <inheritdoc />
@@ -96,7 +115,11 @@ namespace Dapplo.Dopy.Storage
             {
                 throw new NotSupportedException("Cannot update a session without an ID");
             }
-            _sessions.Update(session);
+            using (var database = _databaseProvider.Create())
+            {
+                var sessions = database.GetCollection<Session>();
+                sessions.Update(session);
+            }
         }
     }
 }

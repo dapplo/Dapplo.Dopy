@@ -29,39 +29,47 @@ namespace Dapplo.Dopy.Storage
     /// <summary>
     /// This initializes the database
     /// </summary>
-    public class DatabaseProvider : IDisposable
+    public class DatabaseProvider
     {
-        private static readonly string DbFilename = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Dapplo.Dopy\dopy.db";
-
-        /// <summary>
-        /// The database wich is being used
-        /// </summary>
-        public LiteDatabase Database { get; private set; } = new LiteDatabase($@"Mode=Shared;Upgrade=true;Filename={DbFilename}");
+        private static readonly string DbDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dapplo.Dopy");
+        private static readonly string DbFilename =  Path.Combine(DbDirectory , @"dopy.db");
+        private readonly BsonMapper _defaultBsonMapper;
 
         /// <inheritdoc />
         public DatabaseProvider()
         {
             // Make sure the DB path is available
-            var dbDirectory = Path.GetDirectoryName(DbFilename);
-
-            if (dbDirectory != null && !Directory.Exists(dbDirectory))
+            if (DbDirectory != null && !Directory.Exists(DbDirectory))
             {
-                Directory.CreateDirectory(dbDirectory);
+                Directory.CreateDirectory(DbDirectory);
             }
-            var mapper = BsonMapper.Global;
-            mapper.Entity<Clip>()
+            _defaultBsonMapper = new BsonMapper();
+
+            _defaultBsonMapper.Entity<Clip>()
                 .Id(x => x.Id) // set your document ID
                 .Ignore(x => x.Contents) // ignore this property (do not store)
                 .Ignore(x => x.IsModifiedByDopy) // ignore this property (do not store)
                 .Ignore(x => x.OwnerIcon); // ignore this property (do not store)
-            mapper.Entity<Session>()
+            _defaultBsonMapper.Entity<Session>()
                 .Id(x => x.Id);
         }
 
-        /// <inheritdoc />
-        public void Dispose()
+        /// <summary>
+        /// Create a database, this needs to be disposed by the classer
+        /// </summary>
+        /// <returns>LiteDatabase</returns>
+        public LiteDatabase Create()
         {
-            Database.Dispose();
+            return new LiteDatabase($@"Mode=Shared;Upgrade=true;Filename={DbFilename}", _defaultBsonMapper);
+        }
+
+        /// <summary>
+        /// Create a readonly database, this needs to be disposed by the classer
+        /// </summary>
+        /// <returns>LiteDatabase</returns>
+        public LiteDatabase CreateReadonly()
+        {
+            return new LiteDatabase($@"Mode=ReadOnly;Upgrade=true;Filename={DbFilename}", _defaultBsonMapper);
         }
     }
 }
