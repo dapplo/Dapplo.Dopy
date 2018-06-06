@@ -22,6 +22,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
@@ -205,12 +206,12 @@ namespace Dapplo.Dopy.Services
                 };
             }
 
-            using (ClipboardNative.Lock())
+            using (var clipboardAccessToken = ClipboardNative.Access())
             {
-                clip.Filenames = ClipboardNative.GetFilenames().ToList();
+                clip.Filenames = clipboardAccessToken.GetFilenames().ToList();
                 if (clip.OriginalFormats.Contains("CF_UNICODETEXT"))
                 {
-                    clip.ClipboardText = ClipboardNative.GetAsUnicodeString();
+                    clip.ClipboardText = clipboardAccessToken.GetAsUnicodeString();
                 }
 
                 foreach (var format in clipboardUpdateInformation.Formats)
@@ -220,7 +221,13 @@ namespace Dapplo.Dopy.Services
                         continue;
                     }
                     clip.Formats.Add(format);
-                    clip.Contents[format] = ClipboardNative.GetAsStream(format);
+                    using (var clipboardStream = clipboardAccessToken.GetAsStream(format))
+                    {
+                        var memoryStream = new MemoryStream((int)clipboardStream.Length);
+                        clipboardStream.CopyTo(memoryStream);
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        clip.Contents[format] = memoryStream;
+                    }
                 }
             }
             return clip;

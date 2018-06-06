@@ -124,6 +124,7 @@ namespace Dapplo.Dopy.Shared.Extensions
         /// Place the clip back onto the clipboard
         /// </summary>
         /// <param name="clip">Clip</param>
+        /// <param name="fromExisting">bool</param>
         public static void PlaceOnClipboard(this Clip clip, bool fromExisting = false)
         {
             var handle = WinProcHandler.Instance.Handle;
@@ -133,21 +134,21 @@ namespace Dapplo.Dopy.Shared.Extensions
                 handle = clip.OriginalWindowHandle;
             }
             // TODO: Prevent detecting the restore, especially if Dopy doesn't "paste" with it's Window handle
-            using (ClipboardNative.Lock(handle))
+            using (var clipboardAccessToken = ClipboardNative.Access(handle))
             {
-                ClipboardNative.Clear();
+                clipboardAccessToken.ClearContents();
                 // Make the clipboard as modified by DOPY
                 if (fromExisting ||clip.IsModifiedByDopy)
                 {
-                    ClipboardNative.SetAsUnicodeString($"On {DateTime.Now:O}", ClipboardFormats.Dopy);
+                    clipboardAccessToken.SetAsUnicodeString($"On {DateTime.Now:O}", ClipboardFormats.Dopy);
                 }
                 foreach (var key in clip.Contents.Keys)
                 {
-                    ClipboardNative.SetAsStream(key, clip.Contents[key]);
+                    clipboardAccessToken.SetAsStream(key, clip.Contents[key]);
                 }
                 if (!string.IsNullOrEmpty(clip.ClipboardText))
                 {
-                    ClipboardNative.SetAsUnicodeString(clip.ClipboardText);
+                    clipboardAccessToken.SetAsUnicodeString(clip.ClipboardText);
                 }
             }
         }

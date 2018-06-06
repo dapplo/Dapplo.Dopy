@@ -68,9 +68,9 @@ namespace Dapplo.Dopy.UseCases.Configuration.ViewModels
             dopyTranslations.CreateDisplayNameBinding(this, nameof(IDopyTranslations.FormatsConfigTitle));
             Id = "F_Formats";
             SelectedFormats = new ObservableCollection<string>(DopyConfiguration.IncludeFormats);
-            using (ClipboardNative.Lock())
+            using (var clipboardAccessToken = ClipboardNative.Access())
             {
-                AvailableFormats = new ObservableCollection<string>(ClipboardNative.AvailableFormats());
+                AvailableFormats = new ObservableCollection<string>(clipboardAccessToken.AvailableFormats());
             }
         }
 
