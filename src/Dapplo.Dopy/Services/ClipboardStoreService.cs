@@ -91,7 +91,7 @@ namespace Dapplo.Dopy.Services
         public void Start()
         {
             bool firstClip = true;
-            _clipboardMonitor = ClipboardMonitor
+            _clipboardMonitor = ClipboardNative
                 .OnUpdate
                 .SubscribeOn(_uiSynchronizationContext)
                 .Where(contents => contents.OwnerHandle != WinProcHandler.Instance.Handle)
@@ -154,6 +154,11 @@ namespace Dapplo.Dopy.Services
         /// <returns>Clip</returns>
         private Clip CreateClip(ClipboardUpdateInformation clipboardUpdateInformation)
         {
+            if (clipboardUpdateInformation.OwnerHandle == IntPtr.Zero)
+            {
+                // TODO: Handle "0" here!!!
+                Log.Warn().WriteLine("Clipboard content is owned by process 0");
+            }
             var interopWindow = InteropWindowFactory.CreateFor(clipboardUpdateInformation.OwnerHandle);
 
             // Make sure we use the parent window (top level) for the title.
