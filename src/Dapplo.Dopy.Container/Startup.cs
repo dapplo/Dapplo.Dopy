@@ -48,11 +48,14 @@ namespace Dapplo.Dopy.Container
             LogSettings.RegisterDefaultLogger<DebugLogger>(LogLevels.Verbose);
 #endif
 
-            var applicationConfig = ApplicationConfig.Create()
+            var applicationConfig = ApplicationConfigBuilder
+                .Create()
                 .WithApplicationName("Dapplo.Dopy")
                 .WithMutex("06486F0F-0DBC-4912-9C5C-5C9C777BA34E")
-                .WithAssemblyNames("Dapplo.Addons.Config")
-                .WithAssemblyPatterns("Dapplo.Dopy*");
+                .WithConfigSupport()
+                .WithCaliburnMicro()
+                .WithAssemblyPatterns("Dapplo.Dopy*")
+                .BuildApplicationConfig();
             var application = new Dapplication(applicationConfig)
             {
                 ShutdownMode = ShutdownMode.OnExplicitShutdown

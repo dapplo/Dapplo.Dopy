@@ -26,6 +26,7 @@ using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using Caliburn.Micro;
 using Dapplo.Addons;
+using Dapplo.CaliburnMicro;
 using Dapplo.Dopy.OpenUri.ViewModels;
 using Dapplo.Dopy.Shared.Entities;
 using Dapplo.Dopy.Shared.Extensions;
@@ -36,6 +37,7 @@ namespace Dapplo.Dopy.OpenUri
     /// <summary>
     /// A service to process 
     /// </summary>
+    [Service(nameof(OpenUriService), nameof(CaliburnStartOrder.CaliburnMicroBootstrapper))]
     public class OpenUriService : IStartup
     {
         private static readonly Regex UriRegex = new Regex(@"([a-z]+://[a-zA-Z0-9-_]+(?::[0-9]+)?[^\s]+)", RegexOptions.Compiled);
@@ -54,7 +56,7 @@ namespace Dapplo.Dopy.OpenUri
         }
 
         /// <inheritdoc />
-        public void Start()
+        public void Startup()
         {
             _clipRepository.Updates.Where(args => args.CrudAction == CrudActions.Create).Subscribe(OnNext);
         }

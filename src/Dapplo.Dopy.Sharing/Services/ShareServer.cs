@@ -30,8 +30,8 @@ namespace Dapplo.Dopy.Sharing.Services
     /// <summary>
     /// Adds the server for sharing and locating other dopy versions
     /// </summary>
-    [ServiceOrder(int.MaxValue)]
-    public class ShareServer : IStartup, IShutdown
+    [Service(nameof(ShareServer))]
+    public class ShareServer : IStartup
     {
         private readonly IClipRepository _clipRepository;
 
@@ -45,14 +45,9 @@ namespace Dapplo.Dopy.Sharing.Services
             
         }
         /// <inheritdoc />
-        public void Start()
+        public void Startup()
         {
             _clipRepository.Updates.Where(args => args.CrudAction == CrudActions.Create).Subscribe(PublishChange);
-        }
-
-        /// <inheritdoc />
-        public void Shutdown()
-        {
         }
 
         private void PublishChange(RepositoryUpdateArgs<Clip> clipUpdate)

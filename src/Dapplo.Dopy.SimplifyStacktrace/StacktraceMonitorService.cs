@@ -23,6 +23,7 @@ using System;
 using System.Reactive.Linq;
 using Caliburn.Micro;
 using Dapplo.Addons;
+using Dapplo.CaliburnMicro;
 using Dapplo.Dopy.Shared.Entities;
 using Dapplo.Dopy.Shared.Extensions;
 using Dapplo.Dopy.Shared.Repositories;
@@ -33,6 +34,7 @@ namespace Dapplo.Dopy.SimplifyStacktrace
     /// <summary>
     /// A service to process 
     /// </summary>
+    [Service(nameof(StacktraceMonitorService), nameof(CaliburnStartOrder.CaliburnMicroBootstrapper))]
     public class StacktraceMonitorService : IStartup
     {
         private readonly IClipRepository _clipRepository;
@@ -50,7 +52,7 @@ namespace Dapplo.Dopy.SimplifyStacktrace
         }
 
         /// <inheritdoc />
-        public void Start()
+        public void Startup()
         {
             _clipRepository.Updates.Where(args => args.CrudAction == CrudActions.Create).Subscribe(OnNext);
         }
