@@ -37,7 +37,7 @@ namespace Dapplo.Dopy.OpenUri
     /// <summary>
     /// A service to process 
     /// </summary>
-    [Service(nameof(OpenUriService), nameof(CaliburnStartOrder.CaliburnMicroBootstrapper))]
+    [Service(nameof(OpenUriService), nameof(CaliburnServices.CaliburnMicroBootstrapper))]
     public class OpenUriService : IStartup
     {
         private static readonly Regex UriRegex = new Regex(@"([a-z]+://[a-zA-Z0-9-_]+(?::[0-9]+)?[^\s]+)", RegexOptions.Compiled);

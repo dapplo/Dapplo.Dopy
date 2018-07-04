@@ -48,7 +48,7 @@ namespace Dapplo.Dopy.Services
     /// <summary>
     /// This service takes care of automatically storing every clipboard change to the IClipboardRepository
     /// </summary>
-    [Service(nameof(ClipboardStoreService), nameof(CaliburnStartOrder.CaliburnMicroBootstrapper))]
+    [Service(nameof(ClipboardStoreService), nameof(CaliburnServices.CaliburnMicroBootstrapper))]
     public class ClipboardStoreService : IStartup, IShutdown
     {
         private static readonly LogSource Log = new LogSource();

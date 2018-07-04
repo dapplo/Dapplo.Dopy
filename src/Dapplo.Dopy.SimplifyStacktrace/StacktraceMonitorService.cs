@@ -34,7 +34,7 @@ namespace Dapplo.Dopy.SimplifyStacktrace
     /// <summary>
     /// A service to process 
     /// </summary>
-    [Service(nameof(StacktraceMonitorService), nameof(CaliburnStartOrder.CaliburnMicroBootstrapper))]
+    [Service(nameof(StacktraceMonitorService), nameof(CaliburnServices.CaliburnMicroBootstrapper))]
     public class StacktraceMonitorService : IStartup
     {
         private readonly IClipRepository _clipRepository;
