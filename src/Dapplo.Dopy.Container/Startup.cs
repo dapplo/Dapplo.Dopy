@@ -24,6 +24,7 @@
 using System;
 using System.Windows;
 using Dapplo.Addons.Bootstrapper;
+using Dapplo.Addons.Config;
 using Dapplo.CaliburnMicro.Dapp;
 using Dapplo.Log;
 using Dapplo.Log.Loggers;
@@ -53,6 +54,8 @@ namespace Dapplo.Dopy.Container
                 .WithApplicationName("Dapplo.Dopy")
                 .WithMutex("06486F0F-0DBC-4912-9C5C-5C9C777BA34E")
                 .WithConfigSupport()
+                .WithIniSectionResolving()
+                .WithLanguageResolving()
                 .WithCaliburnMicro()
                 .WithAssemblyPatterns("Dapplo.Dopy*")
                 .BuildApplicationConfig();
