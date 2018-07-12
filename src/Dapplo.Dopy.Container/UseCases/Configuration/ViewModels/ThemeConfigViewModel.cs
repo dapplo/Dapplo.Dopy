@@ -24,7 +24,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reactive.Disposables;
-using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Metro;
@@ -59,22 +58,15 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
 
         public IConfigTranslations UiTranslations { get; }
 
-        /// <summary>
-        ///     Used to show a "normal" dialog
-        /// </summary>
-        private readonly IWindowManager _windowsManager;
-
         public ThemeConfigViewModel(
                 IDopyUiConfiguration uiConfiguration,
                 IConfigTranslations uiTranslations,
-                MetroWindowManager metroWindowManager,
-                IWindowManager windowsManager
-            )
+                MetroWindowManager metroWindowManager
+ )
         {
             UiConfiguration = uiConfiguration;
             UiTranslations = uiTranslations;
             _metroWindowManager = metroWindowManager;
-            _windowsManager = windowsManager;
         }
 
         /// <inheritdoc />

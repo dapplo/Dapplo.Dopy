@@ -24,7 +24,6 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
-using Autofac.Features.AttributeFilters;
 using Dapplo.CaliburnMicro.Dapp;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
@@ -42,9 +41,7 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu
     public sealed class ExitMenuItem : ClickableMenuItem
     {
         public ExitMenuItem(
-            IMainContextMenuTranslations contextMenuTranslations,
-            // Test for the exporting SynchronizationContext
-            [KeyFilter("ui")]SynchronizationContext uiSynchronizationContext
+            IMainContextMenuTranslations contextMenuTranslations
         )
         {
             // automatically update the DisplayName
