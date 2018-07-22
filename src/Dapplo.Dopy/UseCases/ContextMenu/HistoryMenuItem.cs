@@ -22,7 +22,6 @@
 #region using
 
 using System;
-using System.Reactive.Linq;
 using System.Windows.Threading;
 using Autofac.Features.OwnedInstances;
 using Caliburn.Micro;
@@ -30,8 +29,8 @@ using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Dopy.Translations;
 using Dapplo.Dopy.UseCases.History.ViewModels;
-using Dapplo.Windows.Input;
 using Dapplo.Windows.Input.Enums;
+using Dapplo.Windows.Input.Keyboard;
 using MahApps.Metro.IconPacks;
 
 #endregion
@@ -64,9 +63,12 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
                 Kind = PackIconMaterialKind.History
             };
 
+            // Key to react to
+            var controlShiftPasteKey = new KeyCombinationHandler(VirtualKeyCode.Control, VirtualKeyCode.Shift, VirtualKeyCode.KeyV);
+
             KeyboardHook.KeyboardEvents
                 // The hotkey to listen do
-                .Where(args => args.IsControl && args.IsShift && args.Key == VirtualKeyCodes.KEY_V)
+                .Where(controlShiftPasteKey)
                 // What to do
                 .Subscribe(args =>
                 {
