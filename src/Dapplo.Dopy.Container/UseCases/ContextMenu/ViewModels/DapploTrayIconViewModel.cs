@@ -27,7 +27,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Autofac.Features.AttributeFilters;
-using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.CaliburnMicro.NotifyIconWpf;
@@ -47,18 +46,15 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu.ViewModels
     {
         private readonly IEnumerable<Lazy<IMenuItem>> _contextMenuItems;
         private readonly IMainContextMenuTranslations _contextMenuTranslations;
-        public IWindowManager WindowManager { get; }
 
         public DapploTrayIconViewModel(
             IMainContextMenuTranslations contextMenuTranslations,
-            IWindowManager windowManager,
             ITrayIconManager trayIconManager,
             [MetadataFilter("Menu", "contextmenu")]IEnumerable<Lazy<IMenuItem>> contextMenuItems = null
         ) : base(trayIconManager)
         {
             _contextMenuTranslations = contextMenuTranslations;
             _contextMenuItems = contextMenuItems;
-            WindowManager = windowManager;
         }
 
         protected override void OnActivate()
