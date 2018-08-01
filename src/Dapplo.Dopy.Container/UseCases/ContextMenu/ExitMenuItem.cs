@@ -21,7 +21,6 @@
 
 #region using
 
-using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using Dapplo.CaliburnMicro.Dapp;

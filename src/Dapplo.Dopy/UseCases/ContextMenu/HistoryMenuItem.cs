@@ -22,7 +22,7 @@
 #region using
 
 using System;
-using System.Windows.Threading;
+using System.Reactive.Linq;
 using Autofac.Features.OwnedInstances;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
@@ -69,16 +69,15 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
             KeyboardHook.KeyboardEvents
                 // The hotkey to listen do
                 .Where(controlShiftPasteKey)
+                // Make sure it's on the dispatcher
+                .SubscribeOnDispatcher()
                 // What to do
                 .Subscribe(args =>
                 {
-                    Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+                    if (IsEnabled)
                     {
-                        if (IsEnabled)
-                        {
-                            Click(this);
-                        }
-                    });
+                        Click(this);
+                    }
                     args.Handled = true;
                 });
 

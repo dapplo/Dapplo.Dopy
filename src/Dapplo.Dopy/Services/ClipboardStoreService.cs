@@ -35,8 +35,8 @@ using Dapplo.Dopy.Shared;
 using Dapplo.Dopy.Shared.Entities;
 using Dapplo.Dopy.Shared.Extensions;
 using Dapplo.Dopy.Shared.Repositories;
-using Dapplo.Dopy.Utils;
 using Dapplo.Log;
+using Dapplo.Windows.Advapi32;
 using Dapplo.Windows.Clipboard;
 using Dapplo.Windows.Desktop;
 using Dapplo.Windows.Messages;
@@ -139,7 +139,7 @@ namespace Dapplo.Dopy.Services
         {
             return new Session
             {
-                SessionSid = SessionUtils.GetSessionId(),
+                SessionSid = Advapi32Api.CurrentSessionId,
                 Domain = Environment.UserDomainName,
                 Username = Environment.UserName,
                 WindowsStartup = Kernel32Api.SystemStartup,
