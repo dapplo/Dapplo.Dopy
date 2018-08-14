@@ -183,7 +183,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
             base.OnDeactivate(close);
             foreach (var clipViewModel in itemsToDispose)
             {
-                clipViewModel.Dispose();
+                clipViewModel?.Dispose();
             }
         }
     }

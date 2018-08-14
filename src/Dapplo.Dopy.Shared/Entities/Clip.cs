@@ -106,7 +106,7 @@ namespace Dapplo.Dopy.Shared.Entities
         {
             foreach (var contentsValue in Contents.Values)
             {
-                contentsValue.Dispose();
+                contentsValue?.Dispose();
             }
             Contents.Clear();
             Filenames.Clear();

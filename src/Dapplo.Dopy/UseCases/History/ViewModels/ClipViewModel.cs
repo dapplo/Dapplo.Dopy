@@ -92,7 +92,7 @@ namespace Dapplo.Dopy.UseCases.History.ViewModels
         /// <inheritdoc />
         public void Dispose()
         {
-            Item.Dispose();
+            Item?.Dispose();
         }
     }
 }
