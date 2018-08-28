@@ -63,6 +63,7 @@ namespace Dapplo.Dopy.Container.UseCases.ContextMenu
                 }
                 finally
                 {
+                    // TODO: Check why this might cause a NullReferenceException in the PresentationFramework at System.Windows.DeferredAppResourceReference.GetValue(BaseValueSourceInternal valueSource)
                     IsEnabled = true;
                 }
             };
