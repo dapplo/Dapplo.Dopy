@@ -10,7 +10,7 @@ branches:
   - master
 environment:
   NuGetApiKey:
-    secure: 0+4uMr/wsyh8BisfHCwkDbaWwzmKNvvB2MwFz45/ePwbOMB6WT1AfhzujeddcN/2
+    secure: Fu7vXeOuWmvDK7WGNsEbTIV2vhDV4P6PiK5k1+UZOmwldhCfvUvkA4HOkml+ZE/n
 build_script:
 - ps: .\build.ps1
 artifacts:
