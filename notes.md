@@ -21,10 +21,10 @@ Identify applications "uniquely" so we can create rules for them.
 
 Services
 * History
- * Some information needs to be encrypted
- * Some information should not be allowed to be stored
- * Formats to include / exclude (name, regex)
- * Expire?
+  * Some information needs to be encrypted
+  * Some information should not be allowed to be stored
+  * Formats to include / exclude (name, regex)
+  * Expire?
 * Delete from Clipboard, for instance after paste
 * Converters
 * Matchers
@@ -32,11 +32,11 @@ Services
 
 Rules:
 * We need a way to define & store rules
- * Format Json?
- * Via the UI
+  * Format Json?
+  * Via the UI
 * A place to store rules online
- * a process to update these via pull-requests
- * way to check for updates and download them
+  * a process to update these via pull-requests
+  * way to check for updates and download them
 
 An example rule could be:
 For 1pass do not store in the history, and delete after paste
