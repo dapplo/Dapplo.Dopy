@@ -20,21 +20,20 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using System.Collections.Generic;
-using System.ComponentModel;
 using Dapplo.Config.Ini;
 
-namespace Dapplo.Dopy.Configuration
+namespace Dapplo.Dopy.Configuration.Impl
 {
     /// <summary>
-    /// The configuration for Dopy
+    /// This implements IDopyConfiguration, the properties here are enhanced with AutoProperties.Fody
     /// </summary>
-    [IniSection("Dopy")]
-    public interface IDopyConfiguration : IIniSection
+    public class DopyConfigurationImpl : IniSectionBase<IDopyConfiguration>, IDopyConfiguration
     {
-        /// <summary>
-        /// Which formats are stored
-        /// </summary>
-        [DefaultValue("PNG,CF_WAVE,HTML Format")]
-        IList<string> IncludeFormats { get; set; }
+        #region Implementation of IDopyConfiguration
+
+        /// <inheritdoc />
+        public IList<string> IncludeFormats { get; set; }
+
+        #endregion
     }
 }

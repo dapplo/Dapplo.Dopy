@@ -25,6 +25,12 @@ using Dapplo.Addons;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.CaliburnMicro.NotifyIconWpf;
+using Dapplo.Config.Ini;
+using Dapplo.Config.Language;
+using Dapplo.Dopy.Container.Configuration;
+using Dapplo.Dopy.Container.Configuration.Impl;
+using Dapplo.Dopy.Container.Translations;
+using Dapplo.Dopy.Container.Translations.Impl;
 using Dapplo.Dopy.Container.UseCases.Configuration.ViewModels;
 using Dapplo.Dopy.Container.UseCases.ContextMenu.ViewModels;
 
@@ -36,6 +42,25 @@ namespace Dapplo.Dopy.Container
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<DopyUiConfigurationImpl>()
+                .As<IDopyUiConfiguration>()
+                .As<IIniSection>()
+                .SingleInstance();
+
+            builder.RegisterType<ConfigTranslationsImpl>()
+                .As<IConfigTranslations>()
+                .As<ILanguage>()
+                .SingleInstance();
+
+            builder.RegisterType<CoreTranslationsImpl>()
+                .As<ICoreTranslations>()
+                .As<ILanguage>()
+                .SingleInstance();
+
+            builder.RegisterType<MainContextMenuTranslationsImpl>()
+                .As<IMainContextMenuTranslations>()
+                .As<ILanguage>()
+                .SingleInstance();
 
             builder.RegisterType<ConfigViewModel>()
                 .AsSelf();

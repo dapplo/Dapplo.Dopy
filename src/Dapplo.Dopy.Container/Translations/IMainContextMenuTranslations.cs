@@ -22,14 +22,14 @@
 #region using
 
 using System.ComponentModel;
-using Dapplo.Language;
+using Dapplo.Config.Language;
 
 #endregion
 
 namespace Dapplo.Dopy.Container.Translations
 {
     [Language("MainContextMenu")]
-    public interface IMainContextMenuTranslations : ILanguage, INotifyPropertyChanged
+    public interface IMainContextMenuTranslations : ILanguage
     {
         [DefaultValue("Exit")]
         string Exit { get; }

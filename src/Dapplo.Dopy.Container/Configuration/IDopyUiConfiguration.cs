@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Metro;
-using Dapplo.Ini;
-using Dapplo.InterfaceImpl.Extensions;
+using Dapplo.Config.Ini;
 
 namespace Dapplo.Dopy.Container.Configuration
 {
     [IniSection("Ui")]
-    public interface IDopyUiConfiguration : IUiConfiguration, ITransactionalProperties
+    public interface IDopyUiConfiguration : IUiConfiguration
     {
         [DefaultValue(Themes.BaseLight)]
         Themes Theme { get; set; }

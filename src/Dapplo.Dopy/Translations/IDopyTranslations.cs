@@ -22,7 +22,7 @@
 #region using
 
 using System.ComponentModel;
-using Dapplo.Language;
+using Dapplo.Config.Language;
 
 #endregion
 
@@ -32,7 +32,7 @@ namespace Dapplo.Dopy.Translations
     /// Translations for Dopy
     /// </summary>
     [Language("Dopy")]
-    public interface IDopyTranslations : ILanguage, INotifyPropertyChanged
+    public interface IDopyTranslations : ILanguage
     {
         /// <summary>
         /// The translation for the history window and menu item
