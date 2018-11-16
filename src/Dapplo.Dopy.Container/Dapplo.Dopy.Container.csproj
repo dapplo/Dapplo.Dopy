@@ -82,6 +82,9 @@
     <Compile Include="Translations\ICoreTranslations.cs" />
     <Compile Include="Translations\IMainContextMenuTranslations.cs" />
     <Compile Include="Configuration\IDopyUiConfiguration.cs" />
+    <Compile Include="Translations\Impl\ConfigTranslationsImpl.cs" />
+    <Compile Include="Translations\Impl\CoreTranslationsImpl.cs" />
+    <Compile Include="Translations\Impl\MainContextMenuTranslationsImpl.cs" />
     <Compile Include="UseCases\Configuration\ViewModels\ConfigViewModel.cs" />
     <Compile Include="UseCases\Configuration\ViewModels\ThemeConfigViewModel.cs" />
     <Compile Include="UseCases\Configuration\ViewModels\UiConfigNodeViewModel.cs" />

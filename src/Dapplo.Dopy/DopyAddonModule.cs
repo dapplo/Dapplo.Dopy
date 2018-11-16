@@ -25,9 +25,12 @@ using Dapplo.Addons;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.Config.Ini;
+using Dapplo.Config.Language;
 using Dapplo.Dopy.Configuration;
 using Dapplo.Dopy.Configuration.Impl;
 using Dapplo.Dopy.Services;
+using Dapplo.Dopy.Translations;
+using Dapplo.Dopy.Translations.Impl;
 using Dapplo.Dopy.UseCases.History.ViewModels;
 
 namespace Dapplo.Dopy
@@ -41,6 +44,10 @@ namespace Dapplo.Dopy
             builder.RegisterType<DopyConfigurationImpl>()
                 .As<IDopyConfiguration>()
                 .As<IIniSection>()
+                .SingleInstance();
+            builder.RegisterType<DopyTranslationsImpl>()
+                .As<IDopyTranslations>()
+                .As<ILanguage>()
                 .SingleInstance();
 
             // All IMenuItem with the context they belong to

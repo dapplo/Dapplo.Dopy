@@ -53,6 +53,8 @@ namespace Dapplo.Dopy.Container
                 .WithApplicationName("Dapplo.Dopy")
                 .WithMutex("06486F0F-0DBC-4912-9C5C-5C9C777BA34E")
                 .WithCaliburnMicro()
+                .WithoutCopyOfAssembliesToProbingPath()
+                .WithoutCopyOfEmbeddedAssemblies()
                 .WithAssemblyPatterns("Dapplo.Dopy*")
                 .BuildApplicationConfig();
             var application = new Dapplication(applicationConfig)

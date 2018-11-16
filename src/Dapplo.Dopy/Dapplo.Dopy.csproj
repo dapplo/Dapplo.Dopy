@@ -67,6 +67,7 @@
     <Compile Include="Configuration\IDopyConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ClipboardStoreService.cs" />
+    <Compile Include="Translations\Impl\DopyTranslationsImpl.cs" />
     <Compile Include="UseCases\Configuration\ViewModels\FormatsViewModel.cs" />
     <Compile Include="UseCases\ContextMenu\HistoryMenuItem.cs" />
     <Compile Include="UseCases\History\TitleMenuItem.cs" />
