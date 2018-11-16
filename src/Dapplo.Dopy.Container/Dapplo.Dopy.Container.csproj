@@ -1,52 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DAC8D59E-AD0A-4C71-B81B-74047BE57D87}</ProjectGuid>
+    <TargetFrameworks>netcoreapp3.0;net471</TargetFrameworks>
+    <AssemblyTitle>Dapplo.Dopy.Container</AssemblyTitle>
+    <AssemblyName>Dapplo.Dopy.Container</AssemblyName>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Dapplo.Dopy.Container</RootNamespace>
-    <AssemblyName>Dopy</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
-  </PropertyGroup>
-  <ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net471' ">
     <Reference Include="CustomMarshalers" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
@@ -62,136 +25,49 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
+  
   <ItemGroup>
-    <Compile Include="Configuration\Impl\DopyUiConfigurationImpl.cs" />
-    <Compile Include="ContainerAddonModule.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Startup.cs" />
-    <Compile Include="Translations\IConfigTranslations.cs" />
-    <Compile Include="Translations\ICoreTranslations.cs" />
-    <Compile Include="Translations\IMainContextMenuTranslations.cs" />
-    <Compile Include="Configuration\IDopyUiConfiguration.cs" />
-    <Compile Include="Translations\Impl\ConfigTranslationsImpl.cs" />
-    <Compile Include="Translations\Impl\CoreTranslationsImpl.cs" />
-    <Compile Include="Translations\Impl\MainContextMenuTranslationsImpl.cs" />
-    <Compile Include="UseCases\Configuration\ViewModels\ConfigViewModel.cs" />
-    <Compile Include="UseCases\Configuration\ViewModels\ThemeConfigViewModel.cs" />
-    <Compile Include="UseCases\Configuration\ViewModels\UiConfigNodeViewModel.cs" />
-    <Compile Include="UseCases\ContextMenu\ConfigMenuItem.cs" />
-    <Compile Include="UseCases\ContextMenu\ExitMenuItem.cs" />
-    <Compile Include="UseCases\ContextMenu\TitleMenuItem.cs" />
-    <Compile Include="UseCases\ContextMenu\ViewModels\DapploTrayIconViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="app.manifest" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UseCases\ContextMenu\Views\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dapplo.Dopy.OpenUri\Dapplo.Dopy.OpenUri.csproj">
-      <Project>{15dee0b1-cb6a-42bb-83c6-60197e3e0064}</Project>
-      <Name>Dapplo.Dopy.OpenUri</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dapplo.Dopy.Shared\Dapplo.Dopy.Shared.csproj">
-      <Project>{f6639371-09c1-42b9-b307-3e0c2ab30609}</Project>
-      <Name>Dapplo.Dopy.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dapplo.Dopy.SimplifyStacktrace\Dapplo.Dopy.SimplifyStacktrace.csproj">
-      <Project>{f269620b-2f0d-4257-b5ac-a42505e7cc97}</Project>
-      <Name>Dapplo.Dopy.SimplifyStacktrace</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dapplo.Dopy.Storage\Dapplo.Dopy.Storage.csproj">
-      <Project>{83617add-ba0d-421f-88db-83cdc062610f}</Project>
-      <Name>Dapplo.Dopy.Storage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dapplo.Dopy\Dapplo.Dopy.csproj">
-      <Project>{cfb4f82e-53c3-40ed-b54f-316e8d300c6c}</Project>
-      <Name>Dapplo.Dopy</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FodyWeavers.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="UseCases\Configuration\Views\ConfigView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UseCases\Configuration\Views\ThemeConfigView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AutoProperties.Fody">
-      <Version>1.19.0</Version>
-    </PackageReference>
-    <PackageReference Include="AvalonEdit">
-      <Version>5.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="Costura.Fody">
-      <Version>3.1.6</Version>
-    </PackageReference>
-    <PackageReference Include="Dapplo.CaliburnMicro.Configuration">
-      <Version>1.2.2</Version>
-    </PackageReference>
-    <PackageReference Include="Dapplo.CaliburnMicro.Dapp">
-      <Version>1.2.2</Version>
-    </PackageReference>
-    <PackageReference Include="Dapplo.CaliburnMicro.Metro">
-      <Version>1.2.2</Version>
-    </PackageReference>
-    <PackageReference Include="Dapplo.CaliburnMicro.NotifyIconWpf">
-      <Version>1.2.2</Version>
-    </PackageReference>
-    <PackageReference Include="Dapplo.CaliburnMicro.Translations">
-      <Version>1.2.2</Version>
-    </PackageReference>
-    <PackageReference Include="Dapplo.Log.Loggers">
-      <Version>1.3.11</Version>
-    </PackageReference>
-    <PackageReference Include="Dapplo.Windows">
-      <Version>0.7.24</Version>
-    </PackageReference>
-    <PackageReference Include="Dapplo.Windows.Dpi">
-      <Version>0.7.24</Version>
-    </PackageReference>
-    <PackageReference Include="Dapplo.Windows.Shell32">
-      <Version>0.7.24</Version>
-    </PackageReference>
-    <PackageReference Include="Fody">
-      <Version>3.2.17</Version>
+    <PackageReference Include="AutoProperties.Fody" Version="1.19.0" />
+    <PackageReference Include="Dapplo.Addons" Version="1.2.1" />
+    <PackageReference Include="Dapplo.Log" Version="1.3.11" />
+    <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="System.Reactive" Version="4.1.2" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.2" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+	
+    <PackageReference Include="AvalonEdit" Version="5.0.4" />
+    <PackageReference Include="Costura.Fody" Version="3.1.6" />
+    <PackageReference Include="Dapplo.CaliburnMicro.Configuration" Version="1.2.2" />
+    <PackageReference Include="Dapplo.CaliburnMicro.Dapp" Version="1.2.2" />
+    <PackageReference Include="Dapplo.CaliburnMicro.Metro" Version="1.2.2" />
+    <PackageReference Include="Dapplo.CaliburnMicro.NotifyIconWpf" Version="1.2.2" />
+    <PackageReference Include="Dapplo.CaliburnMicro.Translations" Version="1.2.2" />
+    <PackageReference Include="Dapplo.Log.Loggers" Version="1.3.11" />
+    <PackageReference Include="Dapplo.Windows" Version="0.7.24" />
+    <PackageReference Include="Dapplo.Windows.Dpi" Version="0.7.24" />
+    <PackageReference Include="Dapplo.Windows.Shell32" Version="0.7.24" />
+    <PackageReference Include="Fody" Version="3.2.17" >
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="gong-wpf-dragdrop">
-      <Version>1.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="MahApps.Metro.IconPacks">
-      <Version>2.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="MetadataExtractor">
-      <Version>2.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="XmpCore">
-      <Version>6.1.10</Version>
-    </PackageReference>
+    <PackageReference Include="gong-wpf-dragdrop" Version="1.1.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="2.3.0" />
+    <PackageReference Include="MetadataExtractor" Version="2.0.0" />
+    <PackageReference Include="XmpCore" Version="6.1.10" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <ItemGroup>
+	<ProjectReference Include="..\Dapplo.Dopy.OpenUri\Dapplo.Dopy.OpenUri.csproj" />
+    <ProjectReference Include="..\Dapplo.Dopy.Shared\Dapplo.Dopy.Shared.csproj" />
+    <ProjectReference Include="..\Dapplo.Dopy.SimplifyStacktrace\Dapplo.Dopy.SimplifyStacktrace.csproj" />
+    <ProjectReference Include="..\Dapplo.Dopy.Storage\Dapplo.Dopy.Storage.csproj" />
+    <ProjectReference Include="..\Dapplo.Dopy\Dapplo.Dopy.csproj" />
+  </ItemGroup>
 </Project>

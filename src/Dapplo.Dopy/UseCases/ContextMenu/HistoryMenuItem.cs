@@ -22,7 +22,9 @@
 #region using
 
 using System;
+#if !NETCOREAPP3_0
 using System.Reactive.Linq;
+#endif
 using Autofac.Features.OwnedInstances;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
@@ -69,8 +71,11 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
             KeyboardHook.KeyboardEvents
                 // The hotkey to listen do
                 .Where(controlShiftPasteKey)
+#if !NETCOREAPP3_0
+// TODO: What about dotnet core 3.0?
                 // Make sure it's on the dispatcher
                 .SubscribeOnDispatcher()
+#endif
                 // What to do
                 .Subscribe(args =>
                 {

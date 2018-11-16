@@ -32,7 +32,7 @@ namespace Dapplo.Dopy.Translations
     /// Translations for Dopy
     /// </summary>
     [Language("Dopy")]
-    public interface IDopyTranslations : ILanguage, INotifyPropertyChanged
+    public interface IDopyTranslations : ILanguage
     {
         /// <summary>
         /// The translation for the history window and menu item

@@ -27,7 +27,7 @@
   <!-- No signing due to dependencies -->
   <!--PropertyGroup>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Dapplo.CaliburnMicro.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Dapplo.Dopy.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
   </PropertyGroup-->
   
