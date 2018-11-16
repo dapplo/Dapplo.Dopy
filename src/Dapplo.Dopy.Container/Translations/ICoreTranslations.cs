@@ -22,14 +22,14 @@
 #region using
 
 using System.ComponentModel;
-using Dapplo.Language;
+using Dapplo.Config.Language;
 
 #endregion
 
 namespace Dapplo.Dopy.Container.Translations
 {
     [Language("Core")]
-    public interface ICoreTranslations : ILanguage, CaliburnMicro.Translations.ICoreTranslations, INotifyPropertyChanged
+    public interface ICoreTranslations : ILanguage, CaliburnMicro.Translations.ICoreTranslations
     {
         [DefaultValue("Configure")]
         string Configure { get; }

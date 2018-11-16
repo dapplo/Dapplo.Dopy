@@ -24,6 +24,9 @@ using Autofac.Features.AttributeFilters;
 using Dapplo.Addons;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Menu;
+using Dapplo.Config.Ini;
+using Dapplo.Dopy.Configuration;
+using Dapplo.Dopy.Configuration.Impl;
 using Dapplo.Dopy.Services;
 using Dapplo.Dopy.UseCases.History.ViewModels;
 
@@ -35,6 +38,11 @@ namespace Dapplo.Dopy
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<DopyConfigurationImpl>()
+                .As<IDopyConfiguration>()
+                .As<IIniSection>()
+                .SingleInstance();
+
             // All IMenuItem with the context they belong to
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .AssignableTo<IMenuItem>()

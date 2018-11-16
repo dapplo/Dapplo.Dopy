@@ -25,6 +25,9 @@ using Dapplo.Addons;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Menu;
 using Dapplo.CaliburnMicro.NotifyIconWpf;
+using Dapplo.Config.Ini;
+using Dapplo.Dopy.Container.Configuration;
+using Dapplo.Dopy.Container.Configuration.Impl;
 using Dapplo.Dopy.Container.UseCases.Configuration.ViewModels;
 using Dapplo.Dopy.Container.UseCases.ContextMenu.ViewModels;
 
@@ -36,6 +39,10 @@ namespace Dapplo.Dopy.Container
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<DopyUiConfigurationImpl>()
+                .As<IDopyUiConfiguration>()
+                .As<IIniSection>()
+                .SingleInstance();
 
             builder.RegisterType<ConfigViewModel>()
                 .AsSelf();

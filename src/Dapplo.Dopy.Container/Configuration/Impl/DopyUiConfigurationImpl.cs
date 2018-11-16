@@ -20,21 +20,28 @@
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Windows;
+using Dapplo.CaliburnMicro.Metro;
 using Dapplo.Config.Ini;
+using Dapplo.Windows.User32.Structs;
 
-namespace Dapplo.Dopy.Configuration
+namespace Dapplo.Dopy.Container.Configuration.Impl
 {
-    /// <summary>
-    /// The configuration for Dopy
-    /// </summary>
-    [IniSection("Dopy")]
-    public interface IDopyConfiguration : IIniSection
+    public class DopyUiConfigurationImpl : IniSectionBase<IDopyUiConfiguration>, IDopyUiConfiguration
     {
-        /// <summary>
-        /// Which formats are stored
-        /// </summary>
-        [DefaultValue("PNG,CF_WAVE,HTML Format")]
-        IList<string> IncludeFormats { get; set; }
+        #region Implementation of IUiConfiguration
+
+        public WindowStartupLocation DefaultWindowStartupLocation { get; set; }
+        public bool AreWindowLocationsStored { get; set; }
+        public IDictionary<string, WindowPlacement> WindowLocations { get; set; }
+
+        #endregion
+
+        #region Implementation of IDopyUiConfiguration
+
+        public Themes Theme { get; set; }
+        public ThemeAccents ThemeAccent { get; set; }
+
+        #endregion
     }
 }
