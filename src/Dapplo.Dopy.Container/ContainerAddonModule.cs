@@ -24,6 +24,7 @@ using Autofac.Features.AttributeFilters;
 using Dapplo.Addons;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Menu;
+using Dapplo.CaliburnMicro.Metro.Configuration;
 using Dapplo.CaliburnMicro.NotifyIconWpf;
 using Dapplo.Config.Ini;
 using Dapplo.Config.Language;
@@ -45,6 +46,8 @@ namespace Dapplo.Dopy.Container
             builder.RegisterType<DopyUiConfigurationImpl>()
                 .As<IDopyUiConfiguration>()
                 .As<IIniSection>()
+                .As<IMetroUiConfiguration>()
+                .As<IUiConfiguration>()      
                 .SingleInstance();
 
             builder.RegisterType<ConfigTranslationsImpl>()

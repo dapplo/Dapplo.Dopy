@@ -1,17 +1,18 @@
 ﻿using System.ComponentModel;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Metro;
+using Dapplo.CaliburnMicro.Metro.Configuration;
 using Dapplo.Config.Ini;
 
 namespace Dapplo.Dopy.Container.Configuration
 {
     [IniSection("Ui")]
-    public interface IDopyUiConfiguration : IUiConfiguration
+    public interface IDopyUiConfiguration : IUiConfiguration, IMetroUiConfiguration
     {
-        [DefaultValue(Themes.BaseLight)]
-        Themes Theme { get; set; }
+        [DefaultValue(Themes.Light)]
+        new Themes Theme { get; set; }
 
         [DefaultValue(ThemeAccents.Orange)]
-        ThemeAccents ThemeAccent { get; set; }
+        new ThemeAccents ThemeAccent { get; set; }
     }
 }

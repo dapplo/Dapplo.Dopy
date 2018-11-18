@@ -86,8 +86,7 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
         {
             // Manually commit
             UiConfiguration.CommitTransaction();
-            _metroWindowManager.ChangeTheme(UiConfiguration.Theme);
-            _metroWindowManager.ChangeThemeAccent(UiConfiguration.ThemeAccent);
+            _metroWindowManager.ChangeTheme(UiConfiguration.Theme, UiConfiguration.ThemeAccent);
         }
 
         public override void Initialize(IConfig config)
