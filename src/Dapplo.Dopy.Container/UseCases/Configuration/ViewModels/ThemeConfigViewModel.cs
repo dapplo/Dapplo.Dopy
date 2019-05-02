@@ -67,6 +67,7 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
             UiConfiguration = uiConfiguration;
             UiTranslations = uiTranslations;
             _metroThemeManager = metroThemeManager;
+            _metroThemeManager.ChangeTheme(UiConfiguration.Theme, UiConfiguration.ThemeColor);
         }
 
         /// <inheritdoc />

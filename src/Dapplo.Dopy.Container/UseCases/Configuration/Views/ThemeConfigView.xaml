@@ -5,8 +5,8 @@
         <Label x:Name="DisplayName" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20" />
         <DockPanel>
             <Label x:Name="UiTranslations_Theme" Width="50" />
-            <ComboBox ItemsSource="{Binding AvailableThemes}" SelectedValuePath="Item1" DisplayMemberPath="Item2" SelectedValue="{Binding UiConfiguration.Theme}" />
-            <ComboBox ItemsSource="{Binding AvailableThemeAccents}" SelectedValuePath="Item1" DisplayMemberPath="Item2" SelectedValue="{Binding UiConfiguration.ThemeAccent}" />
+            <ComboBox ItemsSource="{Binding AvailableThemes}" SelectedValue="{Binding UiConfiguration.Theme}" />
+            <ComboBox ItemsSource="{Binding AvailableThemeColors}" SelectedValue="{Binding UiConfiguration.ThemeColor}" />
         </DockPanel>
     </StackPanel>
 </UserControl>
