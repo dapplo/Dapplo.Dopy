@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Dapplo.CaliburnMicro.Toasts.ViewModels;
+using Dapplo.Log;
 
 namespace Dapplo.Dopy.OpenUri.ViewModels
 {
@@ -32,6 +33,8 @@ namespace Dapplo.Dopy.OpenUri.ViewModels
     /// </summary>
     public class OpenUriToastViewModel : ToastBaseViewModel
     {
+        private static readonly LogSource Log = new LogSource();
+        
         public ObservableCollection<Uri> Uris { get; }
 
         /// <summary>
@@ -48,8 +51,19 @@ namespace Dapplo.Dopy.OpenUri.ViewModels
         /// </summary>
         public void Open(Uri uri)
         {
-            // TODO: Better handling!
-            Process.Start(uri.AbsoluteUri);
+            try
+            {
+                // In dotnet core we need shell-execute
+                var processStartInfo = new ProcessStartInfo(uri.AbsoluteUri)
+                {
+                    UseShellExecute = true
+                };
+                Process.Start(processStartInfo);
+            }
+            catch (Exception ex)
+            {
+                Log.Error().WriteLine(ex, "Couldn't open url {0} in the default browser.");
+            }
         }
     }
 }

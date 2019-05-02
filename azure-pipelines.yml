@@ -1,0 +1,73 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+
+pool:
+  vmImage: 'Windows-2019'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: DotNetCoreInstaller@0
+  displayName: 'Install .NET Core SDK 3.0'
+  inputs:
+    version: '3.0.100-preview6-011657'
+
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.9.3'
+  inputs:
+    versionSpec: 4.9.3
+    checkLatest: true
+
+- task: NuGetCommand@2
+  displayName: NuGet restore
+  inputs:
+    restoreSolution: '$(solution)'
+    feedsToUse: config
+
+- task: DotNetCoreCLI@2
+  displayName: Publish single-exe x64
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: 'src\Dapplo.Dopy.Container\Dapplo.Dopy.Container.csproj'
+    arguments: '-f netcoreapp3.0 -c Release /p:PublishSingleFile=true /p:UseAppHost=true /p:RuntimeIdentifier=win-x64 /p:PublishReadyToRun=true'
+    zipAfterPublish: false
+
+- task: CmdLine@2
+  displayName: Rename single-exe x64
+  inputs:
+    script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy.Container\bin\Release\netcoreapp3.0\win-x64\publish\Dapplo.Dopy.Container.exe Dopy-x64.exe'
+
+- task: DotNetCoreCLI@2
+  displayName: Publish single-exe x86
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: 'src\Dapplo.Dopy.Container\Dapplo.Dopy.Container.csproj'
+    arguments: '-f netcoreapp3.0 -c Release /p:PublishSingleFile=true /p:UseAppHost=true /p:RuntimeIdentifier=win-x86 /p:PublishReadyToRun=true'
+    zipAfterPublish: false
+
+- task: CmdLine@2
+  displayName: Rename single-exe x86
+  inputs:
+    script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy.Container\bin\Release\netcoreapp3.0\win-x86\publish\Dapplo.Dopy.Container.exe Dopy-x86.exe' 
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\src\Dapplo.Dopy.Container\bin\Release\netcoreapp3.0'
+    Contents: |
+     win-x64\publish\Dopy-x64.exe
+     win-x86\publish\Dopy-x86.exe
+    TargetFolder: '$(build.artifactstagingdirectory)'
+    flattenFolders: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'

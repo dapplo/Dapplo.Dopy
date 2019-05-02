@@ -22,11 +22,11 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reactive.Disposables;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Extensions;
 using Dapplo.CaliburnMicro.Metro;
+using Dapplo.Config.Intercepting;
 using Dapplo.Dopy.Container.Configuration;
 using Dapplo.Dopy.Container.Translations;
 using Dapplo.Dopy.Shared;
@@ -43,16 +43,16 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
         private CompositeDisposable _disposables;
 
         /// <summary>
-        ///     The avaible theme accents
+        ///     The available themes
         /// </summary>
-        public ObservableCollection<Tuple<ThemeAccents, string>> AvailableThemeAccents { get; set; } = new ObservableCollection<Tuple<ThemeAccents, string>>();
+        public ObservableCollection<string> AvailableThemes { get; set; } = new ObservableCollection<string>();
 
         /// <summary>
-        ///     The avaible themes
+        ///     The available theme colors
         /// </summary>
-        public ObservableCollection<Tuple<Themes, string>> AvailableThemes { get; set; } = new ObservableCollection<Tuple<Themes, string>>();
+        public ObservableCollection<string> AvailableThemeColors { get; set; } = new ObservableCollection<string>();
 
-        private readonly MetroWindowManager _metroWindowManager;
+        private readonly MetroThemeManager _metroThemeManager;
 
         public IDopyUiConfiguration UiConfiguration { get; }
 
@@ -61,24 +61,26 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
         public ThemeConfigViewModel(
                 IDopyUiConfiguration uiConfiguration,
                 IConfigTranslations uiTranslations,
-                MetroWindowManager metroWindowManager
+                MetroThemeManager metroThemeManager
  )
         {
             UiConfiguration = uiConfiguration;
             UiTranslations = uiTranslations;
-            _metroWindowManager = metroWindowManager;
+            _metroThemeManager = metroThemeManager;
         }
 
         /// <inheritdoc />
         public override void Rollback()
         {
-            // Nothing to do
+            UiConfiguration.RollbackTransaction();
+            _metroThemeManager.ChangeTheme(UiConfiguration.Theme, UiConfiguration.ThemeColor);
         }
 
         /// <inheritdoc />
         public override void Terminate()
         {
-            // Nothing to do
+            UiConfiguration.RollbackTransaction();
+            _metroThemeManager.ChangeTheme(UiConfiguration.Theme, UiConfiguration.ThemeColor);
         }
 
         /// <inheritdoc />
@@ -86,7 +88,8 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
         {
             // Manually commit
             UiConfiguration.CommitTransaction();
-            _metroWindowManager.ChangeTheme(UiConfiguration.Theme, UiConfiguration.ThemeAccent);
+            // Manually commit
+            _metroThemeManager.ChangeTheme(UiConfiguration.Theme, UiConfiguration.ThemeColor);
         }
 
         public override void Initialize(IConfig config)
@@ -95,19 +98,10 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
             _disposables?.Dispose();
             _disposables = new CompositeDisposable();
 
-            AvailableThemeAccents.Clear();
-            foreach (var themeAccent in Enum.GetValues(typeof(ThemeAccents)).Cast<ThemeAccents>())
-            {
-                var translation = themeAccent.EnumValueOf();
-                AvailableThemeAccents.Add(new Tuple<ThemeAccents, string>(themeAccent, translation));
-            }
-
             AvailableThemes.Clear();
-            foreach (var theme in Enum.GetValues(typeof(Themes)).Cast<Themes>())
-            {
-                var translation = theme.EnumValueOf();
-                AvailableThemes.Add(new Tuple<Themes, string>(theme, translation));
-            }
+            MetroThemeManager.AvailableThemes.ForEach(themeBaseColor => AvailableThemes.Add(themeBaseColor));
+            MetroThemeManager.AvailableThemeColors.ForEach(colorScheme => AvailableThemeColors.Add(colorScheme));
+
 
             // Place this under the Ui parent
             ParentId = nameof(ConfigIds.Ui);
@@ -118,6 +112,25 @@ namespace Dapplo.Dopy.Container.UseCases.Configuration.ViewModels
             // automatically update the DisplayName
             _disposables.Add(UiTranslations.CreateDisplayNameBinding(this, nameof(IConfigTranslations.Theme)));
 
+            // Automatically show theme changes
+            _disposables.Add(
+                UiConfiguration.OnPropertyChanging(nameof(UiConfiguration.Theme)).Subscribe(args =>
+                {
+                    if (args is PropertyChangingEventArgsEx propertyChangingEventArgsEx)
+                    {
+                        _metroThemeManager.ChangeTheme(propertyChangingEventArgsEx.NewValue as string, null);
+                    }
+                })
+            );
+            _disposables.Add(
+                UiConfiguration.OnPropertyChanging(nameof(UiConfiguration.ThemeColor)).Subscribe(args =>
+                {
+                    if (args is PropertyChangingEventArgsEx propertyChangingEventArgsEx)
+                    {
+                        _metroThemeManager.ChangeTheme(null, propertyChangingEventArgsEx.NewValue as string);
+                    }
+                })
+            );
             base.Initialize(config);
         }
 

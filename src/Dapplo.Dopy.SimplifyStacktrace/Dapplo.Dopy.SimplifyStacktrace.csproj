@@ -1,41 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;net471</TargetFrameworks>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyTitle>Dapplo.Dopy.SimplifyStacktrace</AssemblyTitle>
     <AssemblyName>Dapplo.Dopy.SimplifyStacktrace</AssemblyName>
   </PropertyGroup>
   
-  <ItemGroup Condition="'$(TargetFramework)' == 'net471' ">
-    <Reference Include="CustomMarshalers" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  
   <ItemGroup>
-    <PackageReference Include="Dapplo.Addons" Version="1.2.1" />
+    <PackageReference Include="Dapplo.Addons" Version="1.2.4" />
     <PackageReference Include="Dapplo.Log" Version="1.3.11" />
-    <PackageReference Include="Dapplo.CaliburnMicro.Toasts" Version="1.2.5" />
-    <PackageReference Include="Dapplo.Windows" Version="0.7.24" />
-    <PackageReference Include="Dapplo.Windows.Dpi" Version="0.7.24" />
-    <PackageReference Include="Dapplo.Windows.Shell32" Version="0.7.24" />
+    <PackageReference Include="Dapplo.CaliburnMicro.Toasts" Version="1.2.25" />
+    <PackageReference Include="Dapplo.Windows" Version="0.8.27" />
+    <PackageReference Include="Dapplo.Windows.Dpi" Version="0.8.27" />
+    <PackageReference Include="Dapplo.Windows.Shell32" Version="0.8.27" />
   </ItemGroup>
 
   <ItemGroup>

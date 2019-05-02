@@ -21,7 +21,6 @@
 
 using System.Collections.Generic;
 using System.Windows;
-using Dapplo.CaliburnMicro.Metro;
 using Dapplo.Config.Ini;
 using Dapplo.Windows.User32.Structs;
 
@@ -39,8 +38,8 @@ namespace Dapplo.Dopy.Container.Configuration.Impl
 
         #region Implementation of IDopyUiConfiguration
 
-        public Themes Theme { get; set; }
-        public ThemeAccents ThemeAccent { get; set; }
+        public string Theme { get; set; }
+        public string ThemeColor { get; set; }
 
         #endregion
     }

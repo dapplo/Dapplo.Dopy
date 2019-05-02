@@ -74,7 +74,7 @@ namespace Dapplo.Dopy.OpenUri
             }
 
             var matches = UriRegex.Matches(clip.ClipboardText);
-            var uris = matches.Cast<Match>().Select(match => new Uri(match.Value)).ToList();
+            var uris = matches.Select(match => new Uri(match.Value)).Distinct().ToList();
             if (uris.Count == 0)
             {
                 return;

@@ -22,9 +22,6 @@
 #region using
 
 using System;
-#if !NETCOREAPP3_0
-using System.Reactive.Linq;
-#endif
 using Autofac.Features.OwnedInstances;
 using Caliburn.Micro;
 using Dapplo.CaliburnMicro.Extensions;
