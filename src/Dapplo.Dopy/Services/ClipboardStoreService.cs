@@ -1,5 +1,5 @@
 ﻿//  Dapplo - building blocks for desktop applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -31,10 +31,10 @@ using Autofac.Features.AttributeFilters;
 using Dapplo.Addons;
 using Dapplo.CaliburnMicro;
 using Dapplo.Dopy.Configuration;
-using Dapplo.Dopy.Shared;
-using Dapplo.Dopy.Shared.Entities;
-using Dapplo.Dopy.Shared.Extensions;
-using Dapplo.Dopy.Shared.Repositories;
+using Dapplo.Dopy.Core;
+using Dapplo.Dopy.Core.Entities;
+using Dapplo.Dopy.Core.Extensions;
+using Dapplo.Dopy.Core.Repositories;
 using Dapplo.Log;
 using Dapplo.Windows.Advapi32;
 using Dapplo.Windows.Clipboard;

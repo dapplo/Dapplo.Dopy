@@ -1,5 +1,5 @@
 ﻿//  Dapplo - building blocks for desktop applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -24,6 +24,8 @@ using Autofac.Features.AttributeFilters;
 using Dapplo.Addons;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Menu;
+using Dapplo.CaliburnMicro.Metro.Configuration;
+using Dapplo.CaliburnMicro.NotifyIconWpf;
 using Dapplo.Config.Ini;
 using Dapplo.Config.Language;
 using Dapplo.Dopy.Configuration;
@@ -31,6 +33,8 @@ using Dapplo.Dopy.Configuration.Impl;
 using Dapplo.Dopy.Services;
 using Dapplo.Dopy.Translations;
 using Dapplo.Dopy.Translations.Impl;
+using Dapplo.Dopy.UseCases.Configuration.ViewModels;
+using Dapplo.Dopy.UseCases.ContextMenu.ViewModels;
 using Dapplo.Dopy.UseCases.History.ViewModels;
 
 namespace Dapplo.Dopy
@@ -41,25 +45,68 @@ namespace Dapplo.Dopy
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<DopyConfigurationImpl>()
-                .As<IDopyConfiguration>()
+        
+            builder
+                .RegisterType<DopyUiConfigurationImpl>()
+                .As<IDopyUiConfiguration>()
                 .As<IIniSection>()
+                .As<IMetroUiConfiguration>()
+                .As<IUiConfiguration>()      
                 .SingleInstance();
-            builder.RegisterType<DopyTranslationsImpl>()
-                .As<IDopyTranslations>()
+
+            builder
+                .RegisterType<ConfigTranslationsImpl>()
+                .As<IConfigTranslations>()
                 .As<ILanguage>()
                 .SingleInstance();
 
-            // All IMenuItem with the context they belong to
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .AssignableTo<IMenuItem>()
-                .As<IMenuItem>()
+            builder
+                .RegisterType<CoreTranslationsImpl>()
+                .As<ICoreTranslations>()
+                .As<ILanguage>()
                 .SingleInstance();
 
+            builder
+                .RegisterType<MainContextMenuTranslationsImpl>()
+                .As<IMainContextMenuTranslations>()
+                .As<ILanguage>()
+                .SingleInstance();
+
+            builder
+                .RegisterType<ConfigViewModel>()
+                .AsSelf();
+
             // All config screens
-            builder.RegisterAssemblyTypes(ThisAssembly)
+            builder
+                .RegisterAssemblyTypes(ThisAssembly)
                 .AssignableTo<IConfigScreen>()
                 .As<IConfigScreen>()
+                .SingleInstance();
+
+            builder
+                .RegisterType<DapploTrayIconViewModel>()
+                .As<ITrayIconViewModel>()
+                .WithAttributeFiltering()
+                .SingleInstance();
+
+            // All IMenuItem with the context they belong to
+            builder
+                .RegisterAssemblyTypes(ThisAssembly)
+                .AssignableTo<IMenuItem>()
+                .As<IMenuItem>()
+                .WithAttributeFiltering()
+                .SingleInstance();
+
+            builder
+                .RegisterType<DopyConfigurationImpl>()
+                .As<IDopyConfiguration>()
+                .As<IIniSection>()
+                .SingleInstance();
+
+            builder
+                .RegisterType<DopyTranslationsImpl>()
+                .As<IDopyTranslations>()
+                .As<ILanguage>()
                 .SingleInstance();
 
             builder

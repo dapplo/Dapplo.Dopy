@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AssemblyTitle>Dapplo.Dopy.Addon.OpenUri</AssemblyTitle>
+    <AssemblyName>Dapplo.Dopy.Addon.OpenUri</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dapplo.Dopy.Core\Dapplo.Dopy.Core.csproj" />
+  </ItemGroup>
+</Project>

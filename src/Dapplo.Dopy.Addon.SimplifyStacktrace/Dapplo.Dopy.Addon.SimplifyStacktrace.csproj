@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AssemblyTitle>Dapplo.Dopy.Addon.SimplifyStacktrace</AssemblyTitle>
+    <AssemblyName>Dapplo.Dopy.Addon.SimplifyStacktrace</AssemblyName>
+  </PropertyGroup>
+ 
+  <ItemGroup>
+    <ProjectReference Include="..\Dapplo.Dopy.Core\Dapplo.Dopy.Core.csproj" />
+  </ItemGroup>
+</Project>

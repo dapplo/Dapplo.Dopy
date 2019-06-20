@@ -1,5 +1,5 @@
 ﻿//  Dapplo - building blocks for desktop applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -21,7 +21,7 @@
 
 using System;
 using System.IO;
-using Dapplo.Dopy.Shared.Entities;
+using Dapplo.Dopy.Core.Entities;
 using LiteDB;
 
 namespace Dapplo.Dopy.Storage
@@ -42,6 +42,15 @@ namespace Dapplo.Dopy.Storage
             if (DbDirectory != null && !Directory.Exists(DbDirectory))
             {
                 Directory.CreateDirectory(DbDirectory);
+            }
+            // Make sure the database exists
+            if (!File.Exists(DbFilename))
+            {
+                using (var db = Create())
+                {
+                    // Workaround to make sure the file is stored and not deleted
+                    db.Engine.Info();
+                }
             }
             _defaultBsonMapper = new BsonMapper();
 
@@ -69,6 +78,7 @@ namespace Dapplo.Dopy.Storage
         /// <returns>LiteDatabase</returns>
         public LiteDatabase CreateReadonly()
         {
+
             return new LiteDatabase($@"Mode=ReadOnly;Upgrade=true;Filename={DbFilename}", _defaultBsonMapper);
         }
     }

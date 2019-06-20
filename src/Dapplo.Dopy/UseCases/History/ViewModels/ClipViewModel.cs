@@ -1,5 +1,5 @@
 ﻿//  Dapplo - building blocks for desktop applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -24,9 +24,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using Caliburn.Micro;
-using Dapplo.Dopy.Shared;
-using Dapplo.Dopy.Shared.Entities;
-using Dapplo.Dopy.Shared.Extensions;
+using Dapplo.Dopy.Core;
+using Dapplo.Dopy.Core.Entities;
+using Dapplo.Dopy.Core.Extensions;
 
 namespace Dapplo.Dopy.UseCases.History.ViewModels
 {

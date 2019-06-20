@@ -1,5 +1,5 @@
 ﻿//  Dapplo - building blocks for desktop applications
-//  Copyright (C) 2016-2018 Dapplo
+//  Copyright (C) 2016-2019 Dapplo
 // 
 //  For more information see: http://dapplo.net/
 //  Dapplo repositories are hosted on GitHub: https://github.com/dapplo
@@ -24,9 +24,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
 using System.Reactive.Subjects;
-using Dapplo.Dopy.Shared.Entities;
-using Dapplo.Dopy.Shared.Extensions;
-using Dapplo.Dopy.Shared.Repositories;
+using Dapplo.Dopy.Core.Entities;
+using Dapplo.Dopy.Core.Extensions;
+using Dapplo.Dopy.Core.Repositories;
 using LiteDB;
 
 namespace Dapplo.Dopy.Storage

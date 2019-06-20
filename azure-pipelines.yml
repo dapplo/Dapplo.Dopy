@@ -15,12 +15,12 @@ steps:
 - task: DotNetCoreInstaller@0
   displayName: 'Install .NET Core SDK 3.0'
   inputs:
-    version: '3.0.100-preview6-011657'
+    version: '3.0.100-preview7-012531'
 
 - task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.9.3'
+  displayName: 'Use NuGet 5.0.2'
   inputs:
-    versionSpec: 4.9.3
+    versionSpec: 5.0.2
     checkLatest: true
 
 - task: NuGetCommand@2
@@ -34,33 +34,33 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: 'src\Dapplo.Dopy.Container\Dapplo.Dopy.Container.csproj'
-    arguments: '-f netcoreapp3.0 -c Release /p:PublishSingleFile=true /p:UseAppHost=true /p:RuntimeIdentifier=win-x64 /p:PublishReadyToRun=true'
+    projects: 'src\Dapplo.Dopy\Dapplo.Dopy.csproj'
+    arguments: '-f netcoreapp3.0 -c Release /p:PublishSingleFile=true /p:RuntimeIdentifier=win-x64'
     zipAfterPublish: false
 
 - task: CmdLine@2
   displayName: Rename single-exe x64
   inputs:
-    script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy.Container\bin\Release\netcoreapp3.0\win-x64\publish\Dapplo.Dopy.Container.exe Dopy-x64.exe'
+    script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.0\win-x64\publish\Dapplo.Dopy.exe Dopy-x64.exe'
 
 - task: DotNetCoreCLI@2
   displayName: Publish single-exe x86
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: 'src\Dapplo.Dopy.Container\Dapplo.Dopy.Container.csproj'
-    arguments: '-f netcoreapp3.0 -c Release /p:PublishSingleFile=true /p:UseAppHost=true /p:RuntimeIdentifier=win-x86 /p:PublishReadyToRun=true'
+    projects: 'src\Dapplo.Dopy\Dapplo.Dopy.csproj'
+    arguments: '-f netcoreapp3.0 -c Release /p:PublishSingleFile=true /p:RuntimeIdentifier=win-x86'
     zipAfterPublish: false
 
 - task: CmdLine@2
   displayName: Rename single-exe x86
   inputs:
-    script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy.Container\bin\Release\netcoreapp3.0\win-x86\publish\Dapplo.Dopy.Container.exe Dopy-x86.exe' 
+    script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.0\win-x86\publish\Dapplo.Dopy.exe Dopy-x86.exe' 
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\src\Dapplo.Dopy.Container\bin\Release\netcoreapp3.0'
+    SourceFolder: '$(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.0'
     Contents: |
      win-x64\publish\Dopy-x64.exe
      win-x86\publish\Dopy-x86.exe

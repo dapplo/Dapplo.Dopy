@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="Dapplo.Dopy.UseCases.Configuration.Views.ThemeConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel>
+        <Label x:Name="DisplayName" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20" />
+        <DockPanel>
+            <Label x:Name="UiTranslations_Theme" Width="50" />
+            <ComboBox ItemsSource="{Binding AvailableThemes}" SelectedValue="{Binding UiConfiguration.Theme}" />
+            <ComboBox ItemsSource="{Binding AvailableThemeColors}" SelectedValue="{Binding UiConfiguration.ThemeColor}" />
+        </DockPanel>
+    </StackPanel>
+</UserControl>
