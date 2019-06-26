@@ -12,8 +12,9 @@
   <ItemGroup>
     <PackageReference Include="AutoProperties.Fody" Version="1.22.0" />
     <PackageReference Include="AvalonEdit" Version="6.0.0-netcore3p4alpha1" />
-    <PackageReference Include="Dapplo.Log.Loggers" Version="1.3.20" />
-    <PackageReference Include="Fody" Version="5.0.6">
+    <PackageReference Include="Costura.Fody" Version="4.0.0" />
+    <PackageReference Include="Dapplo.Log.Loggers" Version="1.3.21" />
+    <PackageReference Include="Fody" Version="5.0.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

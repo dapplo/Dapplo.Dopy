@@ -46,6 +46,9 @@ namespace Dapplo.Dopy
 #if DEBUG
             // Initialize a debug logger for Dapplo packages
             LogSettings.RegisterDefaultLogger<DebugLogger>(LogLevels.Verbose);
+#else
+            // Make sure everything is logged, until the next logger is set, so it can be forwarded
+            LogSettings.RegisterDefaultLogger<ForwardingLogger>(LogLevels.Debug);
 #endif
 
             var applicationConfig = ApplicationConfigBuilder

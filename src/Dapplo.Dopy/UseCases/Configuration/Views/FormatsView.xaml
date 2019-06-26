@@ -21,7 +21,7 @@
             </StackPanel>
             <StackPanel Grid.Column="1" >
                 <Label x:Name="DopyTranslations_FormatsSelected" HorizontalAlignment="Center" FontWeight="Bold" FontSize="15" />
-                <ListBox ItemsSource="{Binding SelectedFormats}" Grid.Column="1"  dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"/>
+                <ListBox ItemsSource="{Binding SelectedFormats}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"/>
             </StackPanel>
         </Grid>
     </StackPanel>
