@@ -1,4 +1,6 @@
 # Dopy
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdapplo%2FDapplo.Dopy.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdapplo%2FDapplo.Dopy?ref=badge_shield)
+
 Dopy is a windows clipboard manager, it stands for Dapplo-Copy -> Dopy
 
 Current state is that it's only experimental, Dopy can monitor every clipboard change (WM_CLIPBOARDUPDATE) and store the folling information in a LiteDB:
@@ -47,3 +49,7 @@ Questions:
 * What to do with URI`s?
 * What with unknown formats? Popup a question if this should be stored?
 * What with CF_SYLK and other shell formats?
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdapplo%2FDapplo.Dopy.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdapplo%2FDapplo.Dopy?ref=badge_large)
