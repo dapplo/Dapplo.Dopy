@@ -26,6 +26,7 @@ using System.Windows;
 using Dapplo.Addons.Bootstrapper;
 using Dapplo.CaliburnMicro.Dapp;
 using Dapplo.Log;
+using Dapplo.Log.LogFile;
 using Dapplo.Log.Loggers;
 
 #endregion
