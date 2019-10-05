@@ -56,9 +56,7 @@ stages:
       displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
       inputs:
         SourceFolder: '$(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.0'
-        Contents: |
-        win-x64\publish\Dopy-x64.exe
-        win-x86\publish\Dopy-x86.exe
+        Contents: 'win*\publish\Dopy-*.exe'
         TargetFolder: '$(build.artifactstagingdirectory)'
         flattenFolders: true
 
