@@ -71,7 +71,7 @@ stages:
     pool:
       vmImage: 'Windows-2019'
 
-    environment: 'NuGet'
+    environment: 'GitHub Release'
     strategy:
       # default deployment strategy
       runOnce:
@@ -96,7 +96,7 @@ stages:
               #releaseNotesSource: 'file' # Optional. Options: file, input
               #releaseNotesFile: # Optional
               #releaseNotes: # Optional
-              assets:  '$(Pipeline.Workspace)/drop/a/Dopy-*.exe' #'$(Build.ArtifactStagingDirectory)/*' # Optional
+              assets:  '$(Pipeline.Workspace)/**/Dopy-*.exe' #'$(Build.ArtifactStagingDirectory)/*' # Optional
               #assetUploadMode: 'delete' # Optional. Options: delete, replace
               isDraft: true # Optional
               isPreRelease: true # Optional
