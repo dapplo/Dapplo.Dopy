@@ -85,7 +85,7 @@ stages:
           # Create, edit, or delete a GitHub release
           - task: GitHubRelease@0
             inputs:
-              gitHubConnection: 'github connection 1'
+              gitHubConnection: 'github.com_Lakritzator'
               repositoryName: '$(Build.Repository.Name)' 
               action: 'create' # Options: create, edit, delete
               target: '$(Build.SourceVersion)' # Required when action == Create || Action == Edit
