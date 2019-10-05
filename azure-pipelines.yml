@@ -53,21 +53,21 @@ stages:
         script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.0\win-x86\publish\Dapplo.Dopy.exe Dopy-x86.exe' 
 
     - task: CopyFiles@2
-      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
       inputs:
         SourceFolder: '$(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.0'
         Contents: 'win*\publish\Dopy-*.exe'
-        TargetFolder: '$(build.artifactstagingdirectory)'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
         flattenFolders: true
 
-    - task: PublishBuildArtifacts@1
+    - task: PublishPipelineArtifact@1
       displayName: 'Publish Artifact: drop'
       inputs:
-        PathtoPublish: '$(build.artifactstagingdirectory)'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
 
 - stage: Deploy
   jobs:
-  - deployment: DeployNuGet
+  - deployment: Release2GitHub
     pool:
       vmImage: 'Windows-2019'
 
