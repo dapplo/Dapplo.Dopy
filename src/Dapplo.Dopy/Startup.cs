@@ -19,8 +19,6 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-#region using
-
 using System;
 using System.Windows;
 using Dapplo.Addons.Bootstrapper;
@@ -28,8 +26,6 @@ using Dapplo.CaliburnMicro.Dapp;
 using Dapplo.Log;
 using Dapplo.Log.LogFile;
 using Dapplo.Log.Loggers;
-
-#endregion
 
 namespace Dapplo.Dopy
 {

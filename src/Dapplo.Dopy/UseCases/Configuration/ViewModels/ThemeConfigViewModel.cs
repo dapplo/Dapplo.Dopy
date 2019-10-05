@@ -30,7 +30,6 @@ using Dapplo.Config.Intercepting;
 using Dapplo.Dopy.Configuration;
 using Dapplo.Dopy.Core;
 using Dapplo.Dopy.Translations;
-using Dapplo.Utils.Extensions;
 
 namespace Dapplo.Dopy.UseCases.Configuration.ViewModels
 {
@@ -100,9 +99,14 @@ namespace Dapplo.Dopy.UseCases.Configuration.ViewModels
             _disposables = new CompositeDisposable();
 
             AvailableThemes.Clear();
-            MetroThemeManager.AvailableThemes.ForEach(themeBaseColor => AvailableThemes.Add(themeBaseColor));
-            MetroThemeManager.AvailableThemeColors.ForEach(colorScheme => AvailableThemeColors.Add(colorScheme));
-
+            foreach (var theme in MetroThemeManager.AvailableThemes)
+            {
+                AvailableThemes.Add(theme);
+            }
+            foreach (var themeColor in MetroThemeManager.AvailableThemeColors)
+            {
+                AvailableThemeColors.Add(themeColor);
+            }
 
             // Place this under the Ui parent
             ParentId = nameof(ConfigIds.Ui);

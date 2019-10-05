@@ -19,8 +19,6 @@
 //  You should have a copy of the GNU Lesser General Public License
 //  along with Dapplo.Dopy. If not, see <http://www.gnu.org/licenses/lgpl.txt>.
 
-#region using
-
 using System;
 using Autofac.Features.OwnedInstances;
 using Caliburn.Micro;
@@ -31,8 +29,6 @@ using Dapplo.Dopy.UseCases.History.ViewModels;
 using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
 using MahApps.Metro.IconPacks;
-
-#endregion
 
 namespace Dapplo.Dopy.UseCases.ContextMenu
 {

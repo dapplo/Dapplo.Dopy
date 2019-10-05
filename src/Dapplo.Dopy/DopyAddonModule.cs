@@ -24,15 +24,14 @@ using Autofac.Features.AttributeFilters;
 using Dapplo.Addons;
 using Dapplo.CaliburnMicro.Configuration;
 using Dapplo.CaliburnMicro.Menu;
+using Dapplo.CaliburnMicro.Metro;
 using Dapplo.CaliburnMicro.Metro.Configuration;
 using Dapplo.CaliburnMicro.NotifyIconWpf;
 using Dapplo.Config.Ini;
 using Dapplo.Config.Language;
 using Dapplo.Dopy.Configuration;
-using Dapplo.Dopy.Configuration.Impl;
 using Dapplo.Dopy.Services;
 using Dapplo.Dopy.Translations;
-using Dapplo.Dopy.Translations.Impl;
 using Dapplo.Dopy.UseCases.Configuration.ViewModels;
 using Dapplo.Dopy.UseCases.ContextMenu.ViewModels;
 using Dapplo.Dopy.UseCases.History.ViewModels;
@@ -45,29 +44,46 @@ namespace Dapplo.Dopy
         /// <inheritdoc />
         protected override void Load(ContainerBuilder builder)
         {
-        
             builder
-                .RegisterType<DopyUiConfigurationImpl>()
+                .Register(c =>
+                {
+                    var metroConfiguration = IniSection<IDopyUiConfiguration>.Create();
+
+                    // add specific code
+                    var metroThemeManager = c.Resolve<MetroThemeManager>();
+
+                    metroConfiguration.RegisterAfterLoad(iniSection =>
+                    {
+                        metroThemeManager.ChangeTheme(metroConfiguration.Theme, metroConfiguration.ThemeColor);
+                    });
+                    return metroConfiguration;
+                })
                 .As<IDopyUiConfiguration>()
                 .As<IIniSection>()
                 .As<IMetroUiConfiguration>()
-                .As<IUiConfiguration>()      
+                .As<IUiConfiguration>()
                 .SingleInstance();
 
             builder
-                .RegisterType<ConfigTranslationsImpl>()
+                .Register(c =>IniSection<IDopyConfiguration>.Create())
+                .As<IDopyConfiguration>()
+                .As<IIniSection>()
+                .SingleInstance();
+
+            builder
+                .Register(c => Language<IConfigTranslations>.Create())
                 .As<IConfigTranslations>()
                 .As<ILanguage>()
                 .SingleInstance();
 
             builder
-                .RegisterType<CoreTranslationsImpl>()
+                .Register(c => Language<ICoreTranslations>.Create())
                 .As<ICoreTranslations>()
                 .As<ILanguage>()
                 .SingleInstance();
 
             builder
-                .RegisterType<MainContextMenuTranslationsImpl>()
+                .Register(c => Language<IMainContextMenuTranslations>.Create())
                 .As<IMainContextMenuTranslations>()
                 .As<ILanguage>()
                 .SingleInstance();
@@ -98,13 +114,7 @@ namespace Dapplo.Dopy
                 .SingleInstance();
 
             builder
-                .RegisterType<DopyConfigurationImpl>()
-                .As<IDopyConfiguration>()
-                .As<IIniSection>()
-                .SingleInstance();
-
-            builder
-                .RegisterType<DopyTranslationsImpl>()
+                .Register(c => Language<IDopyTranslations>.Create())
                 .As<IDopyTranslations>()
                 .As<ILanguage>()
                 .SingleInstance();
