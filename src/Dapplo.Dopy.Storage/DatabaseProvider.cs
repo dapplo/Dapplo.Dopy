@@ -46,11 +46,9 @@ namespace Dapplo.Dopy.Storage
             // Make sure the database exists
             if (!File.Exists(DbFilename))
             {
-                using (var db = Create())
-                {
-                    // Workaround to make sure the file is stored and not deleted
-                    db.Engine.Info();
-                }
+                using var db = Create();
+                // Workaround to make sure the file is stored and not deleted
+                db.Engine.Info();
             }
             _defaultBsonMapper = new BsonMapper();
 

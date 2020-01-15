@@ -226,13 +226,11 @@ namespace Dapplo.Dopy.Services
                         continue;
                     }
                     clip.Formats.Add(format);
-                    using (var clipboardStream = clipboardAccessToken.GetAsStream(format))
-                    {
-                        var memoryStream = new MemoryStream((int)clipboardStream.Length);
-                        clipboardStream.CopyTo(memoryStream);
-                        memoryStream.Seek(0, SeekOrigin.Begin);
-                        clip.Contents[format] = memoryStream;
-                    }
+                    using var clipboardStream = clipboardAccessToken.GetAsStream(format);
+                    var memoryStream = new MemoryStream((int)clipboardStream.Length);
+                    clipboardStream.CopyTo(memoryStream);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    clip.Contents[format] = memoryStream;
                 }
             }
             return clip;

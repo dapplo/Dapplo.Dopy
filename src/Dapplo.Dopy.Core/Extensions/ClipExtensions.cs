@@ -134,22 +134,20 @@ namespace Dapplo.Dopy.Core.Extensions
                 handle = clip.OriginalWindowHandle;
             }
             // TODO: Prevent detecting the restore, especially if Dopy doesn't "paste" with it's Window handle
-            using (var clipboardAccessToken = ClipboardNative.Access(handle))
+            using var clipboardAccessToken = ClipboardNative.Access(handle);
+            clipboardAccessToken.ClearContents();
+            // Make the clipboard as modified by DOPY
+            if (fromExisting ||clip.IsModifiedByDopy)
             {
-                clipboardAccessToken.ClearContents();
-                // Make the clipboard as modified by DOPY
-                if (fromExisting ||clip.IsModifiedByDopy)
-                {
-                    clipboardAccessToken.SetAsUnicodeString($"On {DateTime.Now:O}", ClipboardFormats.Dopy);
-                }
-                foreach (var key in clip.Contents.Keys)
-                {
-                    clipboardAccessToken.SetAsStream(key, clip.Contents[key]);
-                }
-                if (!string.IsNullOrEmpty(clip.ClipboardText))
-                {
-                    clipboardAccessToken.SetAsUnicodeString(clip.ClipboardText);
-                }
+                clipboardAccessToken.SetAsUnicodeString($"On {DateTime.Now:O}", ClipboardFormats.Dopy);
+            }
+            foreach (var key in clip.Contents.Keys)
+            {
+                clipboardAccessToken.SetAsStream(key, clip.Contents[key]);
+            }
+            if (!string.IsNullOrEmpty(clip.ClipboardText))
+            {
+                clipboardAccessToken.SetAsUnicodeString(clip.ClipboardText);
             }
         }
     }

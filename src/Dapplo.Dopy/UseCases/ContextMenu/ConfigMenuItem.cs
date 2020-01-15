@@ -52,10 +52,8 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
                 IsEnabled = false;
                 try
                 {
-                    using (var configViewModel = configViewModelFactory())
-                    {
-                        windowsManager.ShowDialog(configViewModel.Value);
-                    }
+                    using var configViewModel = configViewModelFactory();
+                    windowsManager.ShowDialog(configViewModel.Value);
                 }
                 finally
                 {

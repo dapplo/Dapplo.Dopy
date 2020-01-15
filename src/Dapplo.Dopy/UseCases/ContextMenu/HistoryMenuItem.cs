@@ -86,10 +86,8 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
 
                 try
                 {
-                    using (var historyViewModel = historyViewModelFactory())
-                    {
-                        windowManager.ShowDialog(historyViewModel.Value);
-                    }
+                    using var historyViewModel = historyViewModelFactory();
+                    windowManager.ShowDialog(historyViewModel.Value);
                 }
                 finally
                 {

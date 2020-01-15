@@ -95,12 +95,10 @@ namespace Dapplo.Dopy.Core
         /// </summary>
         public void ReadFrom(string filename)
         {
-            using (var filestream = File.OpenRead(filename))
-            {
-                var memoryStream = new MemoryStream();
-                filestream.CopyTo(memoryStream);
-                ReadFrom(memoryStream);
-            }
+            using var filestream = File.OpenRead(filename);
+            var memoryStream = new MemoryStream();
+            filestream.CopyTo(memoryStream);
+            ReadFrom(memoryStream);
         }
 
         /// <summary>

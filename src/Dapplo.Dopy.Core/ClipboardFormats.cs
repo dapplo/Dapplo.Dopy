@@ -25,7 +25,7 @@ using Dapplo.Windows.Clipboard;
 namespace Dapplo.Dopy.Core
 {
     /// <summary>
-    /// Helps with the format recognisions
+    /// Helps with the format recognition
     /// </summary>
     public static class ClipboardFormats
     {

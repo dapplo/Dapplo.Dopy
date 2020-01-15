@@ -46,28 +46,24 @@ namespace Dapplo.Dopy.Storage
         /// <inheritdoc />
         public Session GetById(int id)
         {
-            using (var database = _databaseProvider.CreateReadonly())
-            {
-                var sessions = database.GetCollection<Session>();
-                return sessions.FindById(id);
-            }
+            using var database = _databaseProvider.CreateReadonly();
+            var sessions = database.GetCollection<Session>();
+            return sessions.FindById(id);
         }
         
         /// <inheritdoc />
         public IEnumerable<Session> Find(Expression<Func<Session, bool>> predicate = null)
         {
-            using (var database = _databaseProvider.CreateReadonly())
-            {
-                var sessions = database.GetCollection<Session>();
+            using var database = _databaseProvider.CreateReadonly();
+            var sessions = database.GetCollection<Session>();
 /*                sessions.EnsureIndex(x => x.WindowsStartup);
                 sessions.EnsureIndex(x => x.SessionSid);
                 sessions.EnsureIndex(x => x.Username);
                 sessions.EnsureIndex(x => x.Domain);
                 sessions.EnsureIndex(x => x.Timestamp);*/
-                foreach (var foundSession in sessions.Find(predicate ?? (session => true)))
-                {
-                    yield return foundSession;
-                }
+            foreach (var foundSession in sessions.Find(predicate ?? (session => true)))
+            {
+                yield return foundSession;
             }
         }
 
@@ -79,11 +75,9 @@ namespace Dapplo.Dopy.Storage
                 throw new ArgumentNullException(nameof(session));
             }
 
-            using (var database = _databaseProvider.Create())
-            {
-                var sessions = database.GetCollection<Session>();
-                sessions.Insert(session);
-            }
+            using var database = _databaseProvider.Create();
+            var sessions = database.GetCollection<Session>();
+            sessions.Insert(session);
         }
 
         /// <inheritdoc />
@@ -97,11 +91,10 @@ namespace Dapplo.Dopy.Storage
             {
                 throw new NotSupportedException("Cannot delete a session without an ID");
             }
-            using (var database = _databaseProvider.Create())
-            {
-                var sessions = database.GetCollection<Session>();
-                sessions.Delete(session.Id);
-            }
+
+            using var database = _databaseProvider.Create();
+            var sessions = database.GetCollection<Session>();
+            sessions.Delete(session.Id);
         }
 
         /// <inheritdoc />
@@ -115,11 +108,10 @@ namespace Dapplo.Dopy.Storage
             {
                 throw new NotSupportedException("Cannot update a session without an ID");
             }
-            using (var database = _databaseProvider.Create())
-            {
-                var sessions = database.GetCollection<Session>();
-                sessions.Update(session);
-            }
+
+            using var database = _databaseProvider.Create();
+            var sessions = database.GetCollection<Session>();
+            sessions.Update(session);
         }
     }
 }

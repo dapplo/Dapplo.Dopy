@@ -52,11 +52,9 @@ namespace Dapplo.Dopy.Storage
         /// <inheritdoc />
         public Clip GetById(int id)
         {
-            using (var database = _databaseProvider.CreateReadonly())
-            {
-                var clipsCollection = database.GetCollection<Clip>();
-                return LoadContentFor(database.FileStorage, clipsCollection.FindById(id));
-            }
+            using var database = _databaseProvider.CreateReadonly();
+            var clipsCollection = database.GetCollection<Clip>();
+            return LoadContentFor(database.FileStorage, clipsCollection.FindById(id));
         }
 
         /// <inheritdoc />
@@ -65,13 +63,11 @@ namespace Dapplo.Dopy.Storage
         /// <inheritdoc />
         public IEnumerable<Clip> Find(Expression<Func<Clip, bool>> predicate = null)
         {
-            using (var database = _databaseProvider.CreateReadonly())
+            using var database = _databaseProvider.CreateReadonly();
+            var clipsCollection = database.GetCollection<Clip>();
+            foreach (var foundClip in clipsCollection.Find(predicate ?? (clip => true)))
             {
-                var clipsCollection = database.GetCollection<Clip>();
-                foreach (var foundClip in clipsCollection.Find(predicate ?? (clip => true)))
-                {
-                    yield return LoadContentFor(database.FileStorage, foundClip);
-                }
+                yield return LoadContentFor(database.FileStorage, foundClip);
             }
         }
 
@@ -251,12 +247,10 @@ namespace Dapplo.Dopy.Storage
             var iconFileId = IconFileIdGenerator(clip);
             if (fileStorage.Exists(iconFileId))
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    fileStorage.Download(iconFileId, memoryStream);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    clip.OwnerIconFromStream(memoryStream);
-                }
+                using var memoryStream = new MemoryStream();
+                fileStorage.Download(iconFileId, memoryStream);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                clip.OwnerIconFromStream(memoryStream);
             }
 
             foreach (var format in clip.Formats)
