@@ -30,13 +30,13 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: 'src\Dapplo.Dopy\Dapplo.Dopy.csproj'
-        arguments: '-f netcoreapp3.0 -c Release /p:PublishSingleFile=true /p:RuntimeIdentifier=win-x64'
+        arguments: '-f netcoreapp3.1 -c Release /p:PublishSingleFile=true /p:RuntimeIdentifier=win-x64'
         zipAfterPublish: false
 
     - task: CmdLine@2
       displayName: Rename single-exe x64
       inputs:
-        script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.0\win-x64\publish\Dapplo.Dopy.exe Dopy-x64.exe'
+        script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.1\win-x64\publish\Dapplo.Dopy.exe Dopy-x64.exe'
 
     - task: DotNetCoreCLI@2
       displayName: Publish single-exe x86
@@ -44,18 +44,18 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: 'src\Dapplo.Dopy\Dapplo.Dopy.csproj'
-        arguments: '-f netcoreapp3.0 -c Release /p:PublishSingleFile=true /p:RuntimeIdentifier=win-x86'
+        arguments: '-f netcoreapp3.1 -c Release /p:PublishSingleFile=true /p:RuntimeIdentifier=win-x86'
         zipAfterPublish: false
 
     - task: CmdLine@2
       displayName: Rename single-exe x86
       inputs:
-        script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.0\win-x86\publish\Dapplo.Dopy.exe Dopy-x86.exe' 
+        script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.1\win-x86\publish\Dapplo.Dopy.exe Dopy-x86.exe' 
 
     - task: CopyFiles@2
       displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
       inputs:
-        SourceFolder: '$(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.0'
+        SourceFolder: '$(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.1'
         Contents: 'win*\publish\Dopy-*.exe'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         flattenFolders: true
