@@ -3,6 +3,14 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
+trigger:
+  batch: true
+  branches:
+    include:
+    - '*'
+    exclude:
+    - gh-pages
+
 stages:
 - stage: Build
   jobs:
@@ -16,6 +24,9 @@ stages:
       buildConfiguration: 'Release'
 
     steps:
+    - checkout: self
+      persistCredentials: true
+
     - task: NuGetToolInstaller@1
 
     - task: UseDotNet@2
@@ -60,10 +71,8 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         flattenFolders: true
 
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Artifact: drop'
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    - publish: $(Build.ArtifactStagingDirectory)
+      artifact: drop
 
 - stage: Deploy
   jobs:
