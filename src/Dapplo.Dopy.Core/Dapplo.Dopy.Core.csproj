@@ -25,8 +25,8 @@
     <PackageReference Include="Dapplo.CaliburnMicro.Translations" Version="2.1.7" />
     <PackageReference Include="Dapplo.CaliburnMicro.NotifyIconWpf" Version="2.1.7" />
     <PackageReference Include="Dapplo.CaliburnMicro.Toasts" Version="2.1.7" />
-    <PackageReference Include="MahApps.Metro.IconPacks" Version="3.1.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="3.2.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
-    <PackageReference Include="MetadataExtractor" Version="2.2.0" />
+    <PackageReference Include="MetadataExtractor" Version="2.3.0" />
   </ItemGroup>
 </Project>

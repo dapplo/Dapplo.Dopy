@@ -48,7 +48,7 @@ namespace Dapplo.Dopy.Storage
             {
                 using var db = Create();
                 // Workaround to make sure the file is stored and not deleted
-                db.Engine.Info();
+                db.Commit();
             }
             _defaultBsonMapper = new BsonMapper();
 

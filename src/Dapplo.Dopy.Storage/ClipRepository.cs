@@ -65,7 +65,7 @@ namespace Dapplo.Dopy.Storage
         {
             using var database = _databaseProvider.CreateReadonly();
             var clipsCollection = database.GetCollection<Clip>();
-            foreach (var foundClip in clipsCollection.Find(predicate ?? (clip => true)))
+            foreach (var foundClip in predicate != null ? clipsCollection.Find(predicate) : clipsCollection.FindAll())
             {
                 yield return LoadContentFor(database.FileStorage, foundClip);
             }
@@ -225,7 +225,7 @@ namespace Dapplo.Dopy.Storage
         /// <param name="clip">Clip</param>
         /// <param name="format">string with clipboard format</param>
         /// <returns>MemoryStream</returns>
-        private MemoryStream LoadContent(LiteStorage fileStorage, Clip clip, string format)
+        private MemoryStream LoadContent(ILiteStorage<string> fileStorage, Clip clip, string format)
         {
             var stream = new MemoryStream();
             var fileId = FileIdGenerator(clip, format);
@@ -242,7 +242,7 @@ namespace Dapplo.Dopy.Storage
         /// <param name="fileStorage">LiteStorage</param>
         /// <param name="clip">Clip</param>
         /// <returns>Clip</returns>
-        private Clip LoadContentFor(LiteStorage fileStorage, Clip clip)
+        private Clip LoadContentFor(ILiteStorage<string> fileStorage, Clip clip)
         {
             var iconFileId = IconFileIdGenerator(clip);
             if (fileStorage.Exists(iconFileId))
