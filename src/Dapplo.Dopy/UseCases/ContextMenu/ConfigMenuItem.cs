@@ -45,7 +45,7 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
             Id = "D_Configure";
             Icon = new PackIconMaterial
             {
-                Kind = PackIconMaterialKind.Settings
+                Kind = PackIconMaterialKind.Cog
             };
             ClickAction = clickedItem =>
             {

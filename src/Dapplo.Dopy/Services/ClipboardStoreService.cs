@@ -213,7 +213,7 @@ namespace Dapplo.Dopy.Services
 
             using (var clipboardAccessToken = ClipboardNative.Access())
             {
-                clip.Filenames = clipboardAccessToken.GetFilenames().ToList();
+                clip.Filenames = clipboardAccessToken.GetFileNames().ToList();
                 if (clip.OriginalFormats.Contains("CF_UNICODETEXT"))
                 {
                     clip.ClipboardText = clipboardAccessToken.GetAsUnicodeString();

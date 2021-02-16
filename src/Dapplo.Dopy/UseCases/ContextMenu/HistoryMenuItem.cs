@@ -64,7 +64,7 @@ namespace Dapplo.Dopy.UseCases.ContextMenu
             KeyboardHook.KeyboardEvents
                 // The hotkey to listen do
                 .Where(controlShiftPasteKey)
-#if !NETCOREAPP3_1
+#if !NET5_0
 // TODO: What about dotnet core 3.0?
                 // Make sure it's on the dispatcher
                 .SubscribeOnDispatcher()

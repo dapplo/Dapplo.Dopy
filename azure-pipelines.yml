@@ -16,7 +16,7 @@ stages:
   jobs:
   - job: Build
     pool:
-      vmImage: 'Windows-2019'
+      vmImage: 'Windows-latest'
 
     variables:
       solution: '**/src/*.sln'
@@ -30,10 +30,10 @@ stages:
     - task: NuGetToolInstaller@1
 
     - task: UseDotNet@2
-      displayName: 'Use .NET Core sdk 3.1'
+      displayName: 'Use .NET Core sdk 5.0'
       inputs:
         packageType: sdk
-        version: 3.1.101
+        version: 5.0.103
 
     - task: DotNetCoreCLI@2
       displayName: Publish single-exe x64
@@ -41,13 +41,13 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: 'src\Dapplo.Dopy\Dapplo.Dopy.csproj'
-        arguments: '-f netcoreapp3.1 -c Release /p:PublishSingleFile=true /p:RuntimeIdentifier=win-x64'
+        arguments: '-f net5.0-windows -c Release /p:PublishSingleFile=true /p:RuntimeIdentifier=win-x64'
         zipAfterPublish: false
 
     - task: CmdLine@2
       displayName: Rename single-exe x64
       inputs:
-        script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.1\win-x64\publish\Dapplo.Dopy.exe Dopy-x64.exe'
+        script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\net5.0-windows\win-x64\publish\Dapplo.Dopy.exe Dopy-x64.exe'
 
     - task: DotNetCoreCLI@2
       displayName: Publish single-exe x86
@@ -55,18 +55,18 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: 'src\Dapplo.Dopy\Dapplo.Dopy.csproj'
-        arguments: '-f netcoreapp3.1 -c Release /p:PublishSingleFile=true /p:RuntimeIdentifier=win-x86'
+        arguments: '-f net5.0-windows -c Release /p:PublishSingleFile=true /p:RuntimeIdentifier=win-x86'
         zipAfterPublish: false
 
     - task: CmdLine@2
       displayName: Rename single-exe x86
       inputs:
-        script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.1\win-x86\publish\Dapplo.Dopy.exe Dopy-x86.exe' 
+        script: 'rename $(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\net5.0-windows\win-x86\publish\Dapplo.Dopy.exe Dopy-x86.exe' 
 
     - task: CopyFiles@2
       displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
       inputs:
-        SourceFolder: '$(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\netcoreapp3.1'
+        SourceFolder: '$(Build.SourcesDirectory)\src\Dapplo.Dopy\bin\Release\net5.0-windows'
         Contents: 'win*\publish\Dopy-*.exe'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
         flattenFolders: true
@@ -78,7 +78,7 @@ stages:
   jobs:
   - deployment: Release2GitHub
     pool:
-      vmImage: 'Windows-2019'
+      vmImage: 'Windows-latest'
 
     environment: 'GitHub Release'
     strategy:

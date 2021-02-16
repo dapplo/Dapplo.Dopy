@@ -7,7 +7,7 @@
              xmlns:controls1="clr-namespace:Dapplo.CaliburnMicro.Configuration.Controls;assembly=Dapplo.CaliburnMicro.Configuration"
              Width="500" Height="400" Title="{Binding DisplayName}" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
     <behaviors:FrameworkElementIcon.Value>
-        <iconPacks:PackIconMaterial Kind="Settings" Margin="10" Visibility="Visible" />
+        <iconPacks:PackIconMaterial Kind="Cog" Margin="10" Visibility="Visible" />
     </behaviors:FrameworkElementIcon.Value>
     <Grid>
         <Grid.RowDefinitions>
