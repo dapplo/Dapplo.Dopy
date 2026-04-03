@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapplo.CaliburnMicro.Toasts" Version="2.1.10" />
+    <PackageReference Include="Dapplo.CaliburnMicro.Toasts" Version="2.1.20" />
   </ItemGroup>
  
   <ItemGroup>

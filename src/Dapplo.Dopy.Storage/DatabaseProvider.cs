@@ -34,8 +34,7 @@ namespace Dapplo.Dopy.Storage
         private static readonly string DbDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dapplo.Dopy");
         private static readonly string DbFilename =  Path.Combine(DbDirectory , @"dopy.db");
         private readonly BsonMapper _defaultBsonMapper;
-
-        /// <inheritdoc />
+        
         public DatabaseProvider()
         {
             // Make sure the DB path is available
